@@ -7,6 +7,8 @@ repositories {
     gradlePluginPortal()
 }
 
+group = "com.nisecoder.gradle"
+version = "1.0-SNAPSHOT"
 
 dependencies {
     implementation("org.jetbrains.kotlin:kotlin-gradle-plugin:1.4.31")
