@@ -1,0 +1,24 @@
+name: "Publishing to Github Packages using Gradle"
+
+on:
+  push:
+    branches: [ master ]
+
+  workflow_dispatch:
+
+jobs:
+  publish:
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v2
+
+      - name: Set up Java for Publishing
+        uses: actions/setup-java@v1
+        with:
+          java-version: 11
+
+      - name: Publish to Github Packages
+        run: ./gradlew publish
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
