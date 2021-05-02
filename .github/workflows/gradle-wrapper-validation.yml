@@ -2,7 +2,7 @@ name: "Validate Gradle Wrapper"
 on: [push, pull_request]
 
 jobs:
-  valication:
+  validation:
     runs-on: ubuntu-latest
 
     steps:
