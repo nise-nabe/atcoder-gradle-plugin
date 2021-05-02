@@ -13,7 +13,7 @@ version = "1.0-SNAPSHOT"
 dependencies {
     implementation("org.jetbrains.kotlin:kotlin-gradle-plugin:1.4.32")
 
-    implementation("it.skrape:skrapeit-core:1.1.1")
+    implementation("it.skrape:skrapeit:1.1.1")
     implementation("io.github.rybalkinsd:kohttp:0.12.0")
 
 
