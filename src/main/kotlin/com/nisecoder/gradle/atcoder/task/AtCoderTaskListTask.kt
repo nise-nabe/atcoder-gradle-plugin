@@ -1,13 +1,6 @@
 package com.nisecoder.gradle.atcoder.task
 
-import com.nisecoder.gradle.atcoder.internal.AtCoderSite
-import it.skrape.core.htmlDocument
-import it.skrape.fetcher.HttpFetcher
-import it.skrape.fetcher.extractIt
-import it.skrape.fetcher.skrape
-import it.skrape.selects.html5.tbody
-import it.skrape.selects.html5.td
-import it.skrape.selects.html5.tr
+import com.nisecoder.gradle.atcoder.internal.AtCoderFetcher
 import org.gradle.api.file.RegularFileProperty
 import org.gradle.api.tasks.Input
 import org.gradle.api.tasks.InputFile
@@ -22,45 +15,14 @@ abstract class AtCoderTaskListTask: AtCoderTask() {
     @get:InputFile
     abstract val sessionFile: RegularFileProperty
 
-
     @TaskAction
     fun taskList() {
         val session = sessionFile.get().asFile.readLines().first()
+        val fetcher = AtCoderFetcher(session)
 
-        val result = skrape(HttpFetcher) {
-            request {
-                url = "${AtCoderSite.baseUrl}/contests/${contestName}/tasks"
-                cookies = mapOf(AtCoderSite.sessionName to session)
-                headers = mapOf("Accept-Language" to "ja")
-            }
-
-            extractIt<ContestTasks> {
-                htmlDocument {
-                    it.tasks = tbody { tr { findAll {
-                        map { it.td {
-                            ContestTask(
-                                taskId = findByIndex(0) { text },
-                                taskName = findByIndex(1) { text },
-                                timeLimit = findByIndex(2) { text },
-                                memoryLimit = findByIndex(3) { text }
-                            ) } }
-                    } } }
-                }
-            }
-        }
+        val result = fetcher.fetchTaskList(contestName)
         result.tasks.forEach {
             logger.lifecycle("${it.taskId}: ${it.taskName}")
         }
     }
 }
-
-class ContestTasks {
-    lateinit var tasks: List<ContestTask>
-}
-
-data class ContestTask(
-    val taskId: String,
-    val taskName: String,
-    val timeLimit: String,
-    val memoryLimit: String,
-)
