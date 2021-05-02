@@ -1,5 +1,6 @@
 package com.nisecoder.gradle.atcoder.task
 
+import com.nisecoder.gradle.atcoder.internal.AtCoderSite
 import io.github.rybalkinsd.kohttp.client.client
 import io.github.rybalkinsd.kohttp.client.fork
 import io.github.rybalkinsd.kohttp.dsl.httpPost
@@ -33,7 +34,7 @@ abstract class AtCoderLoginTask : AtCoderTask() {
     fun login() {
         val cookies = skrape(HttpFetcher) {
             request {
-                url = "https://atcoder.jp/"
+                url = AtCoderSite.home
             }
 
             extract {
@@ -57,7 +58,7 @@ abstract class AtCoderLoginTask : AtCoderTask() {
         }.fork {
             followRedirects = false
         }) {
-            url("https://atcoder.jp/login")
+            url(AtCoderSite.login)
             header {
                 "Content-Type" to "application/x-www-form-urlencoded"
                 cookie {
@@ -76,7 +77,7 @@ abstract class AtCoderLoginTask : AtCoderTask() {
         }
 
         val loginSession = result.headers("Set-Cookie")
-            .map { it.toCookie("https://atcoder.jp") }
+            .map { it.toCookie(AtCoderSite.baseUrl) }
             .firstOrNull { it.name == "REVEL_SESSION" }
             ?: throw Exception("fail to login")
 

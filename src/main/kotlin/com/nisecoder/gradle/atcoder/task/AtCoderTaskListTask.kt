@@ -1,5 +1,6 @@
 package com.nisecoder.gradle.atcoder.task
 
+import com.nisecoder.gradle.atcoder.internal.AtCoderSite
 import it.skrape.core.htmlDocument
 import it.skrape.fetcher.HttpFetcher
 import it.skrape.fetcher.extractIt
@@ -28,7 +29,7 @@ abstract class AtCoderTaskListTask: AtCoderTask() {
 
         val result = skrape(HttpFetcher) {
             request {
-                url = "https://atcoder.jp/contests/${contestName}/tasks"
+                url = "${AtCoderSite.baseUrl}/contests/${contestName}/tasks"
                 cookies = mapOf("REVEL_SESSION" to session)
                 headers = mapOf("Accept-Language" to "ja")
             }
