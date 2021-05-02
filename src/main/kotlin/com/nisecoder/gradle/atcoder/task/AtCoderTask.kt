@@ -1,4 +1,4 @@
-package com.nisecoder.gradle.atcoder.tasks
+package com.nisecoder.gradle.atcoder.task
 
 import org.gradle.api.DefaultTask
 
