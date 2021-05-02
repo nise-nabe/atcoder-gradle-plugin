@@ -30,7 +30,7 @@ abstract class AtCoderTaskListTask: AtCoderTask() {
         val result = skrape(HttpFetcher) {
             request {
                 url = "${AtCoderSite.baseUrl}/contests/${contestName}/tasks"
-                cookies = mapOf("REVEL_SESSION" to session)
+                cookies = mapOf(AtCoderSite.sessionName to session)
                 headers = mapOf("Accept-Language" to "ja")
             }
 

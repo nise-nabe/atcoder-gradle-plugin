@@ -42,7 +42,7 @@ abstract class AtCoderLoginTask : AtCoderTask() {
             }
         }
 
-        val session = cookies.find { it.name == "REVEL_SESSION" }!!
+        val session = cookies.find { it.name == AtCoderSite.sessionName }!!
         val csrfToken = session.value.split("%00")
             .first { it.startsWith("csrf_token") }
             .let { URLDecoder.decode(it, Charset.defaultCharset()) }
@@ -78,7 +78,7 @@ abstract class AtCoderLoginTask : AtCoderTask() {
 
         val loginSession = result.headers("Set-Cookie")
             .map { it.toCookie(AtCoderSite.baseUrl) }
-            .firstOrNull { it.name == "REVEL_SESSION" }
+            .firstOrNull { it.name == AtCoderSite.sessionName }
             ?: throw Exception("fail to login")
 
         // save cookie object which could be deserialize after end of tasks
