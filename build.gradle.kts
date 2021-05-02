@@ -16,6 +16,7 @@ dependencies {
     implementation("it.skrape:skrapeit:1.1.1")
     implementation("io.github.rybalkinsd:kohttp:0.12.0")
 
+    implementation("nu.studer:gradle-credentials-plugin:2.1")
 
     testImplementation(gradleTestKit())
     testImplementation(kotlin("test-junit5"))
