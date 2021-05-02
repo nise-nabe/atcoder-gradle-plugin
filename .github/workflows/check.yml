@@ -1,0 +1,22 @@
+name: "check"
+
+on: [push, workflow_dispatch]
+
+jobs:
+  check:
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v2
+
+      - name: Set up Java for Publishing
+        uses: actions/setup-java@v1
+        with:
+          java-version: 11
+
+      - name: Check
+        uses: eskatos/gradle-command-action@v1
+        with:
+          arguments: check
+          wrapper-cache-enabled: true
+          dependencies-cache-enabled: true
