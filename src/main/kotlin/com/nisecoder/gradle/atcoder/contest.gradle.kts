@@ -15,7 +15,7 @@ atcoder.contestName.convention(project.name)
 tasks {
     val atcoderLogin by getting(AtCoderLoginTask::class)
 
-    register<AtCoderTaskListTask>("atcoderTasks") {
+    register<AtCoderTaskListTask>("atcoderTaskList") {
         contestName = atcoder.contestName.get()
         sessionFile.set(atcoderLogin.sessionFile)
     }

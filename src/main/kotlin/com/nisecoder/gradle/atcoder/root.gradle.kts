@@ -15,7 +15,7 @@ tasks {
         outputDir.set(project.rootDir.resolve("subprojects/contests/"))
     }
 
-    register<AtCoderTaskListTask>("atcoderTasks") {
+    register<AtCoderTaskListTask>("atcoderTaskList") {
         sessionFile.set(atcoderLogin.sessionFile)
     }
 }
