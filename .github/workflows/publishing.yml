@@ -19,7 +19,9 @@ jobs:
           java-version: 11
 
       - name: Publish to Github Packages
-        run: ./gradlew publish
+        uses: eskatos/gradle-command-action@v1
+        with:
+          arguments: publish
         env:
           USERNAME: ${{ github.actor }}
           TOKEN: ${{ secrets.GITHUB_TOKEN }}
