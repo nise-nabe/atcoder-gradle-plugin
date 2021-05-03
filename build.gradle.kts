@@ -1,6 +1,7 @@
 plugins {
     `kotlin-dsl`
     `maven-publish`
+    id("org.asciidoctor.jvm.convert") version "3.1.0"
 }
 
 repositories {
