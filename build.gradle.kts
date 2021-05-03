@@ -63,5 +63,6 @@ publishing {
 tasks.asciidoctor {
     languages("en")
     // to add github pages
-    setOutputDir(file("docs"))
+    val githubPagesDir = rootProject.layout.projectDirectory.asFile.resolve("docs")
+    setOutputDir(githubPagesDir)
 }
