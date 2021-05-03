@@ -1,5 +1,6 @@
 package com.nisecoder.gradle.atcoder.internal
 
+import it.skrape.core.document
 import it.skrape.core.htmlDocument
 import it.skrape.fetcher.HttpFetcher
 import it.skrape.fetcher.extractIt
@@ -18,6 +19,9 @@ class AtCoderFetcher(private val session: String) {
             }
 
             extractIt {
+                if (responseStatus.code == 404 && document.wholeText.contains("権限がありません")) {
+                    throw AtCoderUnauthorizedException("not login")
+                }
                 htmlDocument {
                     it.tasks = tbody { tr { findAll {
                         map { it.td {
