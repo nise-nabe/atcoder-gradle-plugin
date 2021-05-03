@@ -12,6 +12,7 @@ tasks {
     val atcoderLogin by getting(AtCoderLoginTask::class)
 
     register<AtCoderNewContestTask>("atcoderNew") {
+        sessionFile.set(atcoderLogin.sessionFile)
         outputDir.set(project.rootDir.resolve("subprojects/contests/"))
     }
 
