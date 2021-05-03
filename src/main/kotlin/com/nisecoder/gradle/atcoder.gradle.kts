@@ -1,4 +1,4 @@
-package com.nisecoder.gradle.atcoder
+package com.nisecoder.gradle
 
 import com.nisecoder.gradle.atcoder.task.AtCoderLoginTask
 import com.nisecoder.gradle.atcoder.task.AtCoderNewContestTask
