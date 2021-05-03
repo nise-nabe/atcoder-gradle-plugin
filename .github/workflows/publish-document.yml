@@ -1,10 +1,8 @@
-name: "Publishing to Github Packages using Gradle"
+name: "Publishing to Github Pages using Gradle"
 
 on:
   push:
     branches: [ master ]
-
-  workflow_dispatch:
 
 jobs:
   publish:
@@ -18,12 +16,15 @@ jobs:
         with:
           java-version: 11
 
-      - name: Publish to Github Packages
+      - name: Generate Document
         uses: eskatos/gradle-command-action@v1
         with:
-          arguments: publish
+          arguments: asciidoctor
           wrapper-cache-enabled: true
           dependencies-cache-enabled: true
-        env:
-          USERNAME: ${{ github.actor }}
-          TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Publish Document to Github Pages
+        uses: JamesIves/github-pages-deploy-action@4.1.1
+        with:
+          branch: gh-pages
+          folder: build/docs/asciidoc
