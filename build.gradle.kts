@@ -15,7 +15,7 @@ dependencies {
 
     implementation("it.skrape:skrapeit:1.1.1")
 
-    implementation(platform("io.ktor:ktor-bom:1.5.3"))
+    implementation(platform("io.ktor:ktor-bom:1.5.4"))
     implementation("io.ktor:ktor-client-core")
     implementation("io.ktor:ktor-client-apache")
     implementation("io.ktor:ktor-client-logging")
