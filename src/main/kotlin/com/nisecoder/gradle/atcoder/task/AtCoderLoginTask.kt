@@ -32,21 +32,20 @@ abstract class AtCoderLoginTask : AtCoderTask() {
 
     @TaskAction
     fun login() {
-        val cookies = skrape(HttpFetcher) {
+        val session = skrape(HttpFetcher) {
             request {
                 url = AtCoderSite.home
             }
 
             extract {
-                cookies
+               cookies.first { it.name == AtCoderSite.sessionName }
             }
         }
 
-        val session = cookies.find { it.name == AtCoderSite.sessionName }!!
         val csrfToken = session.value.split("%00")
             .first { it.startsWith("csrf_token") }
-            .let { URLDecoder.decode(it, Charset.defaultCharset()) }
-            ?.split(":")?.get(1)!!
+            .decodeURLQueryComponent()
+            .split(":")[1]
 
 
         val result = httpPost(client {
