@@ -81,7 +81,7 @@ abstract class AtCoderLoginTask : AtCoderTask() {
             ?: throw Exception("fail to login")
 
         // save cookie object which could be deserialize after end of tasks
-        sessionFile.asFile.get().writeText(loginSession.value)
+        sessionFile.asFile.get().writeText(session.value)
 
         logger.lifecycle("login user: $username")
     }
