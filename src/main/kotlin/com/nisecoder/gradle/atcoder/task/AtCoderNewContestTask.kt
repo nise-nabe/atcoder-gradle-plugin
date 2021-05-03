@@ -1,29 +1,32 @@
 package com.nisecoder.gradle.atcoder.task
 
-import org.gradle.api.DefaultTask
+import com.nisecoder.gradle.atcoder.internal.AtCoderFetcher
 import org.gradle.api.file.DirectoryProperty
+import org.gradle.api.file.RegularFileProperty
 import org.gradle.api.tasks.Input
-import org.gradle.api.tasks.Optional
+import org.gradle.api.tasks.InputFile
 import org.gradle.api.tasks.OutputDirectory
 import org.gradle.api.tasks.TaskAction
 import org.gradle.api.tasks.options.Option
 
-abstract class AtCoderNewContestTask: DefaultTask() {
+abstract class AtCoderNewContestTask: AtCoderTask() {
     @get:Input
     @set:Option(option = "contest", description = "contest name")
-    @get:Optional
-    abstract var contestName: String?
+    abstract var contestName: String
+
+    @get:InputFile
+    abstract val sessionFile: RegularFileProperty
 
     @get:OutputDirectory
     abstract val outputDir: DirectoryProperty
 
     @TaskAction
     fun newContest() {
-        val contestName = contestName ?: throw IllegalArgumentException("argument \"contest\" is required for \"$name\" task")
         val contestDir = outputDir.get().asFile.resolve(contestName)
         if (!contestDir.exists()) contestDir.mkdir()
 
-        val problems = listOf("A", "B", "C", "D", "E", "F")
+        val fetcher = AtCoderFetcher(sessionFile.get().asFile.readLines().first())
+        val problems = fetcher.fetchTaskList(contestName).tasks.map { it.taskId }
 
         val problemString = problems.joinToString(prefix = "\"", postfix = "\"", separator = "\", \"")
 

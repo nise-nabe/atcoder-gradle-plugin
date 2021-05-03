@@ -14,8 +14,14 @@ dependencies {
     implementation("org.jetbrains.kotlin:kotlin-gradle-plugin:1.4.32")
 
     implementation("it.skrape:skrapeit:1.1.1")
-    implementation("io.github.rybalkinsd:kohttp:0.12.0")
 
+    implementation(platform("io.ktor:ktor-bom:1.5.4"))
+    implementation("io.ktor:ktor-client-core")
+    implementation("io.ktor:ktor-client-cio")
+    implementation("io.ktor:ktor-client-logging")
+    implementation("ch.qos.logback:logback-classic")
+
+    implementation("nu.studer:gradle-credentials-plugin:2.1")
 
     testImplementation(gradleTestKit())
     testImplementation(kotlin("test-junit5"))
