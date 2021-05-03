@@ -14,5 +14,5 @@ tasks.register<AtCoderLoginTask>("atcoderLogin") {
     val credentials: CredentialsContainer by rootProject.extra
     username = credentials.getProperty("atcoder.username").toString()
     password = credentials.getProperty("atcoder.password").toString()
-    sessionFile.set(project.buildDir.resolve("atcoder/session.txt"))
+    sessionFile.set(rootProject.buildDir.resolve("atcoder/session.txt"))
 }
