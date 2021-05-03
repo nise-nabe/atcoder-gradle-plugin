@@ -59,3 +59,9 @@ publishing {
         }
     }
 }
+
+tasks.asciidoctor {
+    languages("en")
+    // to add github pages
+    setOutputDir(file("docs"))
+}
