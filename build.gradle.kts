@@ -59,10 +59,3 @@ publishing {
         }
     }
 }
-
-tasks.asciidoctor {
-    languages("en")
-    // to add github pages
-    val githubPagesDir = rootProject.layout.projectDirectory.asFile.resolve("docs")
-    setOutputDir(githubPagesDir)
-}
