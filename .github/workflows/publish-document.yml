@@ -20,6 +20,8 @@ jobs:
         uses: eskatos/gradle-command-action@v1
         with:
           arguments: asciidoctor
+          wrapper-cache-enabled: true
+          dependencies-cache-enabled: true
 
       - name: Publish Document to Github Pages
         uses: JamesIves/github-pages-deploy-action@4.1.1

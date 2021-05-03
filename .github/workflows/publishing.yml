@@ -22,6 +22,8 @@ jobs:
         uses: eskatos/gradle-command-action@v1
         with:
           arguments: publish
+          wrapper-cache-enabled: true
+          dependencies-cache-enabled: true
         env:
           USERNAME: ${{ github.actor }}
           TOKEN: ${{ secrets.GITHUB_TOKEN }}
