@@ -53,7 +53,7 @@ abstract class AtCoderLoginTask : AtCoderTask() {
             .decodeURLQueryComponent()
             .split(":")[1]
 
-        runBlocking {
+        val loginSession = runBlocking {
             val client = HttpClient(CIO) {
                 expectSuccess = false
                 followRedirects = false
@@ -75,13 +75,13 @@ abstract class AtCoderLoginTask : AtCoderTask() {
                 ).let(::renderCookieHeader))
             }
             when (response.status) {
-                OK, Found -> return@runBlocking
+                OK, Found -> return@runBlocking response.setCookie().first { it.name == AtCoderSite.sessionName }.value
                 Forbidden -> throw AtCoderUnauthorizedException(response.readText())
                 else -> throw AtCoderException(response.status.toString())
             }
         }
 
-        sessionFile.asFile.get().writeText(session.value)
+        sessionFile.asFile.get().writeText(loginSession)
 
         logger.lifecycle("login user: $username")
     }

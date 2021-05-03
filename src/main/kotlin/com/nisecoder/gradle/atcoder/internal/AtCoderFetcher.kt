@@ -1,5 +1,6 @@
 package com.nisecoder.gradle.atcoder.internal
 
+import io.ktor.http.*
 import it.skrape.core.document
 import it.skrape.core.htmlDocument
 import it.skrape.fetcher.HttpFetcher
@@ -14,8 +15,10 @@ class AtCoderFetcher(private val session: String) {
         return skrape(HttpFetcher) {
             request {
                 url = "${AtCoderSite.baseUrl}/contests/${contestName}/tasks"
-                cookies = mapOf(AtCoderSite.sessionName to session)
-                headers = mapOf("Accept-Language" to "ja")
+                headers = mapOf(
+                    "Accept-Language" to "ja",
+                    "Cookie" to Cookie(name = AtCoderSite.sessionName, value = session, encoding = CookieEncoding.RAW).let(::renderCookieHeader)
+                )
             }
 
             extractIt {
