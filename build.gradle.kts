@@ -17,7 +17,7 @@ dependencies {
 
     implementation(platform("io.ktor:ktor-bom:1.5.4"))
     implementation("io.ktor:ktor-client-core")
-    implementation("io.ktor:ktor-client-apache")
+    implementation("io.ktor:ktor-client-cio")
     implementation("io.ktor:ktor-client-logging")
     implementation("ch.qos.logback:logback-classic")
 
