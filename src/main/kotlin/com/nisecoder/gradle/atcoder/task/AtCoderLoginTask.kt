@@ -3,6 +3,7 @@ package com.nisecoder.gradle.atcoder.task
 import com.nisecoder.gradle.atcoder.internal.AtCoderException
 import com.nisecoder.gradle.atcoder.internal.AtCoderSite
 import com.nisecoder.gradle.atcoder.internal.AtCoderUnauthorizedException
+import com.nisecoder.gradle.atcoder.internal.csrfToken
 import io.ktor.client.HttpClient
 import io.ktor.client.engine.cio.CIO
 import io.ktor.client.request.forms.submitForm
@@ -48,10 +49,7 @@ abstract class AtCoderLoginTask : AtCoderTask() {
             }
         }
 
-        val csrfToken = session.value.split("%00")
-            .first { it.startsWith("csrf_token") }
-            .decodeURLQueryComponent()
-            .split(":")[1]
+        val csrfToken = session.value.csrfToken()
 
         val loginSession = runBlocking {
             val client = HttpClient(CIO) {

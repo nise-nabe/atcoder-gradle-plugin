@@ -1,6 +1,7 @@
 package com.nisecoder.gradle.atcoder.internal
 
 import io.ktor.http.*
+import io.ktor.util.KtorExperimentalAPI
 import it.skrape.core.document
 import it.skrape.core.htmlDocument
 import it.skrape.fetcher.HttpFetcher
@@ -11,6 +12,7 @@ import it.skrape.selects.html5.td
 import it.skrape.selects.html5.tr
 
 class AtCoderFetcher(private val session: String) {
+    @KtorExperimentalAPI
     fun fetchTaskList(contestName: String): ContestTaskList {
         return skrape(HttpFetcher) {
             request {
@@ -32,7 +34,10 @@ class AtCoderFetcher(private val session: String) {
                                 taskId = findByIndex(0) { text },
                                 taskName = findByIndex(1) { text },
                                 timeLimit = findByIndex(2) { text },
-                                memoryLimit = findByIndex(3) { text }
+                                memoryLimit = findByIndex(3) { text },
+                                taskScreenName = findByIndex(4) {
+                                    eachHref.first().split("taskScreenName=")[1]
+                                }
                             ) } }
                     } } }
                 }

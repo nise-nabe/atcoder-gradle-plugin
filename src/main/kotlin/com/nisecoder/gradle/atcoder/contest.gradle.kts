@@ -1,6 +1,7 @@
 package com.nisecoder.gradle.atcoder
 
 import com.nisecoder.gradle.atcoder.task.AtCoderLoginTask
+import com.nisecoder.gradle.atcoder.task.AtCoderSubmitTask
 import com.nisecoder.gradle.atcoder.task.AtCoderTaskListTask
 
 
@@ -16,6 +17,11 @@ tasks {
     val atcoderLogin by getting(AtCoderLoginTask::class)
 
     register<AtCoderTaskListTask>("atcoderTaskList") {
+        contestName = atcoder.contestName.get()
+        sessionFile.set(atcoderLogin.sessionFile)
+    }
+
+    register<AtCoderSubmitTask>("atcoderSubmit") {
         contestName = atcoder.contestName.get()
         sessionFile.set(atcoderLogin.sessionFile)
     }
