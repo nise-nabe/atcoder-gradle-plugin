@@ -17,6 +17,6 @@ jobs:
       - name: Check
         uses: eskatos/gradle-command-action@v1
         with:
-          arguments: --scan -s check
+          arguments: check
           wrapper-cache-enabled: true
           dependencies-cache-enabled: true
