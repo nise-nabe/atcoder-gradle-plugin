@@ -26,6 +26,34 @@ credentials use values saved with
 https://github.com/etiennestuder/gradle-credentials-plugin[gradle-credential-plugin]
 
 ----
-$ gradle  addCredentials --key atcoder.username --value {user atcoder username}
-$ gradle  addCredentials --key atcoder.password --value {user atcoder password}
+$ gradle addCredentials --key atcoder.username --value {user atcoder username}
+$ gradle addCredentials --key atcoder.password --value {user atcoder password}
+----
+
+=== Login
+
+----
+$ gradle atcoderLogin
+----
+
+=== Create Contest Project
+
+If you didn't execute login task,  login task  will execute automatically.
+
+----
+$ gradle atcoderNew --contest=practice
+----
+
+Now, the projects will create into 'subprojects/contests'
+
+=== Solve It
+
+----
+subprojects/contests/practice/src/A/kotlin/main.kt
+----
+
+=== Submit
+
+----
+$ gradle :practice:atcoderSubmitA
 ----
