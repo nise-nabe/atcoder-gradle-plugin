@@ -446,7 +446,14 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
 <div id="toctitle">Table of Contents</div>
 <ul class="sectlevel1">
 <li><a href="#_introduction">Introduction</a></li>
-<li><a href="#_getting_started">Getting Started</a></li>
+<li><a href="#_getting_started">Getting Started</a>
+<ul class="sectlevel2">
+<li><a href="#_login">Login</a></li>
+<li><a href="#_create_contest_project">Create Contest Project</a></li>
+<li><a href="#_solve_it">Solve It</a></li>
+<li><a href="#_submit">Submit</a></li>
+</ul>
+</li>
 </ul>
 </div>
 </div>
@@ -501,8 +508,46 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
 </div>
 <div class="listingblock">
 <div class="content">
-<pre>$ gradle  addCredentials --key atcoder.username --value {user atcoder username}
-$ gradle  addCredentials --key atcoder.password --value {user atcoder password}</pre>
+<pre>$ gradle addCredentials --key atcoder.username --value {user atcoder username}
+$ gradle addCredentials --key atcoder.password --value {user atcoder password}</pre>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_login">Login</h3>
+<div class="listingblock">
+<div class="content">
+<pre>$ gradle atcoderLogin</pre>
+</div>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_create_contest_project">Create Contest Project</h3>
+<div class="paragraph">
+<p>If you didn&#8217;t execute login task,  login task  will execute automatically.</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre>$ gradle atcoderNew --contest=practice</pre>
+</div>
+</div>
+<div class="paragraph">
+<p>Now, the projects will create into 'subprojects/contests'</p>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_solve_it">Solve It</h3>
+<div class="listingblock">
+<div class="content">
+<pre>subprojects/contests/practice/src/A/kotlin/main.kt</pre>
+</div>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_submit">Submit</h3>
+<div class="listingblock">
+<div class="content">
+<pre>$ gradle :practice:atcoderSubmitA</pre>
+</div>
 </div>
 </div>
 </div>
@@ -511,7 +556,7 @@ $ gradle  addCredentials --key atcoder.password --value {user atcoder password}<
 <div id="footer">
 <div id="footer-text">
 Version 1.0-SNAPSHOT<br>
-Last updated 2021-05-04 14:57:51 UTC
+Last updated 2021-05-04 15:18:18 UTC
 </div>
 </div>
 </body>
