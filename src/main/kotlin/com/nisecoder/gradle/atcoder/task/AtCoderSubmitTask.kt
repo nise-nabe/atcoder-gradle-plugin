@@ -17,6 +17,7 @@ import io.ktor.http.renderCookieHeader
 import io.ktor.util.KtorExperimentalAPI
 import kotlinx.coroutines.runBlocking
 import org.gradle.api.file.RegularFileProperty
+import org.gradle.api.provider.Property
 import org.gradle.api.tasks.Input
 import org.gradle.api.tasks.InputFile
 import org.gradle.api.tasks.SourceSetContainer
@@ -27,11 +28,11 @@ import org.gradle.kotlin.dsl.getByType
 abstract class AtCoderSubmitTask: AtCoderTask() {
     @get:Input
     @set:Option(option = "contest", description = "contest name")
-    abstract var contestName: String
+    abstract var contestName: Property<String>
 
     @get:Input
     @set:Option(option = "taskId", description = "contest task")
-    abstract var taskId: String
+    abstract var taskId: Property<String>
 
     @get:InputFile
     abstract val sessionFile: RegularFileProperty
@@ -41,7 +42,7 @@ abstract class AtCoderSubmitTask: AtCoderTask() {
     fun submit() {
         val session = sessionFile.get().asFile.readLines().first()
 
-        val task = AtCoderFetcher(session).fetchTaskList(contestName).tasks.first { it.taskId == taskId }
+        val task = AtCoderFetcher(session).fetchTaskList(contestName.get()).tasks.first { it.taskId == taskId.get() }
 
         val sourceSets: SourceSetContainer = project.extensions.getByType()
 

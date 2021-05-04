@@ -19,6 +19,7 @@ import io.ktor.util.*
 import it.skrape.fetcher.*
 import kotlinx.coroutines.runBlocking
 import org.gradle.api.file.RegularFileProperty
+import org.gradle.api.provider.Property
 import org.gradle.api.tasks.Input
 import org.gradle.api.tasks.OutputFile
 import org.gradle.api.tasks.TaskAction
@@ -26,12 +27,10 @@ import org.gradle.api.tasks.options.Option
 
 abstract class AtCoderLoginTask : AtCoderTask() {
     @get:Input
-    @set:Option(option = "username", description = "AtCoder Username")
-    abstract var username: String
+    abstract val username: Property<String>
 
     @get:Input
-    @set:Option(option = "password", description = "AtCoder Password")
-    abstract var password: String
+    abstract val password: Property<String>
 
     @get:OutputFile
     abstract val sessionFile: RegularFileProperty
@@ -39,6 +38,9 @@ abstract class AtCoderLoginTask : AtCoderTask() {
     @KtorExperimentalAPI
     @TaskAction
     fun login() {
+        if (sessionFile.get().asFile.exists()) {
+            return
+        }
         val session = skrape(HttpFetcher) {
             request {
                 url = AtCoderSite.home
@@ -59,8 +61,8 @@ abstract class AtCoderLoginTask : AtCoderTask() {
             val response: HttpResponse = client.submitForm(
                 url = AtCoderSite.login,
                 formParameters = Parameters.build {
-                    append("username", username)
-                    append("password", password)
+                    append("username", username.get())
+                    append("password", password.get())
                     append("csrf_token", csrfToken)
                 },
                 encodeInQuery = false

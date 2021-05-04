@@ -14,15 +14,15 @@ val atcoder = extensions.create<AtCoderExtension>("atcoder")
 atcoder.contestName.convention(project.name)
 
 tasks {
-    val atcoderLogin by getting(AtCoderLoginTask::class)
+    val atcoderLogin by rootProject.tasks.getting(AtCoderLoginTask::class)
 
     register<AtCoderTaskListTask>("atcoderTaskList") {
-        contestName = atcoder.contestName.get()
+        contestName.set(atcoder.contestName)
         sessionFile.set(atcoderLogin.sessionFile)
     }
 
     register<AtCoderSubmitTask>("atcoderSubmit") {
-        contestName = atcoder.contestName.get()
+        contestName.set(atcoder.contestName)
         sessionFile.set(atcoderLogin.sessionFile)
     }
 }
