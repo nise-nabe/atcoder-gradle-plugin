@@ -36,8 +36,8 @@ abstract class AtCoderLoginTask : AtCoderTask() {
     @get:OutputFile
     abstract val sessionFile: RegularFileProperty
 
-    @TaskAction
     @KtorExperimentalAPI
+    @TaskAction
     fun login() {
         val session = skrape(HttpFetcher) {
             request {
