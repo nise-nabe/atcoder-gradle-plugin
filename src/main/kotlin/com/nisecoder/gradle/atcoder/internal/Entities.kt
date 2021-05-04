@@ -10,4 +10,5 @@ data class ContestTask(
     val taskName: String,
     val timeLimit: String,
     val memoryLimit: String,
+    val taskScreenName: String,
 )

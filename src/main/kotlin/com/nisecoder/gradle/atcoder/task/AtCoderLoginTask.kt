@@ -3,6 +3,7 @@ package com.nisecoder.gradle.atcoder.task
 import com.nisecoder.gradle.atcoder.internal.AtCoderException
 import com.nisecoder.gradle.atcoder.internal.AtCoderSite
 import com.nisecoder.gradle.atcoder.internal.AtCoderUnauthorizedException
+import com.nisecoder.gradle.atcoder.internal.csrfToken
 import io.ktor.client.HttpClient
 import io.ktor.client.engine.cio.CIO
 import io.ktor.client.request.forms.submitForm

@@ -1,5 +1,7 @@
 package com.nisecoder.gradle.atcoder.task
 
+import com.nisecoder.gradle.atcoder.internal.AtCoderException
+import com.nisecoder.gradle.atcoder.internal.AtCoderFetcher
 import com.nisecoder.gradle.atcoder.internal.AtCoderSite
 import com.nisecoder.gradle.atcoder.internal.csrfToken
 import io.ktor.client.HttpClient
@@ -16,8 +18,10 @@ import kotlinx.coroutines.runBlocking
 import org.gradle.api.file.RegularFileProperty
 import org.gradle.api.tasks.Input
 import org.gradle.api.tasks.InputFile
+import org.gradle.api.tasks.SourceSetContainer
 import org.gradle.api.tasks.TaskAction
 import org.gradle.api.tasks.options.Option
+import org.gradle.kotlin.dsl.getByType
 
 abstract class AtCoderSubmitTask: AtCoderTask() {
     @get:Input
@@ -25,36 +29,43 @@ abstract class AtCoderSubmitTask: AtCoderTask() {
     abstract var contestName: String
 
     @get:Input
-    @set:Option(option = "task", description = "contest task")
-    abstract var taskScreenName: String
+    @set:Option(option = "taskId", description = "contest task")
+    abstract var taskId: String?
+
+    @get:InputFile
+    @set:Option(option = "file", description = "file for submit")
+    abstract var submitFile: RegularFileProperty?
 
     @get:InputFile
     abstract val sessionFile: RegularFileProperty
 
     @TaskAction
     fun submit() {
+        if (taskId == null) {
+            throw AtCoderException("required: taskId")
+        }
+
         val session = sessionFile.get().asFile.readLines().first()
 
-        val submitUrl = "${AtCoderSite.contest}/$contestName/submit"
+        val task = AtCoderFetcher(session).fetchTaskList(contestName).tasks.first { it.taskId == taskId }
+
+        val sourceSets: SourceSetContainer = project.extensions.getByType()
+
+        val sourceCode = (submitFile?.get()?.asFile
+            ?: sourceSets.getAt(task.taskId).allSource.find { it.name == "main.kt" }
+            ?: throw AtCoderException("cannot find file for submit")).readText()
+
         runBlocking {
             val client = HttpClient(CIO) {
                 expectSuccess = false
                 followRedirects = false
             }
-            val response: HttpResponse = client.submitForm(
-                url = submitUrl,
+            client.submitForm<HttpResponse>(
+                url = "${AtCoderSite.contest}/$contestName/submit",
                 formParameters = Parameters.build {
-                    append("data.TaskScreenName", taskScreenName)
+                    append("data.TaskScreenName", task.taskScreenName)
                     append("data.LanguageId", "4032")
-                    append("sourceCode", """
-                        fun main() {
-                            val a = readLine()!!.toInt()
-                            val (b, c) = readLine()!!.split(" ").map { it.toInt() }
-                            val s = readLine()!!
-
-                            println("${'$'}{a + b + c} ${'$'}s")
-                        }
-                    """.trimIndent())
+                    append("sourceCode", sourceCode)
                     append("csrf_token", session.csrfToken())
                 },
                 encodeInQuery = false

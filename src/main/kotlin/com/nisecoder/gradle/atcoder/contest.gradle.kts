@@ -23,7 +23,6 @@ tasks {
 
     register<AtCoderSubmitTask>("atcoderSubmit") {
         contestName = atcoder.contestName.get()
-        taskScreenName = "practice_1"
         sessionFile.set(atcoderLogin.sessionFile)
     }
 }
