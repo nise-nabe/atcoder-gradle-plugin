@@ -48,10 +48,7 @@ abstract class AtCoderLoginTask : AtCoderTask() {
             }
         }
 
-        val csrfToken = session.value.split("%00")
-            .first { it.startsWith("csrf_token") }
-            .decodeURLQueryComponent()
-            .split(":")[1]
+        val csrfToken = session.value.csrfToken()
 
         val loginSession = runBlocking {
             val client = HttpClient(CIO) {
