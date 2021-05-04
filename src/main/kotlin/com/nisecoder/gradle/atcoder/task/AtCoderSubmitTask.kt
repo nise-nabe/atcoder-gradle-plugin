@@ -31,11 +31,7 @@ abstract class AtCoderSubmitTask: AtCoderTask() {
 
     @get:Input
     @set:Option(option = "taskId", description = "contest task")
-    abstract var taskId: String?
-
-    @get:InputFile
-    @set:Option(option = "file", description = "file for submit")
-    abstract var submitFile: RegularFileProperty?
+    abstract var taskId: String
 
     @get:InputFile
     abstract val sessionFile: RegularFileProperty
@@ -43,19 +39,16 @@ abstract class AtCoderSubmitTask: AtCoderTask() {
     @KtorExperimentalAPI
     @TaskAction
     fun submit() {
-        if (taskId == null) {
-            throw AtCoderException("required: taskId")
-        }
-
         val session = sessionFile.get().asFile.readLines().first()
 
         val task = AtCoderFetcher(session).fetchTaskList(contestName).tasks.first { it.taskId == taskId }
 
         val sourceSets: SourceSetContainer = project.extensions.getByType()
 
-        val sourceCode = (submitFile?.get()?.asFile
-            ?: sourceSets.getAt(task.taskId).allSource.find { it.name == "main.kt" }
-            ?: throw AtCoderException("cannot find file for submit")).readText()
+        val submitFile = sourceSets.getAt(task.taskId).allSource.find { it.name == "main.kt" }
+            ?: throw AtCoderException("cannot find file for submit")
+
+        val sourceCode = submitFile.readText()
 
         runBlocking {
             val client = HttpClient(CIO) {
@@ -81,7 +74,5 @@ abstract class AtCoderSubmitTask: AtCoderTask() {
                 ).let(::renderCookieHeader))
             }
         }
-
-
     }
 }
