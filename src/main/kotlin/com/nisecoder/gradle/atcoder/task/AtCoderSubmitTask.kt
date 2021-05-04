@@ -14,6 +14,7 @@ import io.ktor.http.CookieEncoding
 import io.ktor.http.HttpHeaders
 import io.ktor.http.Parameters
 import io.ktor.http.renderCookieHeader
+import io.ktor.util.KtorExperimentalAPI
 import kotlinx.coroutines.runBlocking
 import org.gradle.api.file.RegularFileProperty
 import org.gradle.api.tasks.Input
@@ -39,6 +40,7 @@ abstract class AtCoderSubmitTask: AtCoderTask() {
     @get:InputFile
     abstract val sessionFile: RegularFileProperty
 
+    @KtorExperimentalAPI
     @TaskAction
     fun submit() {
         if (taskId == null) {

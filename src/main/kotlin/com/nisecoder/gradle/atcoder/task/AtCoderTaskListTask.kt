@@ -1,6 +1,7 @@
 package com.nisecoder.gradle.atcoder.task
 
 import com.nisecoder.gradle.atcoder.internal.AtCoderFetcher
+import io.ktor.util.KtorExperimentalAPI
 import org.gradle.api.file.RegularFileProperty
 import org.gradle.api.tasks.Input
 import org.gradle.api.tasks.InputFile
@@ -15,6 +16,7 @@ abstract class AtCoderTaskListTask: AtCoderTask() {
     @get:InputFile
     abstract val sessionFile: RegularFileProperty
 
+    @KtorExperimentalAPI
     @TaskAction
     fun taskList() {
         val session = sessionFile.get().asFile.readLines().first()

@@ -1,6 +1,7 @@
 package com.nisecoder.gradle.atcoder.task
 
 import com.nisecoder.gradle.atcoder.internal.AtCoderFetcher
+import io.ktor.util.KtorExperimentalAPI
 import org.gradle.api.file.DirectoryProperty
 import org.gradle.api.file.RegularFileProperty
 import org.gradle.api.tasks.Input
@@ -20,6 +21,7 @@ abstract class AtCoderNewContestTask: AtCoderTask() {
     @get:OutputDirectory
     abstract val outputDir: DirectoryProperty
 
+    @KtorExperimentalAPI
     @TaskAction
     fun newContest() {
         val contestDir = outputDir.get().asFile.resolve(contestName)
