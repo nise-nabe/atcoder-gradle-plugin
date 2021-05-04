@@ -12,36 +12,19 @@ atcoder tool for Gradle
 [source, kotlin]
 ----
 plugins {
-    id("com.nisecoder.gradle.atcoder") version "1.0-SNAPSHOT"
+    id("com.nisecoder.gradle.atcoder")
 }
 ----
 
 .setting.gradle.kts
-[source, kotlin]
 ----
-pluginManagement {
-    repositories {
-        maven {
-            url = uri("https://maven.pkg.github.com/nise-nabe/atcoder-gradle-plugin")
-            mavenContent {
-                includeGroup("com.nisecoder.gradle")
-            }
-        }
-        gradlePluginPortal()
+include::src/getting-started/how-to-apply-plugin.gradle.kts[]
+----
 
-    }
+credentials use values saved with
+https://github.com/etiennestuder/gradle-credentials-plugin[gradle-credential-plugin]
 
-    resolutionStrategy {
-        eachPlugin {
-            if (requested.id.id.startsWith("com.nisecoder.gradle.atcoder")) {
-                useModule("com.nisecoder.gradle:atcoder-gradle-plugin:1.0-SNAPSHOT")
-            }
-        }
-    }
-
-    plugins {
-        id("com.nisecoder.gradle.atcoder")
-        id("com.nisecoder.gradle.atcoder.contest")
-    }
-}
+----
+$ gradle  addCredentials --key atcoder.username --value {user atcoder username}
+$ gradle  addCredentials --key atcoder.password --value {user atcoder password}
 ----
