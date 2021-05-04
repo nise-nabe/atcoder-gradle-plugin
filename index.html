@@ -463,9 +463,40 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
 <h2 id="_getting_started">Getting Started</h2>
 <div class="sectionbody">
 <div class="listingblock">
+<div class="title">build.gradle.kts</div>
 <div class="content">
 <pre class="highlight"><code class="language-kotlin" data-lang="kotlin">plugins {
     id("com.nisecoder.gradle.atcoder") version "1.0-SNAPSHOT"
+}</code></pre>
+</div>
+</div>
+<div class="listingblock">
+<div class="title">setting.gradle.kts</div>
+<div class="content">
+<pre class="highlight"><code class="language-kotlin" data-lang="kotlin">pluginManagement {
+    repositories {
+        maven {
+            url = uri("https://maven.pkg.github.com/nise-nabe/atcoder-gradle-plugin")
+            mavenContent {
+                includeGroup("com.nisecoder.gradle")
+            }
+        }
+        gradlePluginPortal()
+
+    }
+
+    resolutionStrategy {
+        eachPlugin {
+            if (requested.id.id.startsWith("com.nisecoder.gradle.atcoder")) {
+                useModule("com.nisecoder.gradle:atcoder-gradle-plugin:1.0-SNAPSHOT")
+            }
+        }
+    }
+
+    plugins {
+        id("com.nisecoder.gradle.atcoder")
+        id("com.nisecoder.gradle.atcoder.contest")
+    }
 }</code></pre>
 </div>
 </div>
@@ -475,7 +506,7 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
 <div id="footer">
 <div id="footer-text">
 Version 1.0-SNAPSHOT<br>
-Last updated 2021-05-04 02:48:05 UTC
+Last updated 2021-05-04 03:06:48 UTC
 </div>
 </div>
 </body>
