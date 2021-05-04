@@ -22,16 +22,13 @@ import org.gradle.api.tasks.Input
 import org.gradle.api.tasks.InputFile
 import org.gradle.api.tasks.SourceSetContainer
 import org.gradle.api.tasks.TaskAction
-import org.gradle.api.tasks.options.Option
 import org.gradle.kotlin.dsl.getByType
 
 abstract class AtCoderSubmitTask: AtCoderTask() {
     @get:Input
-    @set:Option(option = "contest", description = "contest name")
     abstract var contestName: Property<String>
 
     @get:Input
-    @set:Option(option = "taskId", description = "contest task")
     abstract var taskId: Property<String>
 
     @get:InputFile
