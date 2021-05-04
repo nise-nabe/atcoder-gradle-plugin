@@ -7,6 +7,7 @@ object AtCoderSite {
 
     const val home = baseUrl
     const val login = "$baseUrl/login"
+    const val contest = "$baseUrl/contests"
 
     const val sessionName = "REVEL_SESSION"
 }
