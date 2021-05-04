@@ -59,3 +59,7 @@ publishing {
         }
     }
 }
+
+tasks.asciidoctor {
+    baseDirFollowsSourceFile()
+}
