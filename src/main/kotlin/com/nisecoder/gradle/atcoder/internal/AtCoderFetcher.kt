@@ -11,7 +11,7 @@ import it.skrape.selects.html5.td
 import it.skrape.selects.html5.tr
 
 class AtCoderFetcher(private val session: String) {
-    fun fetchTaskList(contestName: String, ): ContestTaskList {
+    fun fetchTaskList(contestName: String): ContestTaskList {
         return skrape(HttpFetcher) {
             request {
                 url = "${AtCoderSite.baseUrl}/contests/${contestName}/tasks"
