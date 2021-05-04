@@ -473,7 +473,26 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
 <div class="listingblock">
 <div class="title">setting.gradle.kts</div>
 <div class="content">
-<pre>Unresolved directive in index.adoc - include::src/getting-started/how-to-apply-plugin.gradle.kts[]</pre>
+<pre class="highlight"><code class="language-kotlin" data-lang="kotlin">pluginManagement {
+    repositories {
+        maven {
+            url = uri("https://maven.pkg.github.com/nise-nabe/atcoder-gradle-plugin")
+            mavenContent {
+                includeGroup("com.nisecoder.gradle")
+            }
+        }
+        gradlePluginPortal()
+
+    }
+
+    resolutionStrategy {
+        eachPlugin {
+            if (requested.id.id.startsWith("com.nisecoder.gradle.atcoder")) {
+                useModule("com.nisecoder.gradle:atcoder-gradle-plugin:1.0-SNAPSHOT")
+            }
+        }
+    }
+}</code></pre>
 </div>
 </div>
 <div class="paragraph">
@@ -492,7 +511,7 @@ $ gradle  addCredentials --key atcoder.password --value {user atcoder password}<
 <div id="footer">
 <div id="footer-text">
 Version 1.0-SNAPSHOT<br>
-Last updated 2021-05-04 04:15:15 UTC
+Last updated 2021-05-04 04:33:34 UTC
 </div>
 </div>
 </body>
