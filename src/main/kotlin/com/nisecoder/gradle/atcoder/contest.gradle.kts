@@ -17,6 +17,8 @@ tasks {
     val atcoderLogin by rootProject.tasks.getting(AtCoderLoginTask::class)
 
     register<AtCoderTaskListTask>("atcoderTaskList") {
+        description = "Displays task list for '${atcoder.contestName.get()}'"
+
         contestName.set(atcoder.contestName)
         sessionFile.set(atcoderLogin.sessionFile)
     }
@@ -24,6 +26,8 @@ tasks {
     atcoder.contestTask.all {
         val contestTaskName = name
         register<AtCoderSubmitTask>("atcoderSubmit$name") {
+            description = "Submits '$contestTaskName' sourceCode"
+
             contestName.set(atcoder.contestName)
             taskId.set(contestTaskName)
             sessionFile.set(atcoderLogin.sessionFile)

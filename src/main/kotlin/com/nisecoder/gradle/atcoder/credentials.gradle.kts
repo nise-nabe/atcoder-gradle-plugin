@@ -11,6 +11,8 @@ plugins {
 }
 
 tasks.register<AtCoderLoginTask>("atcoderLogin") {
+    description = "Logins to AtCoder using credentials"
+
     val credentials: CredentialsContainer by rootProject.extra
     username.set(credentials.getProperty("atcoder.username").toString())
     password.set(credentials.getProperty("atcoder.password").toString())
