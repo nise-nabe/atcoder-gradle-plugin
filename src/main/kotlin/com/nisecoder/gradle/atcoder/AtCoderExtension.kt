@@ -1,9 +1,13 @@
 package com.nisecoder.gradle.atcoder
 
-import org.gradle.api.provider.ListProperty
+import org.gradle.api.NamedDomainObjectContainer
 import org.gradle.api.provider.Property
 
-abstract class AtCoderExtension {
-    abstract val contestName: Property<String>
-    abstract val problems: ListProperty<String>
+interface AtCoderExtension {
+    val contestName: Property<String>
+    val contestTask: NamedDomainObjectContainer<AtCoderContestTaskObject>
+}
+
+interface AtCoderContestTaskObject {
+    val name: String
 }

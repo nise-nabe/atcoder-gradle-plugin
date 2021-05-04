@@ -21,8 +21,12 @@ tasks {
         sessionFile.set(atcoderLogin.sessionFile)
     }
 
-    register<AtCoderSubmitTask>("atcoderSubmit") {
-        contestName.set(atcoder.contestName)
-        sessionFile.set(atcoderLogin.sessionFile)
+    atcoder.contestTask.all {
+        val contestTaskName = name
+        register<AtCoderSubmitTask>("atcoderSubmit$name") {
+            contestName.set(atcoder.contestName)
+            taskId.set(contestTaskName)
+            sessionFile.set(atcoderLogin.sessionFile)
+        }
     }
 }

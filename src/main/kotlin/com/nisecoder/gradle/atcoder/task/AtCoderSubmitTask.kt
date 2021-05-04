@@ -26,10 +26,10 @@ import org.gradle.kotlin.dsl.getByType
 
 abstract class AtCoderSubmitTask: AtCoderTask() {
     @get:Input
-    abstract var contestName: Property<String>
+    abstract val contestName: Property<String>
 
     @get:Input
-    abstract var taskId: Property<String>
+    abstract val taskId: Property<String>
 
     @get:InputFile
     abstract val sessionFile: RegularFileProperty
@@ -54,7 +54,7 @@ abstract class AtCoderSubmitTask: AtCoderTask() {
                 followRedirects = false
             }
             client.submitForm<HttpResponse>(
-                url = "${AtCoderSite.contest}/$contestName/submit",
+                url = "${AtCoderSite.contest}/${contestName.get()}/submit",
                 formParameters = Parameters.build {
                     append("data.TaskScreenName", task.taskScreenName)
                     append("data.LanguageId", "4032")

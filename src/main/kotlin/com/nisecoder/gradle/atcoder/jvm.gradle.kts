@@ -11,19 +11,16 @@ java {
     }
 }
 
-afterEvaluate {
-    val atcoder = extensions.getByType<AtCoderExtension>()
-    atcoder.problems.get().forEach {
-        sourceSets {
-            create(it) {
-                val mainSourceSet = sourceSets[SourceSet.MAIN_SOURCE_SET_NAME]
-                val mainOutput = objects.fileCollection().from(mainSourceSet.output)
-                compileClasspath += mainOutput
-                runtimeClasspath += mainOutput
+val atcoder = extensions.getByType<AtCoderExtension>()
 
-                configurations.getByName(implementationConfigurationName)
-                    .extendsFrom(configurations.getByName(mainSourceSet.implementationConfigurationName))
-            }
-        }
+atcoder.contestTask.all {
+    sourceSets.create(name) {
+        val mainSourceSet = sourceSets[SourceSet.MAIN_SOURCE_SET_NAME]
+        val mainOutput = objects.fileCollection().from(mainSourceSet.output)
+        compileClasspath += mainOutput
+        runtimeClasspath += mainOutput
+
+        configurations.getByName(implementationConfigurationName)
+            .extendsFrom(configurations.getByName(mainSourceSet.implementationConfigurationName))
     }
 }

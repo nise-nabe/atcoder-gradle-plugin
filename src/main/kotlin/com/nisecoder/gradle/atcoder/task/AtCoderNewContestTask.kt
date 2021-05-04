@@ -43,8 +43,14 @@ abstract class AtCoderNewContestTask: AtCoderTask() {
                         }
 
                         atcoder {
-                            problems.set(listOf(${problemString}))
+                            val contestTasks = listOf(${problemString})
+                            contestTask {
+                                contestTasks.forEach {
+                                    register(it)
+                                }
+                            }
                         }
+
                     """.trimIndent()
                 )
             }
