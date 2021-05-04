@@ -8,9 +8,40 @@ atcoder tool for Gradle
 
 == Getting Started
 
+.build.gradle.kts
 [source, kotlin]
 ----
 plugins {
     id("com.nisecoder.gradle.atcoder") version "1.0-SNAPSHOT"
+}
+----
+
+.setting.gradle.kts
+[source, kotlin]
+----
+pluginManagement {
+    repositories {
+        maven {
+            url = uri("https://maven.pkg.github.com/nise-nabe/atcoder-gradle-plugin")
+            mavenContent {
+                includeGroup("com.nisecoder.gradle")
+            }
+        }
+        gradlePluginPortal()
+
+    }
+
+    resolutionStrategy {
+        eachPlugin {
+            if (requested.id.id.startsWith("com.nisecoder.gradle.atcoder")) {
+                useModule("com.nisecoder.gradle:atcoder-gradle-plugin:1.0-SNAPSHOT")
+            }
+        }
+    }
+
+    plugins {
+        id("com.nisecoder.gradle.atcoder")
+        id("com.nisecoder.gradle.atcoder.contest")
+    }
 }
 ----
