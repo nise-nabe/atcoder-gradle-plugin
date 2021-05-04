@@ -4,7 +4,9 @@
 
 == Introduction
 
-atcoder tool for Gradle
+https://atcoder.jp[AtCoder] tool for Gradle
+
+This tool is inspired by https://github.com/Tatamo/atcoder-cli[atcoder-cli]
 
 == Getting Started
 
