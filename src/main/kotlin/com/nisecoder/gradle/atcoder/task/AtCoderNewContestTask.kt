@@ -1,6 +1,7 @@
 package com.nisecoder.gradle.atcoder.task
 
 import com.nisecoder.gradle.atcoder.internal.AtCoderFetcher
+import com.nisecoder.gradle.atcoder.internal.readFirstLine
 import io.ktor.util.KtorExperimentalAPI
 import org.gradle.api.file.DirectoryProperty
 import org.gradle.api.file.RegularFileProperty
@@ -27,7 +28,7 @@ abstract class AtCoderNewContestTask: AtCoderTask() {
         val contestDir = outputDir.get().asFile.resolve(contestName)
         if (!contestDir.exists()) contestDir.mkdir()
 
-        val fetcher = AtCoderFetcher(sessionFile.get().asFile.readLines().first())
+        val fetcher = AtCoderFetcher(sessionFile.get().readFirstLine())
         val problems = fetcher.fetchTaskList(contestName).tasks.map { it.taskId }
 
         val problemString = problems.joinToString(prefix = "\"", postfix = "\"", separator = "\", \"")

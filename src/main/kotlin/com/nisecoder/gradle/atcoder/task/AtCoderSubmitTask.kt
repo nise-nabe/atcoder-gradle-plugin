@@ -5,6 +5,7 @@ import com.nisecoder.gradle.atcoder.internal.AtCoderFetcher
 import com.nisecoder.gradle.atcoder.internal.AtCoderSite
 import com.nisecoder.gradle.atcoder.internal.cookieValue
 import com.nisecoder.gradle.atcoder.internal.csrfToken
+import com.nisecoder.gradle.atcoder.internal.readFirstLine
 import io.ktor.client.HttpClient
 import io.ktor.client.engine.cio.CIO
 import io.ktor.client.request.forms.submitForm
@@ -35,7 +36,7 @@ abstract class AtCoderSubmitTask: AtCoderTask() {
     @KtorExperimentalAPI
     @TaskAction
     fun submit() {
-        val session = sessionFile.get().asFile.readLines().first()
+        val session = sessionFile.get().readFirstLine()
 
         val task = AtCoderFetcher(session).fetchTaskList(contestName.get()).tasks.first { it.taskId == taskId.get() }
 
