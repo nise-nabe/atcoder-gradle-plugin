@@ -24,5 +24,17 @@ data class ContestTask(
         ).joinToString( "\t")
     }
 
-    companion object
+    companion object {
+        fun fromTsvRow(row: String): ContestTask {
+            return row.split("\t").let {
+                ContestTask(
+                    taskId = it[0],
+                    taskName = it[1],
+                    timeLimit = it[2],
+                    memoryLimit = it[3],
+                    taskScreenName = it[4],
+                )
+            }
+        }
+    }
 }
