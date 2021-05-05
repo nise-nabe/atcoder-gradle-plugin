@@ -3,6 +3,8 @@ package com.nisecoder.gradle.atcoder.internal
 
 class ContestTaskList {
     lateinit var tasks: List<ContestTask>
+
+    companion object
 }
 
 data class ContestTask(
@@ -21,4 +23,6 @@ data class ContestTask(
             taskScreenName
         ).joinToString( "\t")
     }
+
+    companion object
 }
