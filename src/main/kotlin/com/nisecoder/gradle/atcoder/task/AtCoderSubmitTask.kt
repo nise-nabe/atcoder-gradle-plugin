@@ -3,17 +3,15 @@ package com.nisecoder.gradle.atcoder.task
 import com.nisecoder.gradle.atcoder.internal.AtCoderException
 import com.nisecoder.gradle.atcoder.internal.AtCoderFetcher
 import com.nisecoder.gradle.atcoder.internal.AtCoderSite
+import com.nisecoder.gradle.atcoder.internal.cookieValue
 import com.nisecoder.gradle.atcoder.internal.csrfToken
 import io.ktor.client.HttpClient
 import io.ktor.client.engine.cio.CIO
 import io.ktor.client.request.forms.submitForm
 import io.ktor.client.request.header
 import io.ktor.client.statement.HttpResponse
-import io.ktor.http.Cookie
-import io.ktor.http.CookieEncoding
 import io.ktor.http.HttpHeaders
 import io.ktor.http.Parameters
-import io.ktor.http.renderCookieHeader
 import io.ktor.util.KtorExperimentalAPI
 import kotlinx.coroutines.runBlocking
 import org.gradle.api.file.RegularFileProperty
@@ -64,12 +62,7 @@ abstract class AtCoderSubmitTask: AtCoderTask() {
                 encodeInQuery = false
             ) {
                 header(HttpHeaders.AcceptLanguage, "ja")
-                header(
-                    HttpHeaders.Cookie, Cookie(
-                    name = AtCoderSite.sessionName,
-                    value = session,
-                    encoding = CookieEncoding.RAW
-                ).let(::renderCookieHeader))
+                header(HttpHeaders.Cookie, session.cookieValue())
             }
         }
     }

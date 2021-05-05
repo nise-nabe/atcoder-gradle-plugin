@@ -3,6 +3,7 @@ package com.nisecoder.gradle.atcoder.task
 import com.nisecoder.gradle.atcoder.internal.AtCoderException
 import com.nisecoder.gradle.atcoder.internal.AtCoderSite
 import com.nisecoder.gradle.atcoder.internal.AtCoderUnauthorizedException
+import com.nisecoder.gradle.atcoder.internal.cookieValue
 import com.nisecoder.gradle.atcoder.internal.csrfToken
 import io.ktor.client.HttpClient
 import io.ktor.client.engine.cio.CIO
@@ -11,7 +12,6 @@ import io.ktor.client.request.header
 import io.ktor.client.statement.HttpResponse
 import io.ktor.client.statement.readText
 import io.ktor.http.*
-import io.ktor.http.Cookie
 import io.ktor.http.HttpStatusCode.Companion.Forbidden
 import io.ktor.http.HttpStatusCode.Companion.Found
 import io.ktor.http.HttpStatusCode.Companion.OK
@@ -23,7 +23,6 @@ import org.gradle.api.provider.Property
 import org.gradle.api.tasks.Input
 import org.gradle.api.tasks.OutputFile
 import org.gradle.api.tasks.TaskAction
-import org.gradle.api.tasks.options.Option
 
 abstract class AtCoderLoginTask : AtCoderTask() {
     @get:Input
@@ -68,11 +67,7 @@ abstract class AtCoderLoginTask : AtCoderTask() {
                 encodeInQuery = false
             ) {
                 header(HttpHeaders.AcceptLanguage, "ja")
-                header(HttpHeaders.Cookie, Cookie(
-                    name = AtCoderSite.sessionName,
-                    value = session.value,
-                    encoding = CookieEncoding.RAW
-                ).let(::renderCookieHeader))
+                header(HttpHeaders.Cookie, session.value.cookieValue())
             }
             when (response.status) {
                 OK, Found -> return@runBlocking response.setCookie().first { it.name == AtCoderSite.sessionName }.value

@@ -19,7 +19,7 @@ class AtCoderFetcher(private val session: String) {
                 url = "${AtCoderSite.baseUrl}/contests/${contestName}/tasks"
                 headers = mapOf(
                     "Accept-Language" to "ja",
-                    "Cookie" to Cookie(name = AtCoderSite.sessionName, value = session, encoding = CookieEncoding.RAW).let(::renderCookieHeader)
+                    "Cookie" to session.cookieValue()
                 )
             }
 
