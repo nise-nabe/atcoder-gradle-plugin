@@ -46,10 +46,7 @@ publishing {
         maven {
             name = "GitHubPackages"
             url = uri("https://maven.pkg.github.com/nise-nabe/atcoder-gradle-plugin")
-            credentials {
-                username = project.findProperty("gpr.user")?.toString() ?: System.getenv("USERNAME")
-                password = project.findProperty("gpr.key")?.toString() ?: System.getenv("TOKEN")
-            }
+            credentials(PasswordCredentials::class)
         }
     }
 
