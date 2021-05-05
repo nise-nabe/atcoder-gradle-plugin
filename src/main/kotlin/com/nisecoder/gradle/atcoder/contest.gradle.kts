@@ -17,7 +17,7 @@ atcoder.contestName.convention(project.name)
 tasks {
     val atcoderLogin by rootProject.tasks.getting(AtCoderLoginTask::class)
 
-    val fetchTaskListTask = register<AtCoderFetchTaskListTask>("atcoderTaskList") {
+    val fetchTaskListTask = register<AtCoderFetchTaskListTask>("atcoderFetchTaskList") {
         description = "Fetches task list for '${atcoder.contestName.get()}'"
 
         contestName.set(atcoder.contestName)
