@@ -472,6 +472,19 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
 <div class="sect1">
 <h2 id="_getting_started">Getting Started</h2>
 <div class="sectionbody">
+<div class="paragraph">
+<p>Two Credential is required</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p>Github Account to download from Github Packages Repository</p>
+</li>
+<li>
+<p>AtCoder Account</p>
+</li>
+</ul>
+</div>
 <div class="listingblock">
 <div class="title">build.gradle.kts</div>
 <div class="content">
@@ -485,14 +498,19 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
 <div class="content">
 <pre class="highlight"><code class="language-kotlin" data-lang="kotlin">pluginManagement {
     repositories {
-        maven {
-            url = uri("https://maven.pkg.github.com/nise-nabe/atcoder-gradle-plugin")
-            mavenContent {
+        gradlePluginPortal()
+        exclusiveContent {
+            forRepository {
+                maven {
+                    name = "GithubPackagesAtCoderGradlePlugin"
+                    url = uri("https://maven.pkg.github.com/nise-nabe/atcoder-gradle-plugin")
+                    credentials(PasswordCredentials::class)
+                }
+            }
+            filter {
                 includeGroup("com.nisecoder.gradle")
             }
         }
-        gradlePluginPortal()
-
     }
 
     resolutionStrategy {
@@ -502,11 +520,25 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
             }
         }
     }
+}
+
+plugins {
+    id("com.nisecoder.gradle.atcoder.auto-include")
 }</code></pre>
 </div>
 </div>
 <div class="paragraph">
-<p>credentials use values saved with
+<p>Github Package Credential use values saved  ~/.gradle.properties
+this property key name is based on repository name in settings.gradle.kts</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre>GithubPackagesAtCoderGradlePluginUsername={user github username}
+GithubPackagesAtCoderGradlePluginPassword={user github personal access token start with "ghp_"}</pre>
+</div>
+</div>
+<div class="paragraph">
+<p>AtCoder credentials use values saved with
 <a href="https://github.com/etiennestuder/gradle-credentials-plugin">gradle-credential-plugin</a></p>
 </div>
 <div class="listingblock">
@@ -559,7 +591,7 @@ $ gradle addCredentials --key atcoder.password --value {user atcoder password}</
 <div id="footer">
 <div id="footer-text">
 Version 1.0-SNAPSHOT<br>
-Last updated 2021-05-04 15:27:44 UTC
+Last updated 2021-05-05 07:06:05 UTC
 </div>
 </div>
 </body>
