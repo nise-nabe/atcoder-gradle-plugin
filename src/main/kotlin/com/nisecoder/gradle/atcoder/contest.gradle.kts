@@ -21,6 +21,8 @@ tasks {
 
         contestName.set(atcoder.contestName)
         sessionFile.set(atcoderLogin.sessionFile)
+
+        taskListFile.set(project.buildDir.resolve("atcoder").resolve("tasks.tsv"))
     }
 
     atcoder.contestTask.all {
