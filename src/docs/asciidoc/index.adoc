@@ -10,6 +10,11 @@ This tool is inspired by https://github.com/Tatamo/atcoder-cli[atcoder-cli]
 
 == Getting Started
 
+Two Credential is required
+
+- Github Account to download from Github Packages Repository
+- AtCoder Account
+
 :sourcedir: ../sample/getting-started
 
 .build.gradle.kts
@@ -21,10 +26,18 @@ include::{sourcedir}/build.gradle.kts[lines=1..3]
 .setting.gradle.kts
 [source, kotlin]
 ----
-include::{sourcedir}/settings.gradle.kts[lines=1..20]
+include::{sourcedir}/settings.gradle.kts[lines=1..31]
 ----
 
-credentials use values saved with
+Github Package Credential use values saved  ~/.gradle.properties
+this property key name is based on repository name in settings.gradle.kts
+
+----
+GithubPackagesAtCoderGradlePluginUsername={user github username}
+GithubPackagesAtCoderGradlePluginPassword={user github personal access token start with "ghp_"}
+----
+
+AtCoder credentials use values saved with
 https://github.com/etiennestuder/gradle-credentials-plugin[gradle-credential-plugin]
 
 ----
