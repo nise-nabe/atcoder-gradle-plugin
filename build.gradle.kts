@@ -44,7 +44,7 @@ java {
 publishing {
     repositories {
         maven {
-            name = "GitHubPackages"
+            name = "gitHubPackages"
             url = uri("https://maven.pkg.github.com/nise-nabe/atcoder-gradle-plugin")
             credentials(PasswordCredentials::class)
         }
