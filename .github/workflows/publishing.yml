@@ -25,5 +25,5 @@ jobs:
           wrapper-cache-enabled: true
           dependencies-cache-enabled: true
         env:
-          ORG_GRADLE_PROJECT_githubPackagesUsername: ${{ github.actor }}
-          ORG_GRADLE_PROJECT_githubPackagesPassword: ${{ secrets.GITHUB_TOKEN }}
+          USERNAME: ${{ github.actor }}
+          TOKEN: ${{ secrets.GITHUB_TOKEN }}
