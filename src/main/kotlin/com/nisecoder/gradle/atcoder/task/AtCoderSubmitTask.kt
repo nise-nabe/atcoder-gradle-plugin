@@ -2,6 +2,7 @@ package com.nisecoder.gradle.atcoder.task
 
 import com.nisecoder.gradle.atcoder.internal.AtCoderException
 import com.nisecoder.gradle.atcoder.internal.AtCoderFetcher
+import com.nisecoder.gradle.atcoder.internal.AtCoderLanguage
 import com.nisecoder.gradle.atcoder.internal.AtCoderSite
 import com.nisecoder.gradle.atcoder.internal.cookieValue
 import com.nisecoder.gradle.atcoder.internal.csrfToken
@@ -30,6 +31,9 @@ abstract class AtCoderSubmitTask: AtCoderTask() {
     @get:Input
     abstract val taskId: Property<String>
 
+    @get:Input
+    abstract val language: Property<AtCoderLanguage>
+
     @get:InputFile
     abstract val sessionFile: RegularFileProperty
 
@@ -56,7 +60,7 @@ abstract class AtCoderSubmitTask: AtCoderTask() {
                 url = "${AtCoderSite.contest}/${contestName.get()}/submit",
                 formParameters = Parameters.build {
                     append("data.TaskScreenName", task.taskScreenName)
-                    append("data.LanguageId", "4032")
+                    append("data.LanguageId", language.get().code)
                     append("sourceCode", sourceCode)
                     append("csrf_token", session.csrfToken())
                 },
