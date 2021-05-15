@@ -1,5 +1,6 @@
 package com.nisecoder.gradle.atcoder
 
+import com.nisecoder.gradle.atcoder.internal.AtCoderLanguage
 import org.gradle.api.NamedDomainObjectContainer
 import org.gradle.api.provider.Property
 
@@ -8,6 +9,12 @@ interface AtCoderExtension {
     val contestTask: NamedDomainObjectContainer<AtCoderContestTaskObject>
 }
 
-interface AtCoderContestTaskObject {
-    val name: String
+abstract class AtCoderContestTaskObject {
+    abstract val name: String
+    abstract val language: Property<AtCoderLanguage>
+
+    init {
+        @Suppress("LeakingThis")
+        language.convention(AtCoderLanguage.Kotlin)
+    }
 }
