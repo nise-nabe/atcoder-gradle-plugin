@@ -2,6 +2,7 @@ plugins {
     `kotlin-dsl`
     `maven-publish`
     id("org.asciidoctor.jvm.convert") version "3.3.2"
+    id("com.gradle.plugin-publish") version "0.14.0"
 }
 
 repositories {
@@ -56,6 +57,36 @@ publishing {
     publications {
         register<MavenPublication>("gpr") {
             from(components["java"])
+        }
+    }
+}
+
+pluginBundle {
+    website = "https://nise-nabe.github.io/atcoder-gradle-plugin/"
+    vcsUrl = "https://github.com/nise-nabe/atcoder-gradle-plugin"
+    tags = listOf("atcoder")
+
+    description = "AtCoder tool for Gradle"
+
+    (plugins) {
+        "com.nisecoder.gradle.atcoder" {
+            displayName = "AtCoder Gradle plugin"
+        }
+        "com.nisecoder.gradle.atcoder.contest" {
+            displayName = "Base Convention plugin for AtCoder Gradle plugin"
+        }
+        "com.nisecoder.gradle.atcoder.java" {
+            displayName = "Java Convention plugins for AtCoder Gradle plugin"
+        }
+        "com.nisecoder.gradle.atcoder.kotlin" {
+            displayName = "Kotlin Convention plugins for AtCoder Gradle plugin"
+        }
+
+        "com.nisecoder.gradle.atcoder.jvm" {
+            displayName = "JVM Based Languages Convention plugins for AtCoder Gradle plugin"
+        }
+        "com.nisecoder.gradle.atcoder.auto-include" {
+            displayName = "Settings Convention plugins for AtCoder Gradle plugin"
         }
     }
 }
