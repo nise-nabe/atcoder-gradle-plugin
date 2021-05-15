@@ -7,11 +7,6 @@ import com.nisecoder.gradle.atcoder.task.AtCoderTaskListTask
 import org.jetbrains.kotlin.gradle.plugin.KotlinPlatformJvmPlugin
 import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
 
-
-plugins {
-    id("com.nisecoder.gradle.atcoder.credentials")
-}
-
 val atcoder = extensions.create<AtCoderExtension>("atcoder")
 atcoder.contestName.convention(project.name)
 
