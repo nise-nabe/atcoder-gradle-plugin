@@ -457,7 +457,6 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
 <li><a href="#_plugins">plugins</a>
 <ul class="sectlevel2">
 <li><a href="#_main_plugins">Main Plugins</a></li>
-<li><a href="#_language_convention_plugins">Language Convention Plugins</a></li>
 <li><a href="#_other_convention_plugins">Other Convention Plugins</a></li>
 </ul>
 </li>
@@ -623,48 +622,9 @@ $ gradle addCredentials --key atcoder.password --value {user atcoder password}</
 </div>
 </div>
 <div class="sect2">
-<h3 id="_language_convention_plugins">Language Convention Plugins</h3>
-<div class="paragraph">
-<p>Setup Language Environment</p>
-</div>
-<div class="sect3">
-<h4 id="_kotlin">kotlin</h4>
-<div class="listingblock">
-<div class="title">build.gradle.kts</div>
-<div class="content">
-<pre class="highlight"><code class="language-kotlin" data-lang="kotlin">plugins {
-    id("com.nisecoder.gradle.atcoder.kotlin")
-}</code></pre>
-</div>
-</div>
-</div>
-<div class="sect3">
-<h4 id="_java">java</h4>
-<div class="listingblock">
-<div class="title">build.gradle.kts</div>
-<div class="content">
-<pre class="highlight"><code class="language-kotlin" data-lang="kotlin">plugins {
-    id("com.nisecoder.gradle.atcoder.java")
-}</code></pre>
-</div>
-</div>
-</div>
-</div>
-<div class="sect2">
 <h3 id="_other_convention_plugins">Other Convention Plugins</h3>
 <div class="paragraph">
 <p>Utils for Main or Language Convention Plugin.</p>
-</div>
-<div class="sect3">
-<h4 id="_credentials">credentials</h4>
-<div class="listingblock">
-<div class="title">build.gradle.kts</div>
-<div class="content">
-<pre class="highlight"><code class="language-kotlin" data-lang="kotlin">plugins {
-    id("com.nisecoder.gradle.atcoder.credentials")
-}</code></pre>
-</div>
-</div>
 </div>
 <div class="sect3">
 <h4 id="_auto_include">auto-include</h4>
@@ -680,20 +640,6 @@ $ gradle addCredentials --key atcoder.password --value {user atcoder password}</
 </div>
 </div>
 </div>
-<div class="sect3">
-<h4 id="_jvm">jvm</h4>
-<div class="paragraph">
-<p>JVM Based Language Setup util plugin</p>
-</div>
-<div class="listingblock">
-<div class="title">build.gradle.kts</div>
-<div class="content">
-<pre class="highlight"><code class="language-kotlin" data-lang="kotlin">plugins {
-    id("com.nisecoder.gradle.atcoder.jvm")
-}</code></pre>
-</div>
-</div>
-</div>
 </div>
 </div>
 </div>
@@ -701,7 +647,7 @@ $ gradle addCredentials --key atcoder.password --value {user atcoder password}</
 <div id="footer">
 <div id="footer-text">
 Version 1.0-SNAPSHOT<br>
-Last updated 2021-05-15 06:47:37 UTC
+Last updated 2021-05-15 07:46:25 UTC
 </div>
 </div>
 </body>
