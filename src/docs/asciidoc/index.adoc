@@ -72,3 +72,97 @@ subprojects/contests/practice/src/A/kotlin/main.kt
 ----
 $ gradle :practice:atcoderSubmitA
 ----
+
+== plugins
+
+=== Main Plugins
+
+==== atcoder
+
+.build.gradle.kts
+[source, kotlin]
+----
+plugins {
+    id("com.nisecoder.gradle.atcoder")
+}
+----
+
+==== contest
+
+.build.gradle.kts
+[source, kotlin]
+----
+plugins {
+    id("com.nisecoder.gradle.atcoder.contest")
+}
+----
+
+
+
+=== Language Convention Plugins
+
+Setup Language Environment
+
+==== kotlin
+
+.build.gradle.kts
+[source, kotlin]
+----
+plugins {
+    id("com.nisecoder.gradle.atcoder.kotlin")
+}
+----
+
+
+==== java
+
+.build.gradle.kts
+[source, kotlin]
+----
+plugins {
+    id("com.nisecoder.gradle.atcoder.java")
+}
+----
+
+
+
+=== Other Convention Plugins
+
+Utils for Main or Language Convention Plugin.
+
+==== credentials
+
+
+
+.build.gradle.kts
+[source, kotlin]
+----
+plugins {
+    id("com.nisecoder.gradle.atcoder.credentials")
+}
+----
+
+==== auto-include
+
+Setting plugin to add generated contest project automatically.
+
+.settings.gradle.kts
+[source, kotlin]
+----
+plugins {
+    id("com.nisecoder.gradle.atcoder.auto-include")
+}
+----
+
+
+==== jvm
+
+JVM Based Language Setup util plugin
+
+.build.gradle.kts
+[source, kotlin]
+----
+plugins {
+    id("com.nisecoder.gradle.atcoder.jvm")
+}
+----
