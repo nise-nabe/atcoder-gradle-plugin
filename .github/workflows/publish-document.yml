@@ -24,7 +24,7 @@ jobs:
           dependencies-cache-enabled: true
 
       - name: Publish Document to Github Pages
-        uses: JamesIves/github-pages-deploy-action@4.1.1
+        uses: JamesIves/github-pages-deploy-action@4.1.3
         with:
           branch: gh-pages
           folder: build/docs/asciidoc
