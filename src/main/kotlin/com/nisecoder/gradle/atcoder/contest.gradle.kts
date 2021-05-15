@@ -4,10 +4,11 @@ import com.nisecoder.gradle.atcoder.task.AtCoderFetchTaskListTask
 import com.nisecoder.gradle.atcoder.task.AtCoderLoginTask
 import com.nisecoder.gradle.atcoder.task.AtCoderSubmitTask
 import com.nisecoder.gradle.atcoder.task.AtCoderTaskListTask
+import org.jetbrains.kotlin.gradle.plugin.KotlinPlatformJvmPlugin
+import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
 
 
 plugins {
-    java
     id("com.nisecoder.gradle.atcoder.credentials")
 }
 
@@ -41,6 +42,63 @@ tasks {
             taskId.set(contestTaskName)
             submitLanguage.set(language)
             sessionFile.set(atcoderLogin.sessionFile)
+        }
+    }
+}
+
+plugins.withType<JavaPlugin> {
+    configure<JavaPluginExtension> {
+        toolchain {
+            languageVersion.set(JavaLanguageVersion.of(11))
+        }
+    }
+
+    val javaPluginExtension = extensions.getByType<JavaPluginExtension>()
+
+    val sourceSets = extensions.getByType<SourceSetContainer>()
+
+    atcoder.contestTask.all {
+        val mainSourceSet = sourceSets.create(name) {
+            val mainSourceSet = sourceSets[SourceSet.MAIN_SOURCE_SET_NAME]
+            val mainOutput = objects.fileCollection().from(mainSourceSet.output)
+            compileClasspath += mainOutput
+            runtimeClasspath += mainOutput
+
+            configurations.getByName(implementationConfigurationName)
+                .extendsFrom(configurations.getByName(mainSourceSet.implementationConfigurationName))
+        }
+
+        val testTask = tasks.register<Test>("test$name") {
+            description = "Runs the unit tests."
+            group = JavaBasePlugin.VERIFICATION_GROUP
+
+            testClassesDirs = mainSourceSet.output.classesDirs
+            classpath = mainSourceSet.runtimeClasspath
+            modularity.inferModulePath.convention(javaPluginExtension.modularity.inferModulePath)
+        }
+
+        tasks.named(JavaBasePlugin.CHECK_TASK_NAME) {
+            dependsOn(testTask)
+        }
+    }
+}
+
+plugins.withType<KotlinPlatformJvmPlugin> {
+    val javaToolchains = extensions.getByType<JavaToolchainService>()
+
+    val compiler: Provider<JavaCompiler> = javaToolchains.compilerFor {
+        languageVersion.set(JavaLanguageVersion.of(11))
+    }
+
+    tasks.withType<KotlinCompile>().configureEach {
+        kotlinOptions {
+            languageVersion = "1.3"
+            jvmTarget = compiler.get().metadata.languageVersion.toString()
+            javaParameters = true
+
+            jdkHome = compiler.get().metadata.installationPath.asFile.absolutePath
+
+            useIR = true
         }
     }
 }

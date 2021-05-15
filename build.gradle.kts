@@ -75,16 +75,6 @@ pluginBundle {
         "com.nisecoder.gradle.atcoder.contest" {
             displayName = "Base Convention plugin for AtCoder Gradle plugin"
         }
-        "com.nisecoder.gradle.atcoder.java" {
-            displayName = "Java Convention plugins for AtCoder Gradle plugin"
-        }
-        "com.nisecoder.gradle.atcoder.kotlin" {
-            displayName = "Kotlin Convention plugins for AtCoder Gradle plugin"
-        }
-
-        "com.nisecoder.gradle.atcoder.jvm" {
-            displayName = "JVM Based Languages Convention plugins for AtCoder Gradle plugin"
-        }
         "com.nisecoder.gradle.atcoder.auto-include" {
             displayName = "Settings Convention plugins for AtCoder Gradle plugin"
         }
