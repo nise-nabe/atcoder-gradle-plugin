@@ -25,22 +25,12 @@ atcoder.contestTask.all {
             .extendsFrom(configurations.getByName(mainSourceSet.implementationConfigurationName))
     }
 
-    val testSourceSet = sourceSets.create("${name}Test") {
-        val testSourceSet = sourceSets[SourceSet.TEST_SOURCE_SET_NAME]
-        val testOutput = objects.fileCollection().from(testSourceSet.output)
-        compileClasspath += mainSourceSet.output + testOutput
-        runtimeClasspath += mainSourceSet.output + testOutput
-
-        configurations.getByName(implementationConfigurationName)
-            .extendsFrom(configurations.getByName(testSourceSet.implementationConfigurationName))
-    }
-
     val testTask = tasks.register<Test>("test$name") {
         description = "Runs the unit tests."
         group = JavaBasePlugin.VERIFICATION_GROUP
 
-        testClassesDirs = testSourceSet.output.classesDirs
-        classpath = testSourceSet.runtimeClasspath
+        testClassesDirs = mainSourceSet.output.classesDirs
+        classpath = mainSourceSet.runtimeClasspath
         modularity.inferModulePath.convention(javaPluginExtension.modularity.inferModulePath)
     }
 
