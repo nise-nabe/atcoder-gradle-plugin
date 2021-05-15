@@ -1,6 +1,5 @@
 package com.nisecoder.gradle.atcoder
 
-import com.nisecoder.gradle.atcoder.internal.AtCoderLanguage
 import com.nisecoder.gradle.atcoder.task.AtCoderFetchTaskListTask
 import com.nisecoder.gradle.atcoder.task.AtCoderLoginTask
 import com.nisecoder.gradle.atcoder.task.AtCoderSubmitTask
@@ -40,7 +39,7 @@ tasks {
 
             contestName.set(atcoder.contestName)
             taskId.set(contestTaskName)
-            language.set(AtCoderLanguage.Kotlin)
+            submitLanguage.set(language)
             sessionFile.set(atcoderLogin.sessionFile)
         }
     }

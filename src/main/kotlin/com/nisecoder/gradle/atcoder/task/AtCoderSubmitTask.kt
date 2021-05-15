@@ -32,7 +32,7 @@ abstract class AtCoderSubmitTask: AtCoderTask() {
     abstract val taskId: Property<String>
 
     @get:Input
-    abstract val language: Property<AtCoderLanguage>
+    abstract val submitLanguage: Property<AtCoderLanguage>
 
     @get:InputFile
     abstract val sessionFile: RegularFileProperty
@@ -60,7 +60,7 @@ abstract class AtCoderSubmitTask: AtCoderTask() {
                 url = "${AtCoderSite.contest}/${contestName.get()}/submit",
                 formParameters = Parameters.build {
                     append("data.TaskScreenName", task.taskScreenName)
-                    append("data.LanguageId", language.get().code)
+                    append("data.LanguageId", submitLanguage.get().code)
                     append("sourceCode", sourceCode)
                     append("csrf_token", session.csrfToken())
                 },
