@@ -2,7 +2,7 @@ plugins {
     `kotlin-dsl`
     `maven-publish`
     id("org.asciidoctor.jvm.convert") version "3.3.2"
-    id("com.gradle.plugin-publish") version "0.14.0"
+    id("com.gradle.plugin-publish") version "0.15.0"
 }
 
 repositories {
