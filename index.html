@@ -479,7 +479,7 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
 <h2 id="_getting_started">Getting Started</h2>
 <div class="sectionbody">
 <div class="paragraph">
-<p>Two Credential is required</p>
+<p>Two Credentials is required</p>
 </div>
 <div class="ulist">
 <ul>
@@ -490,6 +490,9 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
 <p>AtCoder Account</p>
 </li>
 </ul>
+</div>
+<div class="paragraph">
+<p>GitHub Account will be not need in future release.</p>
 </div>
 <div class="listingblock">
 <div class="title">build.gradle.kts</div>
@@ -534,23 +537,22 @@ plugins {
 </div>
 </div>
 <div class="paragraph">
-<p>GitHub Package Credential use values saved  ~/.gradle.properties
+<p>GitHub Package Credential use values saved <code>~/.gradle.properties</code>
 this property key name is based on repository name in settings.gradle.kts</p>
 </div>
 <div class="listingblock">
 <div class="content">
-<pre>GithubPackagesAtCoderGradlePluginUsername={user github username}
-GithubPackagesAtCoderGradlePluginPassword={user github personal access token start with "ghp_"}</pre>
+<pre>GithubPackagesAtCoderGradlePluginUsername={your github username}
+GithubPackagesAtCoderGradlePluginPassword={your github personal access token start with "ghp_"}</pre>
 </div>
 </div>
 <div class="paragraph">
-<p>AtCoder credentials use values saved with
-<a href="https://github.com/etiennestuder/gradle-credentials-plugin">gradle-credential-plugin</a></p>
+<p>AtCoder credentials will use values saved in  <code>~/.gradle.properties</code></p>
 </div>
 <div class="listingblock">
 <div class="content">
-<pre>$ gradle addCredentials --key atcoder.username --value {user atcoder username}
-$ gradle addCredentials --key atcoder.password --value {user atcoder password}</pre>
+<pre>atcoderUsername={your atcoder username}
+atcoderPassword={your  atcoder password}</pre>
 </div>
 </div>
 <div class="sect2">
@@ -647,7 +649,7 @@ $ gradle addCredentials --key atcoder.password --value {user atcoder password}</
 <div id="footer">
 <div id="footer-text">
 Version 1.0-SNAPSHOT<br>
-Last updated 2021-07-17 13:16:17 UTC
+Last updated 2021-07-17 13:47:31 UTC
 </div>
 </div>
 </body>
