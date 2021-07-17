@@ -1,5 +1,6 @@
 plugins {
-    `kotlin-dsl`
+    `java-gradle-plugin`
+    `kotlin-dsl-base`
     `maven-publish`
     id("org.asciidoctor.jvm.convert") version "3.3.2"
     id("com.gradle.plugin-publish") version "0.15.0"
@@ -13,7 +14,8 @@ group = "com.nisecoder.gradle"
 version = "1.0-SNAPSHOT"
 
 dependencies {
-    implementation("org.jetbrains.kotlin:kotlin-gradle-plugin:1.4.32")
+    implementation(enforcedPlatform("org.jetbrains.kotlin:kotlin-bom:${embeddedKotlinVersion}"))
+    implementation("org.jetbrains.kotlin:kotlin-gradle-plugin")
 
     // https://github.com/skrapeit/skrape.it
     implementation("it.skrape:skrapeit:1.1.5")
@@ -38,6 +40,25 @@ dependencies {
 
 tasks.test {
     useJUnitPlatform()
+}
+
+
+
+gradlePlugin {
+    plugins {
+        create("AtCoderPlugin") {
+            id = "com.nisecoder.gradle.atcoder"
+            implementationClass = "com.nisecoder.gradle.AtCoderPlugin"
+        }
+        create("AtCoderContestPlugin") {
+            id = "com.nisecoder.gradle.atcoder.contest"
+            implementationClass = "com.nisecoder.gradle.atcoder.AtCoderContestPlugin"
+        }
+        create("AtCoderSettingsPlugin") {
+            id = "com.nisecoder.gradle.atcoder.auto-detect"
+            implementationClass = "com.nisecoder.gradle.atcoder.AtCoderSettingsPlugin"
+        }
+    }
 }
 
 
@@ -74,13 +95,13 @@ pluginBundle {
     description = "AtCoder tool for Gradle"
 
     (plugins) {
-        "com.nisecoder.gradle.atcoder" {
+        "AtCoderPlugin" {
             displayName = "AtCoder Gradle plugin"
         }
-        "com.nisecoder.gradle.atcoder.contest" {
+        "AtCoderContestPlugin" {
             displayName = "Base Convention plugin for AtCoder Gradle plugin"
         }
-        "com.nisecoder.gradle.atcoder.auto-include" {
+        "AtCoderSettingsPlugin" {
             displayName = "Settings Convention plugins for AtCoder Gradle plugin"
         }
     }

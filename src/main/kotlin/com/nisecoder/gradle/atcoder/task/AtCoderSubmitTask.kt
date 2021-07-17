@@ -21,7 +21,6 @@ import org.gradle.api.tasks.Input
 import org.gradle.api.tasks.InputFile
 import org.gradle.api.tasks.SourceSetContainer
 import org.gradle.api.tasks.TaskAction
-import org.gradle.kotlin.dsl.getByType
 
 abstract class AtCoderSubmitTask: AtCoderTask() {
     @get:Input
@@ -42,7 +41,7 @@ abstract class AtCoderSubmitTask: AtCoderTask() {
 
         val task = AtCoderFetcher(session).fetchTaskList(contestName.get()).tasks.first { it.taskId == taskId.get() }
 
-        val sourceSets: SourceSetContainer = project.extensions.getByType()
+        val sourceSets: SourceSetContainer = project.extensions.getByType(SourceSetContainer::class.java)
 
         val submitFile = sourceSets.getAt(task.taskId).allSource.find { it.name == "main.kt" }
             ?: throw AtCoderException("cannot find file for submit")
