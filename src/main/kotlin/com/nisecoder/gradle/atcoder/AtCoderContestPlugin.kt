@@ -48,8 +48,8 @@ class AtCoderContestPlugin: Plugin<Project> {
 
         atcoder.contestTask.all(object : Action<AtCoderContestTaskObject> {
             override fun execute(config: AtCoderContestTaskObject) {
-                val contestTaskName = name
-                tasks.register("atcoderSubmit$name", AtCoderSubmitTask::class.java, object : Action<AtCoderSubmitTask> {
+                val contestTaskName = config.name
+                tasks.register("atcoderSubmit$contestTaskName", AtCoderSubmitTask::class.java, object : Action<AtCoderSubmitTask> {
                     override fun execute(task: AtCoderSubmitTask) {
                         task.description = "Submits '$contestTaskName' sourceCode"
 
