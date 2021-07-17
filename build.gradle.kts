@@ -15,7 +15,7 @@ version = "1.0-SNAPSHOT"
 dependencies {
     implementation("org.jetbrains.kotlin:kotlin-gradle-plugin:1.4.32")
 
-    implementation("it.skrape:skrapeit:1.1.1")
+    implementation("it.skrape:skrapeit:1.1.5")
 
     implementation(platform("io.ktor:ktor-bom:1.5.4"))
     implementation("io.ktor:ktor-client-core")
