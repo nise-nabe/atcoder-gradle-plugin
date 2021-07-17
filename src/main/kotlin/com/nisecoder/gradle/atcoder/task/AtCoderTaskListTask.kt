@@ -1,7 +1,6 @@
 package com.nisecoder.gradle.atcoder.task
 
 import com.nisecoder.gradle.atcoder.internal.ContestTask
-import io.ktor.util.*
 import org.gradle.api.file.RegularFileProperty
 import org.gradle.api.tasks.InputFile
 import org.gradle.api.tasks.TaskAction
@@ -10,7 +9,6 @@ abstract class AtCoderTaskListTask: AtCoderTask() {
     @get:InputFile
     abstract val taskListFile: RegularFileProperty
 
-    @KtorExperimentalAPI
     @TaskAction
     fun taskList() {
         taskListFile.get().asFile.readLines().map(ContestTask::fromTsvRow).forEach {

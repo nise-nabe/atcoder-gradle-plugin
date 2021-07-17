@@ -1,7 +1,5 @@
 package com.nisecoder.gradle.atcoder.internal
 
-import io.ktor.http.*
-import io.ktor.util.KtorExperimentalAPI
 import it.skrape.core.document
 import it.skrape.core.htmlDocument
 import it.skrape.fetcher.HttpFetcher
@@ -12,7 +10,6 @@ import it.skrape.selects.html5.td
 import it.skrape.selects.html5.tr
 
 class AtCoderFetcher(private val session: String) {
-    @KtorExperimentalAPI
     fun fetchTaskList(contestName: String): ContestTaskList {
         return skrape(HttpFetcher) {
             request {
