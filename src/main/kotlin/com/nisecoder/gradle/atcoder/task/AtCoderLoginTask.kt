@@ -17,27 +17,28 @@ import io.ktor.http.HttpStatusCode.Companion.Found
 import io.ktor.http.HttpStatusCode.Companion.OK
 import it.skrape.fetcher.*
 import kotlinx.coroutines.runBlocking
+import org.gradle.api.credentials.PasswordCredentials
 import org.gradle.api.file.RegularFileProperty
 import org.gradle.api.provider.Property
-import org.gradle.api.tasks.Input
+import org.gradle.api.tasks.Internal
 import org.gradle.api.tasks.OutputFile
 import org.gradle.api.tasks.TaskAction
 
 abstract class AtCoderLoginTask : AtCoderTask() {
-    @get:Input
-    abstract val username: Property<String>
-
-    @get:Input
-    abstract val password: Property<String>
+    @get:Internal
+    abstract val credentials: Property<PasswordCredentials>
 
     @get:OutputFile
     abstract val sessionFile: RegularFileProperty
 
     @TaskAction
     fun login() {
-        if (sessionFile.get().asFile.exists()) {
-            return
+        val (username, password) = credentials.get().let { it.username to it.password }
+
+        if (username == null || password == null) {
+            throw Exception("username and password is required")
         }
+
         val session = skrape(HttpFetcher) {
             request {
                 url = AtCoderSite.home
@@ -58,8 +59,8 @@ abstract class AtCoderLoginTask : AtCoderTask() {
             val response: HttpResponse = client.submitForm(
                 url = AtCoderSite.login,
                 formParameters = Parameters.build {
-                    append("username", username.get())
-                    append("password", password.get())
+                    append("username", username)
+                    append("password", password)
                     append("csrf_token", csrfToken)
                 },
                 encodeInQuery = false
