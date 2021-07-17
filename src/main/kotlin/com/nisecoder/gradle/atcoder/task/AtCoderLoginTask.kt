@@ -43,7 +43,7 @@ abstract class AtCoderLoginTask : AtCoderTask() {
                 url = AtCoderSite.home
             }
 
-            extract {
+            response {
                cookies.first { it.name == AtCoderSite.sessionName }
             }
         }
