@@ -2,24 +2,21 @@ package com.nisecoder.gradle
 
 import com.nisecoder.gradle.atcoder.task.AtCoderLoginTask
 import com.nisecoder.gradle.atcoder.task.AtCoderNewContestTask
-import nu.studer.gradle.credentials.domain.CredentialsContainer
 import org.gradle.api.Action
 import org.gradle.api.Plugin
 import org.gradle.api.Project
+import org.gradle.api.credentials.PasswordCredentials
+import org.gradle.kotlin.dsl.credentials
 
 
 class AtCoderPlugin: Plugin<Project> {
     override fun apply(project: Project): Unit = project.run {
-        plugins.apply("nu.studer.credentials")
-
         val atcoderLogin = tasks.register("atcoderLogin", AtCoderLoginTask::class.java, object : Action<AtCoderLoginTask> {
             override fun execute(task: AtCoderLoginTask) {
                 task.description = "Logins to AtCoder using credentials"
 
-                val credentials: CredentialsContainer =
-                    rootProject.extensions.extraProperties.get("credentials") as CredentialsContainer
-                task.username.set(credentials.getProperty("atcoder.username").toString())
-                task.password.set(credentials.getProperty("atcoder.password").toString())
+                val credentials = providers.credentials(PasswordCredentials::class, "atcoder")
+                task.credentials.set(credentials)
                 task.sessionFile.set(rootProject.buildDir.resolve("atcoder/session.txt"))
             }
         })

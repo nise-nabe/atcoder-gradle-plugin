@@ -27,9 +27,6 @@ dependencies {
     implementation("io.ktor:ktor-client-logging")
     implementation("ch.qos.logback:logback-classic")
 
-    // https://github.com/etiennestuder/gradle-credentials-plugin
-    implementation("nu.studer:gradle-credentials-plugin:2.1")
-
     testImplementation(gradleTestKit())
     testImplementation(kotlin("test-junit5"))
 
