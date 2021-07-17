@@ -87,6 +87,10 @@ publishing {
     }
 }
 
+tasks.withType<GenerateModuleMetadata> {
+    suppressedValidationErrors.add("enforced-platform")
+}
+
 pluginBundle {
     website = "https://nise-nabe.github.io/atcoder-gradle-plugin/"
     vcsUrl = "https://github.com/nise-nabe/atcoder-gradle-plugin"
