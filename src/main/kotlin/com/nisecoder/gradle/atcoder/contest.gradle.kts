@@ -44,6 +44,7 @@ tasks {
 plugins.withType<JavaPlugin> {
     configure<JavaPluginExtension> {
         toolchain {
+            // atcoder use openjdk 11.0.6
             languageVersion.set(JavaLanguageVersion.of(11))
         }
     }
@@ -82,12 +83,16 @@ plugins.withType<KotlinPlatformJvmPlugin> {
     val javaToolchains = extensions.getByType<JavaToolchainService>()
 
     val compiler: Provider<JavaCompiler> = javaToolchains.compilerFor {
+        // atcoder use openjdk 11.0.6
         languageVersion.set(JavaLanguageVersion.of(11))
     }
 
     tasks.withType<KotlinCompile>().configureEach {
         kotlinOptions {
+            // atcoder use 1.3.71
             languageVersion = "1.3"
+            apiVersion = "1.3"
+
             jvmTarget = compiler.get().metadata.languageVersion.toString()
             javaParameters = true
 
