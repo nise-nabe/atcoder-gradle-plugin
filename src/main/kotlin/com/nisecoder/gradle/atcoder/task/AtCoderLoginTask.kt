@@ -15,7 +15,6 @@ import io.ktor.http.*
 import io.ktor.http.HttpStatusCode.Companion.Forbidden
 import io.ktor.http.HttpStatusCode.Companion.Found
 import io.ktor.http.HttpStatusCode.Companion.OK
-import io.ktor.util.*
 import it.skrape.fetcher.*
 import kotlinx.coroutines.runBlocking
 import org.gradle.api.file.RegularFileProperty
@@ -34,7 +33,6 @@ abstract class AtCoderLoginTask : AtCoderTask() {
     @get:OutputFile
     abstract val sessionFile: RegularFileProperty
 
-    @KtorExperimentalAPI
     @TaskAction
     fun login() {
         if (sessionFile.get().asFile.exists()) {
@@ -81,4 +79,3 @@ abstract class AtCoderLoginTask : AtCoderTask() {
         logger.lifecycle("login user: $username")
     }
 }
-

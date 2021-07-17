@@ -14,7 +14,6 @@ import io.ktor.client.request.header
 import io.ktor.client.statement.HttpResponse
 import io.ktor.http.HttpHeaders
 import io.ktor.http.Parameters
-import io.ktor.util.KtorExperimentalAPI
 import kotlinx.coroutines.runBlocking
 import org.gradle.api.file.RegularFileProperty
 import org.gradle.api.provider.Property
@@ -37,7 +36,6 @@ abstract class AtCoderSubmitTask: AtCoderTask() {
     @get:InputFile
     abstract val sessionFile: RegularFileProperty
 
-    @KtorExperimentalAPI
     @TaskAction
     fun submit() {
         val session = sessionFile.get().readFirstLine()
