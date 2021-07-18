@@ -17,34 +17,31 @@ import org.gradle.api.tasks.testing.Test
 import org.gradle.jvm.toolchain.JavaCompiler
 import org.gradle.jvm.toolchain.JavaLanguageVersion
 import org.gradle.jvm.toolchain.JavaToolchainService
+import org.gradle.kotlin.dsl.*
 import org.jetbrains.kotlin.gradle.plugin.KotlinPlatformJvmPlugin
 import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
 
 class AtCoderContestPlugin: Plugin<Project> {
     override fun apply(project: Project): Unit = project.run {
-        val atcoder = extensions.create("atcoder", AtCoderExtension::class.java)
+        val atcoder = extensions.create<AtCoderExtension>("atcoder")
         atcoder.contestName.convention(name)
 
-        val atcoderLogin = rootProject.tasks.named("atcoderLogin", AtCoderLoginTask::class.java)
+        val atcoderLogin = rootProject.tasks.named<AtCoderLoginTask>("atcoderLogin")
 
-        val fetchTaskListTask = tasks.register("atcoderFetchTaskList", AtCoderFetchTaskListTask::class.java, object : Action<AtCoderFetchTaskListTask> {
-            override fun execute(task: AtCoderFetchTaskListTask) {
-                task.description = "Fetches task list for '${atcoder.contestName.get()}'"
+        val fetchTaskListTask = tasks.register<AtCoderFetchTaskListTask>("atcoderFetchTaskList") {
+            description = "Fetches task list for '${atcoder.contestName.get()}'"
 
-                task.contestName.set(atcoder.contestName)
-                task.sessionFile.set(atcoderLogin.get().sessionFile)
+            contestName.set(atcoder.contestName)
+            sessionFile.set(atcoderLogin.get().sessionFile)
 
-                task.taskListFile.set(buildDir.resolve("atcoder").resolve("tasks.tsv"))
-            }
-        })
+            taskListFile.set(buildDir.resolve("atcoder").resolve("tasks.tsv"))
+        }
 
-        tasks.register("atcoderTaskList", AtCoderTaskListTask::class.java, object : Action<AtCoderTaskListTask> {
-            override fun execute(task: AtCoderTaskListTask) {
-                task.description = "Displays task list for '${atcoder.contestName.get()}'"
+        tasks.register<AtCoderTaskListTask>("atcoderTaskList") {
+            description = "Displays task list for '${atcoder.contestName.get()}'"
 
-                task.taskListFile.set(fetchTaskListTask.flatMap { it.taskListFile })
-            }
-        })
+            taskListFile.set(fetchTaskListTask.flatMap { it.taskListFile })
+        }
 
         atcoder.contestTask.all(object : Action<AtCoderContestTaskObject> {
             override fun execute(config: AtCoderContestTaskObject) {
@@ -63,7 +60,7 @@ class AtCoderContestPlugin: Plugin<Project> {
         })
 
         plugins.withType(JavaPlugin::class.java) {
-            val javaPluginExtension = extensions.getByType(JavaPluginExtension::class.java).apply {
+            val javaPluginExtension = extensions.getByType<JavaPluginExtension>().apply {
                 toolchain {
                     // atcoder use openjdk 11.0.6
                     languageVersion.set(JavaLanguageVersion.of(11))
@@ -98,15 +95,15 @@ class AtCoderContestPlugin: Plugin<Project> {
             }
         }
 
-        plugins.withType(KotlinPlatformJvmPlugin::class.java) {
-            val javaToolchains = extensions.getByType(JavaToolchainService::class.java)
+        plugins.withType<KotlinPlatformJvmPlugin> {
+            val javaToolchains = extensions.getByType<JavaToolchainService>()
 
             val compiler: Provider<JavaCompiler> = javaToolchains.compilerFor {
                 // atcoder use openjdk 11.0.6
                 languageVersion.set(JavaLanguageVersion.of(11))
             }
 
-            tasks.withType(KotlinCompile::class.java).configureEach {
+            tasks.withType<KotlinCompile>().configureEach {
                 kotlinOptions {
                     // atcoder use 1.3.71
                     languageVersion = "1.3"
