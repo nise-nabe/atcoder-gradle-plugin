@@ -36,7 +36,7 @@ class AtCoderContestPlugin: Plugin<Project> {
             description = "Fetches task list for '${atcoder.contestName.get()}'"
 
             contestName.set(atcoder.contestName)
-            sessionFile.set(atcoderLogin.get().sessionFile)
+            sessionFile.set(atcoderLogin.flatMap { it.sessionFile })
 
             taskListFile.set(buildDir.resolve("atcoder").resolve("tasks.tsv"))
         }
@@ -56,7 +56,7 @@ class AtCoderContestPlugin: Plugin<Project> {
                     contestName.set(atcoder.contestName)
                     taskId.set(contestTaskName)
                     submitLanguage.set(config.language)
-                    sessionFile.set(atcoderLogin.get().sessionFile)
+                    sessionFile.set(atcoderLogin.flatMap { it.sessionFile })
                 }
             }
         })
