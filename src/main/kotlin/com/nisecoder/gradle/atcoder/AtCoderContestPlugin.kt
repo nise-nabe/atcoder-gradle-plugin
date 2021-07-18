@@ -17,7 +17,11 @@ import org.gradle.api.tasks.testing.Test
 import org.gradle.jvm.toolchain.JavaCompiler
 import org.gradle.jvm.toolchain.JavaLanguageVersion
 import org.gradle.jvm.toolchain.JavaToolchainService
-import org.gradle.kotlin.dsl.*
+import org.gradle.kotlin.dsl.create
+import org.gradle.kotlin.dsl.getByType
+import org.gradle.kotlin.dsl.named
+import org.gradle.kotlin.dsl.register
+import org.gradle.kotlin.dsl.withType
 import org.jetbrains.kotlin.gradle.plugin.KotlinPlatformJvmPlugin
 import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
 
@@ -59,7 +63,7 @@ class AtCoderContestPlugin: Plugin<Project> {
             }
         })
 
-        plugins.withType(JavaPlugin::class.java) {
+        plugins.withType<JavaPlugin> {
             val javaPluginExtension = extensions.getByType<JavaPluginExtension>().apply {
                 toolchain {
                     // atcoder use openjdk 11.0.6
@@ -67,7 +71,7 @@ class AtCoderContestPlugin: Plugin<Project> {
                 }
             }
 
-            val sourceSets = extensions.getByType(SourceSetContainer::class.java)
+            val sourceSets = extensions.getByType<SourceSetContainer>()
 
             atcoder.contestTask.all {
                 val mainSourceSet = sourceSets.create(name) {
@@ -80,7 +84,7 @@ class AtCoderContestPlugin: Plugin<Project> {
                         .extendsFrom(configurations.getByName(mainSourceSet.implementationConfigurationName))
                 }
 
-                val testTask = tasks.register("test$name", Test::class.java) {
+                val testTask = tasks.register<Test>("test$name") {
                     description = "Runs the unit tests."
                     group = JavaBasePlugin.VERIFICATION_GROUP
 
