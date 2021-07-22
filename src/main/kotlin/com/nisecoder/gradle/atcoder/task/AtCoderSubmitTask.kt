@@ -1,9 +1,10 @@
 package com.nisecoder.gradle.atcoder.task
 
 import com.nisecoder.gradle.atcoder.internal.AtCoderException
-import com.nisecoder.gradle.atcoder.internal.AtCoderFetcher
 import com.nisecoder.gradle.atcoder.internal.AtCoderLanguage
+import com.nisecoder.gradle.atcoder.internal.AtCoderNoSuchTaskException
 import com.nisecoder.gradle.atcoder.internal.AtCoderSite
+import com.nisecoder.gradle.atcoder.internal.ContestTask
 import com.nisecoder.gradle.atcoder.internal.cookieValue
 import com.nisecoder.gradle.atcoder.internal.csrfToken
 import com.nisecoder.gradle.atcoder.internal.readFirstLine
@@ -33,13 +34,18 @@ abstract class AtCoderSubmitTask: AtCoderTask() {
     abstract val submitLanguage: Property<AtCoderLanguage>
 
     @get:InputFile
+    abstract val taskListFile: RegularFileProperty
+
+    @get:InputFile
     abstract val sessionFile: RegularFileProperty
 
     @TaskAction
     fun submit() {
         val session = sessionFile.get().readFirstLine()
 
-        val task = AtCoderFetcher(session).fetchTaskList(contestName.get()).tasks.first { it.taskId == taskId.get() }
+        val task = taskListFile.get().asFile.readLines().map(ContestTask::fromTsvRow)
+            .firstOrNull { it.taskId == taskId.get() }
+            ?: throw AtCoderNoSuchTaskException("taskId=${taskId.get()} is not found")
 
         val sourceSets: SourceSetContainer = project.extensions.getByType(SourceSetContainer::class.java)
 

@@ -29,27 +29,15 @@ abstract class AtCoderNewContestTask: AtCoderTask() {
         val fetcher = AtCoderFetcher(sessionFile.get().readFirstLine())
         val problems = fetcher.fetchTaskList(contestName).tasks.map { it.taskId }
 
-        val problemString = problems.joinToString(prefix = "\"", postfix = "\"", separator = "\", \"")
-
         contestDir.resolve("build.gradle.kts").let { buildscriptFile ->
             if (!buildscriptFile.exists()) {
                 // language=gradle.kts
                 buildscriptFile.writeText(
                     """
                         plugins {
+                            kotlin("jvm") version embeddedKotlinVersion
                             id("com.nisecoder.gradle.atcoder.contest")
-                            id("com.nisecoder.gradle.atcoder.kotlin")
                         }
-
-                        atcoder {
-                            val contestTasks = listOf(${problemString})
-                            contestTask {
-                                contestTasks.forEach {
-                                    register(it)
-                                }
-                            }
-                        }
-
                     """.trimIndent()
                 )
             }
