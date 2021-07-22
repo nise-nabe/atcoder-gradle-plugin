@@ -54,20 +54,18 @@ class AtCoderContestPlugin: Plugin<Project> {
             contestTasks.addAll(atcoder.contestTasks.get().map { AtCoderContestTaskObject(it) })
         }
 
-        contestTasks.all(object : Action<AtCoderContestTaskObject> {
-            override fun execute(config: AtCoderContestTaskObject) {
-                val contestTaskName = config.name
-                tasks.register<AtCoderSubmitTask>("atcoderSubmit$contestTaskName") {
-                    description = "Submits '$contestTaskName' sourceCode"
+        contestTasks.all {
+            val contestTaskName = name
+            tasks.register<AtCoderSubmitTask>("atcoderSubmit$contestTaskName") {
+                description = "Submits '$contestTaskName' sourceCode"
 
-                    contestName.set(atcoder.contestName)
-                    taskId.set(contestTaskName)
-                    submitLanguage.set(config.language)
-                    taskListFile.set(fetchTaskListTask.flatMap { it.taskListFile })
-                    sessionFile.set(atcoderLogin.flatMap { it.sessionFile })
-                }
+                contestName.set(atcoder.contestName)
+                taskId.set(contestTaskName)
+                submitLanguage.set(language)
+                taskListFile.set(fetchTaskListTask.flatMap { it.taskListFile })
+                sessionFile.set(atcoderLogin.flatMap { it.sessionFile })
             }
-        })
+        }
 
         plugins.withType<JavaPlugin> {
             val javaPluginExtension = extensions.getByType<JavaPluginExtension>().apply {
