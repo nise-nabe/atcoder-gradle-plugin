@@ -5,6 +5,7 @@ import com.nisecoder.gradle.atcoder.task.AtCoderLoginTask
 import com.nisecoder.gradle.atcoder.task.AtCoderSubmitTask
 import com.nisecoder.gradle.atcoder.task.AtCoderTaskListTask
 import org.gradle.api.Action
+import org.gradle.api.NamedDomainObjectList
 import org.gradle.api.Plugin
 import org.gradle.api.Project
 import org.gradle.api.plugins.JavaBasePlugin
@@ -30,6 +31,7 @@ class AtCoderContestPlugin: Plugin<Project> {
         val atcoder = extensions.create<AtCoderExtension>("atcoder")
         atcoder.contestName.convention(name)
 
+        // register tasks
         val atcoderLogin = rootProject.tasks.named<AtCoderLoginTask>("atcoderLogin")
 
         val fetchTaskListTask = tasks.register<AtCoderFetchTaskListTask>("atcoderFetchTaskList") {
@@ -47,6 +49,7 @@ class AtCoderContestPlugin: Plugin<Project> {
             taskListFile.set(fetchTaskListTask.flatMap { it.taskListFile })
         }
 
+        // register sourceSets
         val defaultList = mutableListOf("A", "B", "C", "D", "E", "F", "G")
         atcoder.contestTasks.convention(defaultList)
         val contestTasks = objects.namedDomainObjectList(AtCoderContestTaskObject::class.java)
@@ -67,6 +70,7 @@ class AtCoderContestPlugin: Plugin<Project> {
             }
         }
 
+        // configure for each language env
         plugins.withType<JavaPlugin> {
             val javaPluginExtension = extensions.getByType<JavaPluginExtension>().apply {
                 toolchain {
