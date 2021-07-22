@@ -4,8 +4,6 @@ import com.nisecoder.gradle.atcoder.task.AtCoderFetchTaskListTask
 import com.nisecoder.gradle.atcoder.task.AtCoderLoginTask
 import com.nisecoder.gradle.atcoder.task.AtCoderSubmitTask
 import com.nisecoder.gradle.atcoder.task.AtCoderTaskListTask
-import org.gradle.api.Action
-import org.gradle.api.NamedDomainObjectList
 import org.gradle.api.Plugin
 import org.gradle.api.Project
 import org.gradle.api.plugins.JavaBasePlugin
