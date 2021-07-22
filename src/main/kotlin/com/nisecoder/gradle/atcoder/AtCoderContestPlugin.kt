@@ -4,7 +4,6 @@ import com.nisecoder.gradle.atcoder.task.AtCoderFetchTaskListTask
 import com.nisecoder.gradle.atcoder.task.AtCoderLoginTask
 import com.nisecoder.gradle.atcoder.task.AtCoderSubmitTask
 import com.nisecoder.gradle.atcoder.task.AtCoderTaskListTask
-import org.gradle.api.Action
 import org.gradle.api.Plugin
 import org.gradle.api.Project
 import org.gradle.api.plugins.JavaBasePlugin
@@ -18,6 +17,7 @@ import org.gradle.jvm.toolchain.JavaCompiler
 import org.gradle.jvm.toolchain.JavaLanguageVersion
 import org.gradle.jvm.toolchain.JavaToolchainService
 import org.gradle.kotlin.dsl.create
+import org.gradle.kotlin.dsl.dependencies
 import org.gradle.kotlin.dsl.getByType
 import org.gradle.kotlin.dsl.named
 import org.gradle.kotlin.dsl.register
@@ -26,10 +26,12 @@ import org.jetbrains.kotlin.gradle.plugin.KotlinPlatformJvmPlugin
 import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
 
 class AtCoderContestPlugin: Plugin<Project> {
+    @Suppress("UnstableApiUsage")
     override fun apply(project: Project): Unit = project.run {
         val atcoder = extensions.create<AtCoderExtension>("atcoder")
         atcoder.contestName.convention(name)
 
+        // register tasks
         val atcoderLogin = rootProject.tasks.named<AtCoderLoginTask>("atcoderLogin")
 
         val fetchTaskListTask = tasks.register<AtCoderFetchTaskListTask>("atcoderFetchTaskList") {
@@ -47,6 +49,7 @@ class AtCoderContestPlugin: Plugin<Project> {
             taskListFile.set(fetchTaskListTask.flatMap { it.taskListFile })
         }
 
+        // register sourceSets
         val defaultList = mutableListOf("A", "B", "C", "D", "E", "F", "G")
         atcoder.contestTasks.convention(defaultList)
         val contestTasks = objects.namedDomainObjectList(AtCoderContestTaskObject::class.java)
@@ -67,6 +70,7 @@ class AtCoderContestPlugin: Plugin<Project> {
             }
         }
 
+        // configure for each language env
         plugins.withType<JavaPlugin> {
             val javaPluginExtension = extensions.getByType<JavaPluginExtension>().apply {
                 toolchain {
@@ -78,6 +82,7 @@ class AtCoderContestPlugin: Plugin<Project> {
             val sourceSets = extensions.getByType<SourceSetContainer>()
 
             contestTasks.all {
+                // copy settings from default "main" sourceSets
                 val mainSourceSet = sourceSets.create(name) {
                     val mainSourceSet = sourceSets.getByName(SourceSet.MAIN_SOURCE_SET_NAME)
                     val mainOutput = objects.fileCollection().from(mainSourceSet.output)
