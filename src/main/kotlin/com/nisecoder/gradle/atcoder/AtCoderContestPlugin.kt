@@ -47,7 +47,14 @@ class AtCoderContestPlugin: Plugin<Project> {
             taskListFile.set(fetchTaskListTask.flatMap { it.taskListFile })
         }
 
-        atcoder.contestTask.all(object : Action<AtCoderContestTaskObject> {
+        val defaultList = mutableListOf("A", "B", "C", "D", "E", "F", "G")
+        atcoder.contestTasks.convention(defaultList)
+        val contestTasks = objects.namedDomainObjectList(AtCoderContestTaskObject::class.java)
+        afterEvaluate {
+            contestTasks.addAll(atcoder.contestTasks.get().map { AtCoderContestTaskObject(it) })
+        }
+
+        contestTasks.all(object : Action<AtCoderContestTaskObject> {
             override fun execute(config: AtCoderContestTaskObject) {
                 val contestTaskName = config.name
                 tasks.register<AtCoderSubmitTask>("atcoderSubmit$contestTaskName") {
@@ -56,6 +63,7 @@ class AtCoderContestPlugin: Plugin<Project> {
                     contestName.set(atcoder.contestName)
                     taskId.set(contestTaskName)
                     submitLanguage.set(config.language)
+                    taskListFile.set(fetchTaskListTask.flatMap { it.taskListFile })
                     sessionFile.set(atcoderLogin.flatMap { it.sessionFile })
                 }
             }
@@ -71,7 +79,7 @@ class AtCoderContestPlugin: Plugin<Project> {
 
             val sourceSets = extensions.getByType<SourceSetContainer>()
 
-            atcoder.contestTask.all {
+            contestTasks.all {
                 val mainSourceSet = sourceSets.create(name) {
                     val mainSourceSet = sourceSets.getByName(SourceSet.MAIN_SOURCE_SET_NAME)
                     val mainOutput = objects.fileCollection().from(mainSourceSet.output)
