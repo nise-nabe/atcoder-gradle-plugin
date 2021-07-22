@@ -49,8 +49,18 @@ abstract class AtCoderNewContestTask: AtCoderTask() {
             val problemDir = contestDir.resolve("src/$problemName/kotlin")
             if (!problemDir.exists()) problemDir.mkdirs()
 
-            val mainFile = problemDir.resolve("main.kt")
-            if (!mainFile.exists()) mainFile.createNewFile()
+            problemDir.resolve("main.kt").let { mainFile ->
+                if (!mainFile.exists()) {
+                    // language=kotlin
+                    mainFile.writeText(
+                    """
+                        fun main() {
+                        
+                        }
+                    """.trimIndent()
+                    )
+                }
+            }
         }
     }
 }
