@@ -60,6 +60,7 @@ gradlePlugin {
 
 
 java {
+    @Suppress("UnstableApiUsage")
     toolchain {
         languageVersion.set(JavaLanguageVersion.of(11))
     }
@@ -82,6 +83,7 @@ publishing {
 }
 
 tasks.withType<GenerateModuleMetadata> {
+    @Suppress("UnstableApiUsage")
     suppressedValidationErrors.add("enforced-platform")
 }
 
