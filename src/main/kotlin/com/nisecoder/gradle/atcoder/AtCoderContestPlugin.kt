@@ -17,6 +17,7 @@ import org.gradle.jvm.toolchain.JavaCompiler
 import org.gradle.jvm.toolchain.JavaLanguageVersion
 import org.gradle.jvm.toolchain.JavaToolchainService
 import org.gradle.kotlin.dsl.create
+import org.gradle.kotlin.dsl.dependencies
 import org.gradle.kotlin.dsl.getByType
 import org.gradle.kotlin.dsl.named
 import org.gradle.kotlin.dsl.register
@@ -81,6 +82,7 @@ class AtCoderContestPlugin: Plugin<Project> {
             val sourceSets = extensions.getByType<SourceSetContainer>()
 
             contestTasks.all {
+                // copy settings from default "main" sourceSets
                 val mainSourceSet = sourceSets.create(name) {
                     val mainSourceSet = sourceSets.getByName(SourceSet.MAIN_SOURCE_SET_NAME)
                     val mainOutput = objects.fileCollection().from(mainSourceSet.output)
