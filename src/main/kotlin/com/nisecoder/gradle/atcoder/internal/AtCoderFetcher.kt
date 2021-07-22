@@ -34,7 +34,8 @@ class AtCoderFetcher(private val session: String) {
                                 memoryLimit = findByIndex(3) { text },
                                 taskScreenName = findByIndex(4) {
                                     eachHref.first().split("taskScreenName=")[1]
-                                }
+                                },
+                                taskUrl = findByIndex(0) { AtCoderSite.baseUrl + eachHref.first() }
                             ) } }
                     } } }
                 }

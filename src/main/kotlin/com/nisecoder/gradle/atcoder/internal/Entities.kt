@@ -13,6 +13,7 @@ data class ContestTask(
     val timeLimit: String,
     val memoryLimit: String,
     val taskScreenName: String,
+    val taskUrl: String,
 ) {
     fun toTsvRow(): String {
         return listOf(
@@ -20,7 +21,8 @@ data class ContestTask(
             taskName,
             timeLimit,
             memoryLimit,
-            taskScreenName
+            taskScreenName,
+            taskUrl,
         ).joinToString( "\t")
     }
 
@@ -33,6 +35,7 @@ data class ContestTask(
                     timeLimit = it[2],
                     memoryLimit = it[3],
                     taskScreenName = it[4],
+                    taskUrl = it[5],
                 )
             }
         }
