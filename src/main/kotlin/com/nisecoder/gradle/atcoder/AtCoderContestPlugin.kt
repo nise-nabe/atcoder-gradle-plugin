@@ -27,6 +27,7 @@ import org.jetbrains.kotlin.gradle.plugin.KotlinPlatformJvmPlugin
 import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
 
 class AtCoderContestPlugin: Plugin<Project> {
+    @Suppress("UnstableApiUsage")
     override fun apply(project: Project): Unit = project.run {
         val atcoder = extensions.create<AtCoderExtension>("atcoder")
         atcoder.contestName.convention(name)
