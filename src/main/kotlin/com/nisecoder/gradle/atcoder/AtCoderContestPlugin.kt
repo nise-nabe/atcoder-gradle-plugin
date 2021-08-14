@@ -92,6 +92,7 @@ class AtCoderContestPlugin: Plugin<Project> {
                         .extendsFrom(configurations.getByName(mainSourceSet.implementationConfigurationName))
                 }
 
+                // create contest test task for each problem
                 val testTask = tasks.register<Test>("test$name") {
                     description = "Runs the unit tests."
                     group = JavaBasePlugin.VERIFICATION_GROUP
@@ -101,6 +102,7 @@ class AtCoderContestPlugin: Plugin<Project> {
                     modularity.inferModulePath.convention(javaPluginExtension.modularity.inferModulePath)
                 }
 
+                // execute contest test task when ":test"  task was executed
                 tasks.named(JavaBasePlugin.CHECK_TASK_NAME) {
                     dependsOn(testTask)
                 }
