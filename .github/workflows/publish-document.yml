@@ -1,8 +1,8 @@
 name: "Publish Documents"
 
 on:
-  release:
-    types: [ published ]
+  push:
+    tags: [ "v*" ]
 
   workflow_dispatch:
 
@@ -26,7 +26,7 @@ jobs:
           wrapper-cache-enabled: true
           dependencies-cache-enabled: true
         env:
-          ORG_GRADLE_PROJECT_publishVersion: "$GITHUB_REF"
+          ORG_GRADLE_PROJECT_publishVersion: ${{ github.ref }}
 
       - name: Publish Document to Github Pages
         uses: JamesIves/github-pages-deploy-action@4.1.4
