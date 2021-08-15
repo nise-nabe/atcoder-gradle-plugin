@@ -15,6 +15,7 @@ group = "com.nisecoder.gradle"
 version = "1.0-SNAPSHOT"
 
 dependencies {
+    // https://docs.gradle.org/current/userguide/compatibility.html#kotlin
     implementation(enforcedPlatform("org.jetbrains.kotlin:kotlin-bom:${embeddedKotlinVersion}"))
     implementation("org.jetbrains.kotlin:kotlin-gradle-plugin")
 
