@@ -9,20 +9,15 @@ import org.gradle.api.Project
 import org.gradle.api.plugins.JavaBasePlugin
 import org.gradle.api.plugins.JavaPlugin
 import org.gradle.api.plugins.JavaPluginExtension
-import org.gradle.api.provider.Provider
 import org.gradle.api.tasks.SourceSet
 import org.gradle.api.tasks.SourceSetContainer
 import org.gradle.api.tasks.testing.Test
-import org.gradle.jvm.toolchain.JavaCompiler
 import org.gradle.jvm.toolchain.JavaLanguageVersion
-import org.gradle.jvm.toolchain.JavaToolchainService
 import org.gradle.kotlin.dsl.create
 import org.gradle.kotlin.dsl.getByType
 import org.gradle.kotlin.dsl.named
 import org.gradle.kotlin.dsl.register
 import org.gradle.kotlin.dsl.withType
-import org.jetbrains.kotlin.gradle.plugin.KotlinPluginWrapper
-import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
 
 class AtCoderContestPlugin: Plugin<Project> {
     @Suppress("UnstableApiUsage")
@@ -109,28 +104,5 @@ class AtCoderContestPlugin: Plugin<Project> {
             }
         }
 
-        plugins.withType<KotlinPluginWrapper> {
-            val javaToolchains = extensions.getByType<JavaToolchainService>()
-
-            val compiler: Provider<JavaCompiler> = javaToolchains.compilerFor {
-                // atcoder use openjdk 11.0.6
-                languageVersion.set(JavaLanguageVersion.of(11))
-            }
-
-            tasks.withType<KotlinCompile>().configureEach {
-                kotlinOptions {
-                    // atcoder use 1.3.71
-                    languageVersion = "1.3"
-                    apiVersion = "1.3"
-
-                    jvmTarget = compiler.get().metadata.languageVersion.toString()
-                    javaParameters = true
-
-                    jdkHome = compiler.get().metadata.installationPath.asFile.absolutePath
-
-                    useIR = true
-                }
-            }
-        }
     }
 }
