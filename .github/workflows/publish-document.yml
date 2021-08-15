@@ -1,8 +1,10 @@
-name: "Publishing to Github Pages using Gradle"
+name: "Publish Documents"
 
 on:
   push:
     branches: [ master ]
+
+  workflow_dispatch:
 
 jobs:
   publish:
