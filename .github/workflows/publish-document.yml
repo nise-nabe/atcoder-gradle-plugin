@@ -1,8 +1,8 @@
 name: "Publish Documents"
 
 on:
-  push:
-    branches: [ master ]
+  release:
+    types: [ published ]
 
   workflow_dispatch:
 
@@ -25,6 +25,8 @@ jobs:
           arguments: asciidoctor
           wrapper-cache-enabled: true
           dependencies-cache-enabled: true
+        env:
+          ORG_GRADLE_PROJECT_publishVersion: ${{ github.ref }}
 
       - name: Publish Document to Github Pages
         uses: JamesIves/github-pages-deploy-action@4.1.4
