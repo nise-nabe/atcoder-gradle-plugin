@@ -43,7 +43,7 @@ AtCoder credentials will use values saved in  `~/.gradle.properties`
 
 ----
 atcoderUsername={your atcoder username}
-atcoderPassword={your  atcoder password}
+atcoderPassword={your atcoder password}
 ----
 
 === Login
@@ -101,6 +101,18 @@ plugins {
 === Other Convention Plugins
 
 Utils for Main or Language Convention Plugin.
+
+==== kotlin
+
+apply plugin and set atcoder env kotlin version and api level.
+
+.build.gradle.kts
+[source, kotlin]
+----
+plugins {
+    id("com.nisecoder.gradle.atcoder.contest.kotlin")
+}
+----
 
 ==== auto-include
 
