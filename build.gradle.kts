@@ -2,6 +2,7 @@ plugins {
     `java-gradle-plugin`
     `kotlin-dsl-base`
     `maven-publish`
+    idea
     id("org.asciidoctor.jvm.convert") version "3.3.2"
     id("com.gradle.plugin-publish") version "0.15.0"
 }
@@ -50,6 +51,10 @@ gradlePlugin {
         create("AtCoderContestPlugin") {
             id = "com.nisecoder.gradle.atcoder.contest"
             implementationClass = "com.nisecoder.gradle.atcoder.AtCoderContestPlugin"
+        }
+        create("AtCoderContestKotlinPlugin") {
+            id = "com.nisecoder.gradle.atcoder.contest.kotlin"
+            implementationClass = "com.nisecoder.gradle.atcoder.language.AtCoderContestKotlinPlugin"
         }
         create("AtCoderSettingsPlugin") {
             id = "com.nisecoder.gradle.atcoder.auto-detect"
@@ -101,6 +106,9 @@ pluginBundle {
         }
         "AtCoderContestPlugin" {
             displayName = "Base Convention plugin for AtCoder Gradle plugin"
+        }
+        "AtCoderContestKotlinPlugin" {
+            displayName = "Kotlin Language Convention plugin for AtCoder Gradle plugin"
         }
         "AtCoderSettingsPlugin" {
             displayName = "Settings Convention plugins for AtCoder Gradle plugin"
