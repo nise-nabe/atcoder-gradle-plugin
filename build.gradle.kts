@@ -11,11 +11,16 @@ repositories {
     gradlePluginPortal()
 }
 
+group = "com.nisecoder.gradle"
+
 // inject in GitHub Action Publish Workflow
 val publishVersion: String? by project
+version = if (publishVersion?.isNotEmpty() == true) {
+    publishVersion!!.trimMargin("refs/tags/v")
+} else {
+    "1.0-SNAPSHOT"
+}
 
-group = "com.nisecoder.gradle"
-version = publishVersion?.takeIf { it.isNotEmpty() } ?: "1.0-SNAPSHOT"
 
 dependencies {
     // https://docs.gradle.org/current/userguide/compatibility.html#kotlin
