@@ -1,4 +1,4 @@
-name: "Publishing to Github Pages using Gradle"
+name: "Publishing Documents"
 
 on:
   push:

@@ -1,4 +1,4 @@
-name: "Publishing to Github Packages using Gradle"
+name: "Publishing Artifacts"
 
 on:
   push:
