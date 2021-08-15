@@ -1,4 +1,4 @@
-name: "Publishing Documents"
+name: "Publish Documents"
 
 on:
   push:

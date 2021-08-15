@@ -1,4 +1,4 @@
-name: "Publishing Artifacts"
+name: "Publish Artifacts"
 
 on:
   push:
