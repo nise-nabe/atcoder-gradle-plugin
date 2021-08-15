@@ -16,7 +16,7 @@ group = "com.nisecoder.gradle"
 // inject in GitHub Action Publish Workflow
 val publishVersion: String? by project
 version = if (publishVersion?.isNotEmpty() == true) {
-    publishVersion!!.trimMargin("refs/tags/v")
+    publishVersion!!.replaceFirst("refs/tags/v", "")
 } else {
     "1.0-SNAPSHOT"
 }
