@@ -89,12 +89,6 @@ publishing {
             credentials(PasswordCredentials::class)
         }
     }
-
-    publications {
-        register<MavenPublication>("gpr") {
-            from(components["java"])
-        }
-    }
 }
 
 tasks.withType<GenerateModuleMetadata> {
