@@ -34,8 +34,6 @@ class AtCoderContestKotlinPlugin: Plugin<Project> {
                 javaParameters = true
 
                 jdkHome = compiler.get().metadata.installationPath.asFile.absolutePath
-
-                useIR = true
             }
         }
     }
