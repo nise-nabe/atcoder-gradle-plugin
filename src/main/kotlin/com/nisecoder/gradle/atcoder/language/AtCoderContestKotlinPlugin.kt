@@ -18,8 +18,6 @@ class AtCoderContestKotlinPlugin: Plugin<Project> {
         plugins.apply(AtCoderContestPlugin::class)
         plugins.apply("org.jetbrains.kotlin.jvm")
 
-        val javaToolchains = extensions.getByType<JavaToolchainService>()
-
         configure<KotlinJvmProjectExtension> {
             jvmToolchain {
                 (this as JavaToolchainSpec).languageVersion.set(JavaLanguageVersion.of(11))
