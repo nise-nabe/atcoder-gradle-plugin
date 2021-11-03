@@ -10,15 +10,7 @@ pluginManagement {
                 }
             }
             filter {
-                includeGroup("com.nisecoder.gradle")
-            }
-        }
-    }
-
-    resolutionStrategy {
-        eachPlugin {
-            if (requested.id.id.startsWith("com.nisecoder.gradle.atcoder")) {
-                useModule("com.nisecoder.gradle:atcoder-gradle-plugin:1.0-SNAPSHOT")
+                includeGroupByRegex("com.nisecoder.*")
             }
         }
     }
