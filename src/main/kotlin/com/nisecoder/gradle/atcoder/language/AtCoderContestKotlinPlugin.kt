@@ -4,15 +4,14 @@ import com.nisecoder.gradle.atcoder.AtCoderContestPlugin
 import org.gradle.api.Plugin
 import org.gradle.api.Project
 import org.gradle.jvm.toolchain.JavaLanguageVersion
-import org.gradle.jvm.toolchain.JavaToolchainService
 import org.gradle.jvm.toolchain.JavaToolchainSpec
 import org.gradle.kotlin.dsl.apply
 import org.gradle.kotlin.dsl.configure
-import org.gradle.kotlin.dsl.getByType
 import org.gradle.kotlin.dsl.withType
 import org.jetbrains.kotlin.gradle.dsl.KotlinJvmProjectExtension
 import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
 
+@Suppress("unused")
 class AtCoderContestKotlinPlugin: Plugin<Project> {
     override fun apply(project: Project): Unit = project.run {
         plugins.apply(AtCoderContestPlugin::class)

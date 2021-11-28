@@ -1,5 +1,6 @@
 package com.nisecoder.gradle.atcoder.internal
 
+@Suppress("MemberVisibilityCanBePrivate")
 object AtCoderSite {
     const val domain = "atcoder.jp"
 
