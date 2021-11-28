@@ -86,8 +86,10 @@ class AtCoderContestPlugin: Plugin<Project> {
             val sourceSets = extensions.getByType<SourceSetContainer>()
 
             contestTasks.all {
+                // name will conflict with many objects
+                val taskName = name
                 // copy settings from default "main" sourceSets
-                sourceSets.create(name) {
+                sourceSets.create(taskName) {
                     val mainSourceSet = sourceSets.getByName(SourceSet.MAIN_SOURCE_SET_NAME)
                     val mainOutput = objects.fileCollection().from(mainSourceSet.output)
                     compileClasspath += mainOutput
@@ -99,11 +101,11 @@ class AtCoderContestPlugin: Plugin<Project> {
 
                 plugins.withType<JvmTestSuitePlugin> {
                     configure<TestingExtension> {
-                        suites.register("$name-test", JvmTestSuite::class) {
+                        suites.register("$taskName-test", JvmTestSuite::class) {
                             useJUnitJupiter()
                             dependencies {
                                 implementation(project)
-                                implementation(sourceSets[name].output)
+                                implementation(sourceSets[taskName].output)
                             }
                         }
                     }
