@@ -6,20 +6,16 @@ import com.nisecoder.gradle.atcoder.task.AtCoderSubmitTask
 import com.nisecoder.gradle.atcoder.task.AtCoderTaskListTask
 import org.gradle.api.Plugin
 import org.gradle.api.Project
-import org.gradle.api.plugins.JavaBasePlugin
 import org.gradle.api.plugins.JavaPlugin
 import org.gradle.api.plugins.JavaPluginExtension
 import org.gradle.api.plugins.JvmTestSuitePlugin
 import org.gradle.api.plugins.jvm.JvmTestSuite
 import org.gradle.api.tasks.SourceSet
 import org.gradle.api.tasks.SourceSetContainer
-import org.gradle.api.tasks.testing.Test
 import org.gradle.jvm.toolchain.JavaLanguageVersion
-import org.gradle.kotlin.dsl.`jvm-test-suite`
 import org.gradle.kotlin.dsl.apply
 import org.gradle.kotlin.dsl.configure
 import org.gradle.kotlin.dsl.create
-import org.gradle.kotlin.dsl.dependencies
 import org.gradle.kotlin.dsl.get
 import org.gradle.kotlin.dsl.getByType
 import org.gradle.kotlin.dsl.named
@@ -106,6 +102,7 @@ class AtCoderContestPlugin: Plugin<Project> {
                             dependencies {
                                 implementation(project)
                                 implementation(sourceSets[taskName].output)
+                                implementation("org.jetbrains.kotlin:kotlin-test-junit5")
                             }
                         }
                     }
