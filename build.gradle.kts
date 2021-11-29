@@ -31,7 +31,7 @@ dependencies {
     implementation("it.skrape:skrapeit:1.1.6")
 
     // https://github.com/ktorio/ktor
-    implementation(platform("io.ktor:ktor-bom:1.6.5"))
+    implementation(platform("io.ktor:ktor-bom:1.6.6"))
     implementation("io.ktor:ktor-client-core")
     implementation("io.ktor:ktor-client-cio")
     implementation("io.ktor:ktor-client-logging")
