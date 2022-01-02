@@ -28,7 +28,7 @@ dependencies {
     implementation("org.jetbrains.kotlin:kotlin-gradle-plugin")
 
     // https://github.com/skrapeit/skrape.it
-    implementation("it.skrape:skrapeit:1.1.6")
+    implementation("it.skrape:skrapeit:1.1.7")
 
     // https://github.com/ktorio/ktor
     implementation(platform("io.ktor:ktor-bom:1.6.7"))
