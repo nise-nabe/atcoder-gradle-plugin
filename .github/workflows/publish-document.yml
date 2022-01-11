@@ -29,7 +29,7 @@ jobs:
           ORG_GRADLE_PROJECT_publishVersion: ${{ github.ref }}
 
       - name: Publish Document to Github Pages
-        uses: JamesIves/github-pages-deploy-action@4.2.0
+        uses: JamesIves/github-pages-deploy-action@v4.2.2
         with:
           branch: gh-pages
           folder: build/docs/asciidoc
