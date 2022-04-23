@@ -35,7 +35,6 @@ abstract class AtCoderNewContestTask: AtCoderTask() {
                 buildscriptFile.writeText(
                     """
                         plugins {
-                            id("com.nisecoder.gradle.atcoder.contest")
                             id("com.nisecoder.gradle.atcoder.contest.kotlin")
                         }
                     """.trimIndent()
