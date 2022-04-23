@@ -1,5 +1,6 @@
 package com.nisecoder.gradle.atcoder.task
 
+import com.nisecoder.gradle.atcoder.AtCoderBuildService
 import com.nisecoder.gradle.atcoder.internal.AtCoderException
 import com.nisecoder.gradle.atcoder.internal.AtCoderSite
 import com.nisecoder.gradle.atcoder.internal.AtCoderUnauthorizedException
@@ -15,7 +16,6 @@ import io.ktor.http.*
 import io.ktor.http.HttpStatusCode.Companion.Forbidden
 import io.ktor.http.HttpStatusCode.Companion.Found
 import io.ktor.http.HttpStatusCode.Companion.OK
-import it.skrape.fetcher.*
 import kotlinx.coroutines.runBlocking
 import org.gradle.api.credentials.PasswordCredentials
 import org.gradle.api.file.RegularFileProperty
@@ -31,6 +31,9 @@ abstract class AtCoderLoginTask : AtCoderTask() {
     @get:OutputFile
     abstract val sessionFile: RegularFileProperty
 
+    @get:Internal
+    abstract val atcoderService: Property<AtCoderBuildService>
+
     @TaskAction
     fun login() {
         val (username, password) = credentials.get().let { it.username to it.password }
@@ -39,17 +42,7 @@ abstract class AtCoderLoginTask : AtCoderTask() {
             throw Exception("username and password is required")
         }
 
-        val session = skrape(HttpFetcher) {
-            request {
-                url = AtCoderSite.home
-            }
-
-            response {
-               cookies.first { it.name == AtCoderSite.sessionName }
-            }
-        }
-
-        val csrfToken = session.value.csrfToken()
+        val anonymous = atcoderService.get().fetchAnonymousCookie()
 
         val loginSession = runBlocking {
             val client = HttpClient(CIO) {
@@ -61,12 +54,12 @@ abstract class AtCoderLoginTask : AtCoderTask() {
                 formParameters = Parameters.build {
                     append("username", username)
                     append("password", password)
-                    append("csrf_token", csrfToken)
+                    append("csrf_token", anonymous.value.csrfToken())
                 },
                 encodeInQuery = false
             ) {
                 header(HttpHeaders.AcceptLanguage, "ja")
-                header(HttpHeaders.Cookie, session.value.cookieValue())
+                header(HttpHeaders.Cookie, anonymous.value.cookieValue())
             }
             when (response.status) {
                 OK, Found -> return@runBlocking response.setCookie().first { it.name == AtCoderSite.sessionName }.value
