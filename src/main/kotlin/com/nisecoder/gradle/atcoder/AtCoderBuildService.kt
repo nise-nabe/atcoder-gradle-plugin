@@ -12,7 +12,9 @@ import io.ktor.client.request.header
 import io.ktor.client.statement.HttpResponse
 import io.ktor.client.statement.readText
 import io.ktor.http.HttpHeaders
-import io.ktor.http.HttpStatusCode
+import io.ktor.http.HttpStatusCode.Companion.Forbidden
+import io.ktor.http.HttpStatusCode.Companion.Found
+import io.ktor.http.HttpStatusCode.Companion.OK
 import io.ktor.http.Parameters
 import io.ktor.http.setCookie
 import it.skrape.fetcher.Cookie
@@ -94,8 +96,8 @@ abstract class AtCoderBuildService: BuildService<AtCoderBuildService.Params> {
                 header(HttpHeaders.Cookie, session.value.cookieValue())
             }
             when (response.status) {
-                HttpStatusCode.OK, HttpStatusCode.Found -> return@runBlocking response.setCookie().first { it.name == AtCoderSite.sessionName }.value
-                HttpStatusCode.Forbidden -> throw AtCoderUnauthorizedException(response.readText())
+                OK, Found -> return@runBlocking response.setCookie().first { it.name == AtCoderSite.sessionName }.value
+                Forbidden -> throw AtCoderUnauthorizedException(response.readText())
                 else -> throw AtCoderException(response.status.toString())
             }
         }
