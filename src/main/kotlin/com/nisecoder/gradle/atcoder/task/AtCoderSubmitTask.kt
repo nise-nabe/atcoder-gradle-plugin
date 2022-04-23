@@ -1,5 +1,6 @@
 package com.nisecoder.gradle.atcoder.task
 
+import com.nisecoder.gradle.atcoder.AtCoderBuildService
 import com.nisecoder.gradle.atcoder.internal.AtCoderException
 import com.nisecoder.gradle.atcoder.internal.AtCoderLanguage
 import com.nisecoder.gradle.atcoder.internal.AtCoderNoSuchTaskException
@@ -20,6 +21,7 @@ import org.gradle.api.file.RegularFileProperty
 import org.gradle.api.provider.Property
 import org.gradle.api.tasks.Input
 import org.gradle.api.tasks.InputFile
+import org.gradle.api.tasks.Internal
 import org.gradle.api.tasks.SourceSetContainer
 import org.gradle.api.tasks.TaskAction
 
@@ -36,12 +38,12 @@ abstract class AtCoderSubmitTask: AtCoderTask() {
     @get:InputFile
     abstract val taskListFile: RegularFileProperty
 
-    @get:InputFile
-    abstract val sessionFile: RegularFileProperty
+    @get:Internal
+    abstract val atCoderService: Property<AtCoderBuildService>
 
     @TaskAction
     fun submit() {
-        val session = sessionFile.get().readFirstLine()
+        val session = atCoderService.get().login()
 
         val task = taskListFile.get().asFile.readLines().map(ContestTask::fromTsvRow)
             .firstOrNull { it.taskId == taskId.get() }
