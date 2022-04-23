@@ -5,18 +5,20 @@ import com.nisecoder.gradle.atcoder.task.AtCoderSubmitTask
 import com.nisecoder.gradle.atcoder.task.AtCoderTaskListTask
 import org.gradle.api.Plugin
 import org.gradle.api.Project
-import org.gradle.api.plugins.JavaBasePlugin
 import org.gradle.api.plugins.JavaPlugin
 import org.gradle.api.plugins.JavaPluginExtension
+import org.gradle.api.plugins.JvmTestSuitePlugin
+import org.gradle.api.plugins.jvm.JvmTestSuite
 import org.gradle.api.tasks.SourceSet
 import org.gradle.api.tasks.SourceSetContainer
-import org.gradle.api.tasks.testing.Test
 import org.gradle.jvm.toolchain.JavaLanguageVersion
+import org.gradle.kotlin.dsl.configure
 import org.gradle.kotlin.dsl.create
 import org.gradle.kotlin.dsl.getByType
 import org.gradle.kotlin.dsl.register
 import org.gradle.kotlin.dsl.registerIfAbsent
 import org.gradle.kotlin.dsl.withType
+import org.gradle.testing.base.TestingExtension
 
 class AtCoderContestPlugin: Plugin<Project> {
     @Suppress("UnstableApiUsage")
@@ -66,7 +68,7 @@ class AtCoderContestPlugin: Plugin<Project> {
 
         // configure for each language env
         plugins.withType<JavaPlugin> {
-            val javaPluginExtension = extensions.getByType<JavaPluginExtension>().apply {
+            extensions.getByType<JavaPluginExtension>().apply {
                 toolchain {
                     // atcoder use openjdk 11.0.6
                     languageVersion.set(JavaLanguageVersion.of(11))
@@ -88,18 +90,27 @@ class AtCoderContestPlugin: Plugin<Project> {
                 }
 
                 // create contest test task for each problem
-                val testTask = tasks.register<Test>("test$name") {
-                    description = "Runs the unit tests."
-                    group = JavaBasePlugin.VERIFICATION_GROUP
+                plugins.withType<JvmTestSuitePlugin> {
+                    configure<TestingExtension> {
+                        suites.register("atcoderTest$name", JvmTestSuite::class) {
+                            useJUnitJupiter()
 
-                    testClassesDirs = mainSourceSet.output.classesDirs
-                    classpath = mainSourceSet.runtimeClasspath
-                    modularity.inferModulePath.convention(javaPluginExtension.modularity.inferModulePath)
-                }
+                            dependencies {
+                                implementation(project)
+                                implementation(mainSourceSet.output)
+                                implementation("org.jetbrains.kotlin:kotlin-test-junit5")
+                            }
 
-                // execute contest test task when ":test"  task was executed
-                tasks.named(JavaBasePlugin.CHECK_TASK_NAME) {
-                    dependsOn(testTask)
+                            targets.all {
+                                testTask.configure {
+                                    reports {
+                                        junitXml.required.set(false)
+                                        html.required.set(false)
+                                    }
+                                }
+                            }
+                        }
+                    }
                 }
             }
         }
