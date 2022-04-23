@@ -5,6 +5,7 @@ import com.nisecoder.gradle.atcoder.internal.AtCoderSite
 import com.nisecoder.gradle.atcoder.internal.AtCoderUnauthorizedException
 import com.nisecoder.gradle.atcoder.internal.cookieValue
 import com.nisecoder.gradle.atcoder.internal.csrfToken
+import com.nisecoder.gradle.atcoder.internal.readFirstLine
 import io.ktor.client.HttpClient
 import io.ktor.client.engine.cio.CIO
 import io.ktor.client.request.forms.submitForm
@@ -23,6 +24,7 @@ import it.skrape.fetcher.response
 import it.skrape.fetcher.skrape
 import kotlinx.coroutines.runBlocking
 import org.gradle.api.credentials.PasswordCredentials
+import org.gradle.api.file.RegularFileProperty
 import org.gradle.api.provider.Property
 import org.gradle.api.services.BuildService
 import org.gradle.api.services.BuildServiceParameters
@@ -31,21 +33,31 @@ import org.gradle.api.services.BuildServiceParameters
 abstract class AtCoderBuildService: BuildService<AtCoderBuildService.Params> {
     interface Params: BuildServiceParameters {
         val credentials: Property<PasswordCredentials>
+        val isPersistence: Property<Boolean>
+        val sessionFile: RegularFileProperty
     }
 
     val username: String?
         get() = parameters.credentials.get().username
 
     private val session: String by lazy {
-        val (username, password) = parameters.credentials.get().let { it.username to it.password }
+        if (parameters.isPersistence.get() && parameters.sessionFile.get().asFile.exists()) {
+            parameters.sessionFile.get().readFirstLine()
+        } else {
+            val (username, password) = parameters.credentials.get().let { it.username to it.password }
 
-        if (username == null || password == null) {
-            throw Exception("username and password is required")
+            if (username == null || password == null) {
+                throw Exception("username and password is required")
+            }
+
+            val anonymous = fetchAnonymousCookie()
+
+            loginInternal(anonymous, username, password).also {
+                if (parameters.isPersistence.get()) {
+                    parameters.sessionFile.asFile.get().writeText(it)
+                }
+            }
         }
-
-        val anonymous = fetchAnonymousCookie()
-
-        loginInternal(anonymous, username, password)
     }
 
     /**

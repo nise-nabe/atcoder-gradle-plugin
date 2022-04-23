@@ -17,21 +17,21 @@ class AtCoderPlugin: Plugin<Project> {
         val service = gradle.sharedServices.registerIfAbsent("atcoder", AtCoderBuildService::class) {
             parameters {
                 credentials.set(providers.credentials(PasswordCredentials::class, "atcoder"))
+                sessionFile.set(rootProject.buildDir.resolve("atcoder/session.txt"))
+                isPersistence.set(true)
             }
-
         }
 
-        val atcoderLogin = tasks.register<AtCoderLoginTask>("atcoderLogin") {
+        tasks.register<AtCoderLoginTask>("atcoderLogin") {
             description = "Logins to AtCoder using credentials"
 
-            sessionFile.set(rootProject.buildDir.resolve("atcoder/session.txt"))
             atcoderService.set(service)
         }
 
         tasks.register<AtCoderNewContestTask>("atcoderNew") {
             description = "Creates AtCoder Contest Project"
 
-            sessionFile.set(atcoderLogin.flatMap { it.sessionFile })
+            atcoderService.set(service)
             outputDir.set(project.rootDir.resolve("subprojects/contests/"))
         }
     }
