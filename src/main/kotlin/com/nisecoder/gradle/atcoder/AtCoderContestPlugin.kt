@@ -3,6 +3,7 @@ package com.nisecoder.gradle.atcoder
 import com.nisecoder.gradle.atcoder.task.AtCoderFetchTaskListTask
 import com.nisecoder.gradle.atcoder.task.AtCoderSubmitTask
 import com.nisecoder.gradle.atcoder.task.AtCoderTaskListTask
+import org.gradle.api.NamedDomainObjectList
 import org.gradle.api.Plugin
 import org.gradle.api.Project
 import org.gradle.api.plugins.JavaPlugin
@@ -20,8 +21,8 @@ import org.gradle.kotlin.dsl.registerIfAbsent
 import org.gradle.kotlin.dsl.withType
 import org.gradle.testing.base.TestingExtension
 
+@Suppress("UnstableApiUsage")
 class AtCoderContestPlugin: Plugin<Project> {
-    @Suppress("UnstableApiUsage")
     override fun apply(project: Project): Unit = project.run {
         val atcoder = extensions.create<AtCoderExtension>("atcoder")
         atcoder.contestName.convention(name)
@@ -68,45 +69,47 @@ class AtCoderContestPlugin: Plugin<Project> {
 
         // configure for each language env
         plugins.withType<JavaPlugin> {
-            extensions.getByType<JavaPluginExtension>().apply {
-                toolchain {
-                    // atcoder use openjdk 11.0.6
-                    languageVersion.set(JavaLanguageVersion.of(11))
-                }
+            configureForJavaPlugin(contestTasks)
+        }
+    }
+
+    private fun Project.configureForJavaPlugin(contestTasks: NamedDomainObjectList<AtCoderContestTaskObject>) {
+        extensions.getByType<JavaPluginExtension>().apply {
+            // atcoder use openjdk 11.0.6
+            toolchain.languageVersion.set(JavaLanguageVersion.of(11))
+        }
+
+        val sourceSets = extensions.getByType<SourceSetContainer>()
+
+        contestTasks.all {
+            // copy settings from default "main" sourceSets
+            val mainSourceSet = sourceSets.create(name) {
+                val mainSourceSet = sourceSets.getByName(SourceSet.MAIN_SOURCE_SET_NAME)
+                val mainOutput = objects.fileCollection().from(mainSourceSet.output)
+                compileClasspath += mainOutput
+                runtimeClasspath += mainOutput
+
+                configurations.getByName(implementationConfigurationName)
+                    .extendsFrom(configurations.getByName(mainSourceSet.implementationConfigurationName))
             }
 
-            val sourceSets = extensions.getByType<SourceSetContainer>()
+            // create contest test task for each problem
+            plugins.withType<JvmTestSuitePlugin> {
+                configure<TestingExtension> {
+                    suites.register("atcoderTest$name", JvmTestSuite::class) {
+                        useJUnitJupiter()
 
-            contestTasks.all {
-                // copy settings from default "main" sourceSets
-                val mainSourceSet = sourceSets.create(name) {
-                    val mainSourceSet = sourceSets.getByName(SourceSet.MAIN_SOURCE_SET_NAME)
-                    val mainOutput = objects.fileCollection().from(mainSourceSet.output)
-                    compileClasspath += mainOutput
-                    runtimeClasspath += mainOutput
+                        dependencies {
+                            implementation(project)
+                            implementation(mainSourceSet.output)
+                            implementation("org.jetbrains.kotlin:kotlin-test-junit5")
+                        }
 
-                    configurations.getByName(implementationConfigurationName)
-                        .extendsFrom(configurations.getByName(mainSourceSet.implementationConfigurationName))
-                }
-
-                // create contest test task for each problem
-                plugins.withType<JvmTestSuitePlugin> {
-                    configure<TestingExtension> {
-                        suites.register("atcoderTest$name", JvmTestSuite::class) {
-                            useJUnitJupiter()
-
-                            dependencies {
-                                implementation(project)
-                                implementation(mainSourceSet.output)
-                                implementation("org.jetbrains.kotlin:kotlin-test-junit5")
-                            }
-
-                            targets.all {
-                                testTask.configure {
-                                    reports {
-                                        junitXml.required.set(false)
-                                        html.required.set(false)
-                                    }
+                        targets.all {
+                            testTask.configure {
+                                reports {
+                                    junitXml.required.set(false)
+                                    html.required.set(false)
                                 }
                             }
                         }
