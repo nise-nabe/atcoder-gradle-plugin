@@ -44,29 +44,7 @@ abstract class AtCoderLoginTask : AtCoderTask() {
 
         val anonymous = atcoderService.get().fetchAnonymousCookie()
 
-        val loginSession = runBlocking {
-            val client = HttpClient(CIO) {
-                expectSuccess = false
-                followRedirects = false
-            }
-            val response: HttpResponse = client.submitForm(
-                url = AtCoderSite.login,
-                formParameters = Parameters.build {
-                    append("username", username)
-                    append("password", password)
-                    append("csrf_token", anonymous.value.csrfToken())
-                },
-                encodeInQuery = false
-            ) {
-                header(HttpHeaders.AcceptLanguage, "ja")
-                header(HttpHeaders.Cookie, anonymous.value.cookieValue())
-            }
-            when (response.status) {
-                OK, Found -> return@runBlocking response.setCookie().first { it.name == AtCoderSite.sessionName }.value
-                Forbidden -> throw AtCoderUnauthorizedException(response.readText())
-                else -> throw AtCoderException(response.status.toString())
-            }
-        }
+        val loginSession = atcoderService.get().login(anonymous, username, password)
 
         sessionFile.asFile.get().writeText(loginSession)
 
