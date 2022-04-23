@@ -74,7 +74,6 @@ gradlePlugin {
 
 
 java {
-    @Suppress("UnstableApiUsage")
     toolchain {
         languageVersion.set(JavaLanguageVersion.of(11))
     }
