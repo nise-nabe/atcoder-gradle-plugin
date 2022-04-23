@@ -21,6 +21,7 @@ class AtCoderPlugin: Plugin<Project> {
             description = "Logins to AtCoder using credentials"
 
             atcoderService.set(service)
+            sessionFile.set(rootProject.buildDir.resolve("atcoder/session.txt"))
         }
 
         tasks.register<AtCoderNewContestTask>("atcoderNew") {

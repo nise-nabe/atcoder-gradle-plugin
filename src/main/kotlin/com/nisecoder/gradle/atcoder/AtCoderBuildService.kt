@@ -26,31 +26,38 @@ import kotlinx.coroutines.runBlocking
 import org.gradle.api.credentials.PasswordCredentials
 import org.gradle.api.file.RegularFileProperty
 import org.gradle.api.provider.Property
+import org.gradle.api.provider.ProviderFactory
 import org.gradle.api.services.BuildService
 import org.gradle.api.services.BuildServiceParameters
+import org.gradle.kotlin.dsl.credentials
+import javax.inject.Inject
 
 @Suppress("UnstableApiUsage")
 abstract class AtCoderBuildService: BuildService<AtCoderBuildService.Params> {
     interface Params: BuildServiceParameters {
-        val credentials: Property<PasswordCredentials>
         val persistence: Property<Boolean>
         val sessionFile: RegularFileProperty
     }
 
-    val username: String?
-        get() = parameters.credentials.get().username
+    @get:Inject
+    abstract val providers: ProviderFactory
+
+    private val credentials: PasswordCredentials by lazy {
+        providers.credentials(PasswordCredentials::class, "atcoder").get()
+    }
+
+    val username: String? by lazy { credentials.username }
 
     private val session: String by lazy {
         if (parameters.persistence.get() && parameters.sessionFile.get().asFile.exists()) {
             parameters.sessionFile.get().readFirstLine()
         } else {
-            val (username, password) = parameters.credentials.get().let { it.username to it.password }
+            val anonymous = fetchAnonymousCookie()
 
+            val (username, password) = credentials.let { it.username to it.password }
             if (username == null || password == null) {
                 throw Exception("username and password is required")
             }
-
-            val anonymous = fetchAnonymousCookie()
 
             loginInternal(anonymous, username, password).also {
                 if (parameters.persistence.get()) {
