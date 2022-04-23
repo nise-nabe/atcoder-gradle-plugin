@@ -24,7 +24,7 @@ version = if (publishVersion?.isNotEmpty() == true) {
 
 dependencies {
     // https://docs.gradle.org/current/userguide/compatibility.html#kotlin
-    implementation(enforcedPlatform("org.jetbrains.kotlin:kotlin-bom:${embeddedKotlinVersion}"))
+    implementation(platform("org.jetbrains.kotlin:kotlin-bom:${embeddedKotlinVersion}"))
     implementation("org.jetbrains.kotlin:kotlin-gradle-plugin")
 
     // https://github.com/skrapeit/skrape.it
@@ -88,11 +88,6 @@ publishing {
             credentials(PasswordCredentials::class)
         }
     }
-}
-
-tasks.withType<GenerateModuleMetadata> {
-    @Suppress("UnstableApiUsage")
-    suppressedValidationErrors.add("enforced-platform")
 }
 
 pluginBundle {
