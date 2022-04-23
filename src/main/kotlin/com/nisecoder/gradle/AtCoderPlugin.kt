@@ -11,14 +11,19 @@ import org.gradle.kotlin.dsl.register
 import org.gradle.kotlin.dsl.registerIfAbsent
 
 
+@Suppress("UnstableApiUsage")
 class AtCoderPlugin: Plugin<Project> {
     override fun apply(project: Project): Unit = project.run {
-        val service = gradle.sharedServices.registerIfAbsent("atcoder", AtCoderBuildService::class) {}
+        val service = gradle.sharedServices.registerIfAbsent("atcoder", AtCoderBuildService::class) {
+            parameters {
+                credentials.set(providers.credentials(PasswordCredentials::class, "atcoder"))
+            }
+
+        }
 
         val atcoderLogin = tasks.register<AtCoderLoginTask>("atcoderLogin") {
             description = "Logins to AtCoder using credentials"
 
-            credentials.set(providers.credentials(PasswordCredentials::class, "atcoder"))
             sessionFile.set(rootProject.buildDir.resolve("atcoder/session.txt"))
             atcoderService.set(service)
         }

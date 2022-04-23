@@ -20,13 +20,39 @@ import it.skrape.fetcher.HttpFetcher
 import it.skrape.fetcher.response
 import it.skrape.fetcher.skrape
 import kotlinx.coroutines.runBlocking
+import org.gradle.api.credentials.PasswordCredentials
+import org.gradle.api.provider.Property
 import org.gradle.api.services.BuildService
 import org.gradle.api.services.BuildServiceParameters
 
+@Suppress("UnstableApiUsage")
 abstract class AtCoderBuildService: BuildService<AtCoderBuildService.Params> {
-    interface Params: BuildServiceParameters
+    interface Params: BuildServiceParameters {
+        val credentials: Property<PasswordCredentials>
+    }
 
-    fun fetchAnonymousCookie(): Cookie {
+    val username: String?
+        get() = parameters.credentials.get().username
+
+    /**
+     * Login to AtCoder using the credentials provided by the user.
+     *
+     * @return login Session ID
+     * @throws AtCoderUnauthorizedException if the credentials is incorrect
+     */
+    fun login(): String {
+        val (username, password) = parameters.credentials.get().let { it.username to it.password }
+
+        if (username == null || password == null) {
+            throw Exception("username and password is required")
+        }
+
+        val anonymous = fetchAnonymousCookie()
+
+        return loginInternal(anonymous, username, password)
+    }
+
+    private fun fetchAnonymousCookie(): Cookie {
         val session = skrape(HttpFetcher) {
             request {
                 url = AtCoderSite.home
@@ -49,7 +75,7 @@ abstract class AtCoderBuildService: BuildService<AtCoderBuildService.Params> {
      *
      * @throws AtCoderUnauthorizedException if the [username] or [password] is incorrect
      */
-    fun login(session: Cookie, username: String, password: String): String {
+    private fun loginInternal(session: Cookie, username: String, password: String): String {
         return runBlocking {
             val client = HttpClient(CIO) {
                 expectSuccess = false
