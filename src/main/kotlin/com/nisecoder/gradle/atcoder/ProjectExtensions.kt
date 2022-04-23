@@ -9,6 +9,6 @@ fun Project.configureAtCoderService(spec: BuildServiceSpec<AtCoderBuildService.P
     spec.parameters {
         credentials.set(providers.credentials(PasswordCredentials::class, "atcoder"))
         sessionFile.set(rootProject.buildDir.resolve("atcoder/session.txt"))
-        isPersistence.set(true)
+        persistence.set(true)
     }
 }

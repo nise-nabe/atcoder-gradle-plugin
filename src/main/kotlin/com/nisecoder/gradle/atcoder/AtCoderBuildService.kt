@@ -33,7 +33,7 @@ import org.gradle.api.services.BuildServiceParameters
 abstract class AtCoderBuildService: BuildService<AtCoderBuildService.Params> {
     interface Params: BuildServiceParameters {
         val credentials: Property<PasswordCredentials>
-        val isPersistence: Property<Boolean>
+        val persistence: Property<Boolean>
         val sessionFile: RegularFileProperty
     }
 
@@ -41,7 +41,7 @@ abstract class AtCoderBuildService: BuildService<AtCoderBuildService.Params> {
         get() = parameters.credentials.get().username
 
     private val session: String by lazy {
-        if (parameters.isPersistence.get() && parameters.sessionFile.get().asFile.exists()) {
+        if (parameters.persistence.get() && parameters.sessionFile.get().asFile.exists()) {
             parameters.sessionFile.get().readFirstLine()
         } else {
             val (username, password) = parameters.credentials.get().let { it.username to it.password }
@@ -53,7 +53,7 @@ abstract class AtCoderBuildService: BuildService<AtCoderBuildService.Params> {
             val anonymous = fetchAnonymousCookie()
 
             loginInternal(anonymous, username, password).also {
-                if (parameters.isPersistence.get()) {
+                if (parameters.persistence.get()) {
                     parameters.sessionFile.asFile.get().writeText(it)
                 }
             }
