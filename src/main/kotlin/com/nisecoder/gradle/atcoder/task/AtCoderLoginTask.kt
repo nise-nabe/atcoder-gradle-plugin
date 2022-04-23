@@ -11,8 +11,9 @@ abstract class AtCoderLoginTask : AtCoderTask() {
 
     @TaskAction
     fun login() {
-        atcoderService.get().login()
-
-        logger.lifecycle("login user: ${atcoderService.get().username}")
+        atcoderService.get().run {
+            login()
+            logger.lifecycle("login user: $username")
+        }
     }
 }
