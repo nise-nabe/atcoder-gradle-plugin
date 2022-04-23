@@ -1,7 +1,6 @@
 package com.nisecoder.gradle.atcoder
 
 import com.nisecoder.gradle.atcoder.task.AtCoderFetchTaskListTask
-import com.nisecoder.gradle.atcoder.task.AtCoderLoginTask
 import com.nisecoder.gradle.atcoder.task.AtCoderSubmitTask
 import com.nisecoder.gradle.atcoder.task.AtCoderTaskListTask
 import org.gradle.api.Plugin
@@ -15,8 +14,8 @@ import org.gradle.api.tasks.testing.Test
 import org.gradle.jvm.toolchain.JavaLanguageVersion
 import org.gradle.kotlin.dsl.create
 import org.gradle.kotlin.dsl.getByType
-import org.gradle.kotlin.dsl.named
 import org.gradle.kotlin.dsl.register
+import org.gradle.kotlin.dsl.registerIfAbsent
 import org.gradle.kotlin.dsl.withType
 
 class AtCoderContestPlugin: Plugin<Project> {
@@ -25,14 +24,15 @@ class AtCoderContestPlugin: Plugin<Project> {
         val atcoder = extensions.create<AtCoderExtension>("atcoder")
         atcoder.contestName.convention(name)
 
-        // register tasks
-        val atcoderLogin = rootProject.tasks.named<AtCoderLoginTask>("atcoderLogin")
+        val service = gradle.sharedServices.registerIfAbsent("atcoder", AtCoderBuildService::class) {
+            configureAtCoderService(this)
+        }
 
         val fetchTaskListTask = tasks.register<AtCoderFetchTaskListTask>("atcoderFetchTaskList") {
             description = "Fetches task list for '${atcoder.contestName.get()}'"
 
             contestName.set(atcoder.contestName)
-            sessionFile.set(atcoderLogin.flatMap { it.sessionFile })
+            atCoderService.set(service)
 
             taskListFile.set(buildDir.resolve("atcoder").resolve("tasks.tsv"))
         }
@@ -60,7 +60,7 @@ class AtCoderContestPlugin: Plugin<Project> {
                 taskId.set(contestTaskName)
                 submitLanguage.set(language)
                 taskListFile.set(fetchTaskListTask.flatMap { it.taskListFile })
-                sessionFile.set(atcoderLogin.flatMap { it.sessionFile })
+                atCoderService.set(service)
             }
         }
 
@@ -103,6 +103,5 @@ class AtCoderContestPlugin: Plugin<Project> {
                 }
             }
         }
-
     }
 }

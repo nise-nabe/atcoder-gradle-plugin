@@ -1,11 +1,11 @@
 package com.nisecoder.gradle.atcoder.task
 
+import com.nisecoder.gradle.atcoder.AtCoderBuildService
 import com.nisecoder.gradle.atcoder.internal.AtCoderFetcher
-import com.nisecoder.gradle.atcoder.internal.readFirstLine
 import org.gradle.api.file.DirectoryProperty
-import org.gradle.api.file.RegularFileProperty
+import org.gradle.api.provider.Property
 import org.gradle.api.tasks.Input
-import org.gradle.api.tasks.InputFile
+import org.gradle.api.tasks.Internal
 import org.gradle.api.tasks.OutputDirectory
 import org.gradle.api.tasks.TaskAction
 import org.gradle.api.tasks.options.Option
@@ -15,8 +15,8 @@ abstract class AtCoderNewContestTask: AtCoderTask() {
     @set:Option(option = "contest", description = "contest name")
     abstract var contestName: String
 
-    @get:InputFile
-    abstract val sessionFile: RegularFileProperty
+    @get:Internal
+    abstract val atcoderService: Property<AtCoderBuildService>
 
     @get:OutputDirectory
     abstract val outputDir: DirectoryProperty
@@ -26,7 +26,7 @@ abstract class AtCoderNewContestTask: AtCoderTask() {
         val contestDir = outputDir.get().asFile.resolve(contestName)
         if (!contestDir.exists()) contestDir.mkdir()
 
-        val fetcher = AtCoderFetcher(sessionFile.get().readFirstLine())
+        val fetcher = AtCoderFetcher(atcoderService.get().login())
         val problems = fetcher.fetchTaskList(contestName).tasks.map { it.taskId }
 
         contestDir.resolve("build.gradle.kts").let { buildscriptFile ->
