@@ -14,6 +14,7 @@ import org.gradle.api.plugins.jvm.JvmTestSuite
 import org.gradle.api.tasks.SourceSet
 import org.gradle.api.tasks.SourceSetContainer
 import org.gradle.jvm.toolchain.JavaLanguageVersion
+import org.gradle.jvm.toolchain.JavaToolchainSpec
 import org.gradle.kotlin.dsl.configure
 import org.gradle.kotlin.dsl.create
 import org.gradle.kotlin.dsl.getByType
@@ -21,6 +22,10 @@ import org.gradle.kotlin.dsl.register
 import org.gradle.kotlin.dsl.registerIfAbsent
 import org.gradle.kotlin.dsl.withType
 import org.gradle.testing.base.TestingExtension
+import org.jetbrains.kotlin.gradle.dsl.KotlinJvmProjectExtension
+import org.jetbrains.kotlin.gradle.plugin.KotlinPlatformJvmPlugin
+import org.jetbrains.kotlin.gradle.plugin.KotlinPluginWrapper
+import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
 
 @Suppress("UnstableApiUsage")
 class AtCoderContestPlugin: Plugin<Project> {
@@ -74,6 +79,10 @@ class AtCoderContestPlugin: Plugin<Project> {
         plugins.withType<JavaPlugin> {
             configureForJavaPlugin(contestTasks)
         }
+
+        plugins.withType<KotlinPluginWrapper> {
+            configureForKotlinJvmPlugin()
+        }
     }
 
     private fun Project.configureForJavaPlugin(contestTasks: NamedDomainObjectList<AtCoderContestTaskObject>) {
@@ -118,6 +127,24 @@ class AtCoderContestPlugin: Plugin<Project> {
                         }
                     }
                 }
+            }
+        }
+    }
+
+    private fun Project.configureForKotlinJvmPlugin() {
+        configure<KotlinJvmProjectExtension> {
+            jvmToolchain {
+                (this as JavaToolchainSpec).languageVersion.set(JavaLanguageVersion.of(11))
+            }
+        }
+
+        tasks.withType<KotlinCompile>().configureEach {
+            kotlinOptions {
+                // atcoder use 1.3.71
+                languageVersion = "1.3"
+                apiVersion = "1.3"
+
+                javaParameters = true
             }
         }
     }
