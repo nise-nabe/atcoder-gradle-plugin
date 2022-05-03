@@ -20,24 +20,30 @@ internal class AtCoderContestPluginFunctionalTest {
         val buildFile: File = tempDir.resolve("sample/build.gradle.kts").toFile()
 
         // language=gradle.kts
-        settingsFile.writeText("""
-        | rootProject.name = "test-project"
-        | include("sample")
-        """.trimMargin())
+        settingsFile.writeText(
+            """
+            | rootProject.name = "test-project"
+            | include("sample")
+            """.trimMargin()
+        )
 
         // language=gradle.kts
-        rootBuildFile.writeText("""
-        | plugins {
-        |   id("com.nisecoder.gradle.atcoder")
-        | }     
-        """.trimMargin())
+        rootBuildFile.writeText(
+            """
+            | plugins {
+            |   id("com.nisecoder.gradle.atcoder")
+            | }     
+            """.trimMargin()
+        )
 
         // language=gradle.kts
-        buildFile.writeText("""
-        | plugins {
-        |   id("com.nisecoder.gradle.atcoder.contest")
-        | }
-        """.trimMargin())
+        buildFile.writeText(
+            """
+            | plugins {
+            |   id("com.nisecoder.gradle.atcoder.contest")
+            | }
+            """.trimMargin()
+        )
 
         val runner = GradleRunner.create()
             .forwardOutput()

@@ -15,16 +15,20 @@ internal class AtCoderPluginFunctionalTest {
         val buildFIle: File = tempDir.resolve("build.gradle.kts").toFile()
 
         // language=gradle.kts
-        settingsFile.writeText("""
-        | rootProject.name = "test-project"
-        """.trimMargin())
+        settingsFile.writeText(
+            """
+            | rootProject.name = "test-project"
+            """.trimMargin()
+        )
 
         // language=gradle.kts
-        buildFIle.writeText("""
-        | plugins {
-        |   id("com.nisecoder.gradle.atcoder")
-        | }
-        """.trimMargin())
+        buildFIle.writeText(
+            """
+            | plugins {
+            |   id("com.nisecoder.gradle.atcoder")
+            | }
+            """.trimMargin()
+        )
 
         val runner = GradleRunner.create()
             .forwardOutput()
@@ -36,5 +40,4 @@ internal class AtCoderPluginFunctionalTest {
 
         assertEquals(TaskOutcome.SUCCESS, buildResult.task(":help")?.outcome)
     }
-
 }

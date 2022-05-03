@@ -5,6 +5,7 @@ plugins {
     idea
     id("org.asciidoctor.jvm.convert") version "3.3.2"
     id("com.gradle.plugin-publish") version "0.21.0"
+    id("org.jlleitschuh.gradle.ktlint") version "10.2.1"
 }
 
 repositories {
@@ -21,10 +22,9 @@ version = if (publishVersion?.isNotEmpty() == true) {
     "1.0-SNAPSHOT"
 }
 
-
 dependencies {
     // https://docs.gradle.org/current/userguide/compatibility.html#kotlin
-    implementation(platform("org.jetbrains.kotlin:kotlin-bom:${embeddedKotlinVersion}"))
+    implementation(platform("org.jetbrains.kotlin:kotlin-bom:$embeddedKotlinVersion"))
     implementation("org.jetbrains.kotlin:kotlin-gradle-plugin")
 
     // https://github.com/skrapeit/skrape.it
@@ -49,8 +49,6 @@ tasks.test {
     useJUnitPlatform()
 }
 
-
-
 gradlePlugin {
     plugins {
         create("AtCoderPlugin") {
@@ -71,7 +69,6 @@ gradlePlugin {
         }
     }
 }
-
 
 java {
     toolchain {

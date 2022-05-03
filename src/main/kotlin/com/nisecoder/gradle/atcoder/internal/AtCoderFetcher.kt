@@ -13,7 +13,7 @@ class AtCoderFetcher(private val session: String) {
     fun fetchTaskList(contestName: String): ContestTaskList {
         return skrape(HttpFetcher) {
             request {
-                url = "${AtCoderSite.baseUrl}/contests/${contestName}/tasks"
+                url = "${AtCoderSite.baseUrl}/contests/$contestName/tasks"
                 headers = mapOf(
                     "Accept-Language" to "ja",
                     "Cookie" to session.cookieValue()
@@ -25,19 +25,26 @@ class AtCoderFetcher(private val session: String) {
                     throw AtCoderUnauthorizedException("not login")
                 }
                 htmlDocument {
-                    it.tasks = tbody { tr { findAll {
-                        map { it.td {
-                            ContestTask(
-                                taskId = findByIndex(0) { text },
-                                taskName = findByIndex(1) { text },
-                                timeLimit = findByIndex(2) { text },
-                                memoryLimit = findByIndex(3) { text },
-                                taskScreenName = findByIndex(4) {
-                                    eachHref.first().split("taskScreenName=")[1]
-                                },
-                                taskUrl = findByIndex(0) { AtCoderSite.baseUrl + eachHref.first() }
-                            ) } }
-                    } } }
+                    it.tasks = tbody {
+                        tr {
+                            findAll {
+                                map {
+                                    it.td {
+                                        ContestTask(
+                                            taskId = findByIndex(0) { text },
+                                            taskName = findByIndex(1) { text },
+                                            timeLimit = findByIndex(2) { text },
+                                            memoryLimit = findByIndex(3) { text },
+                                            taskScreenName = findByIndex(4) {
+                                                eachHref.first().split("taskScreenName=")[1]
+                                            },
+                                            taskUrl = findByIndex(0) { AtCoderSite.baseUrl + eachHref.first() }
+                                        )
+                                    }
+                                }
+                            }
+                        }
+                    }
                 }
             }
         }
