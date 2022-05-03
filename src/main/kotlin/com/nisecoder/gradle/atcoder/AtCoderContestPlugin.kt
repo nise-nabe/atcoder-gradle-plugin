@@ -1,6 +1,7 @@
 package com.nisecoder.gradle.atcoder
 
 import com.nisecoder.gradle.atcoder.task.AtCoderFetchTaskListTask
+import com.nisecoder.gradle.atcoder.task.AtCoderSessionTask
 import com.nisecoder.gradle.atcoder.task.AtCoderSubmitTask
 import com.nisecoder.gradle.atcoder.task.AtCoderTaskListTask
 import org.gradle.api.NamedDomainObjectList
@@ -31,11 +32,14 @@ class AtCoderContestPlugin: Plugin<Project> {
             configureAtCoderService(this)
         }
 
+        tasks.withType<AtCoderSessionTask>().configureEach {
+            atcoderService.set(service)
+        }
+
         val fetchTaskListTask = tasks.register<AtCoderFetchTaskListTask>("atcoderFetchTaskList") {
             description = "Fetches task list for '${atcoder.contestName.get()}'"
 
             contestName.set(atcoder.contestName)
-            atCoderService.set(service)
 
             taskListFile.set(buildDir.resolve("atcoder").resolve("tasks.tsv"))
         }
@@ -63,7 +67,6 @@ class AtCoderContestPlugin: Plugin<Project> {
                 taskId.set(contestTaskName)
                 submitLanguage.set(language)
                 taskListFile.set(fetchTaskListTask.flatMap { it.taskListFile })
-                atCoderService.set(service)
             }
         }
 

@@ -10,13 +10,10 @@ import org.gradle.api.tasks.OutputDirectory
 import org.gradle.api.tasks.TaskAction
 import org.gradle.api.tasks.options.Option
 
-abstract class AtCoderNewContestTask: AtCoderTask() {
+abstract class AtCoderNewContestTask: AtCoderSessionTask() {
     @get:Input
     @set:Option(option = "contest", description = "contest name")
     abstract var contestName: String
-
-    @get:Internal
-    abstract val atcoderService: Property<AtCoderBuildService>
 
     @get:OutputDirectory
     abstract val outputDir: DirectoryProperty
