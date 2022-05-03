@@ -35,6 +35,10 @@ abstract class AtCoderSubmitTask : AtCoderSessionTask() {
     @get:InputFile
     abstract val taskListFile: RegularFileProperty
 
+    /** sourceCode fileName to submit */
+    @get:Input
+    abstract val sourceCode: Property<String>
+
     @TaskAction
     fun submit() {
         val session = atcoderService.get().login()
@@ -45,7 +49,7 @@ abstract class AtCoderSubmitTask : AtCoderSessionTask() {
 
         val sourceSets: SourceSetContainer = project.extensions.getByType(SourceSetContainer::class.java)
 
-        val submitFile = sourceSets.getAt(task.taskId).allSource.find { it.name == "main.kt" }
+        val submitFile = sourceSets.getAt(task.taskId).allSource.find { it.name == fileName.get() }
             ?: throw AtCoderException("cannot find file for submit")
 
         val sourceCode = submitFile.readText()
