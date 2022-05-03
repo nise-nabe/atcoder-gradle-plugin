@@ -71,7 +71,7 @@ class AtCoderContestPlugin : Plugin<Project> {
                 taskId.set(contestTaskName)
                 submitLanguage.set(language)
                 taskListFile.set(fetchTaskListTask.flatMap { it.taskListFile })
-                sourceCodeFile.set("main.kt")
+                sourceCode.set("main.kt")
             }
         }
 
