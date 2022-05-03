@@ -33,8 +33,8 @@ import org.gradle.kotlin.dsl.credentials
 import javax.inject.Inject
 
 @Suppress("UnstableApiUsage")
-abstract class AtCoderBuildService: BuildService<AtCoderBuildService.Params> {
-    interface Params: BuildServiceParameters {
+abstract class AtCoderBuildService : BuildService<AtCoderBuildService.Params> {
+    interface Params : BuildServiceParameters {
         val persistence: Property<Boolean>
         val sessionFile: RegularFileProperty
     }

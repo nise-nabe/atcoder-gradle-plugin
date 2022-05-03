@@ -1,6 +1,5 @@
 package com.nisecoder.gradle.atcoder.task
 
-import com.nisecoder.gradle.atcoder.AtCoderBuildService
 import com.nisecoder.gradle.atcoder.internal.AtCoderException
 import com.nisecoder.gradle.atcoder.internal.AtCoderLanguage
 import com.nisecoder.gradle.atcoder.internal.AtCoderNoSuchTaskException
@@ -8,7 +7,6 @@ import com.nisecoder.gradle.atcoder.internal.AtCoderSite
 import com.nisecoder.gradle.atcoder.internal.ContestTask
 import com.nisecoder.gradle.atcoder.internal.cookieValue
 import com.nisecoder.gradle.atcoder.internal.csrfToken
-import com.nisecoder.gradle.atcoder.internal.readFirstLine
 import io.ktor.client.HttpClient
 import io.ktor.client.engine.cio.CIO
 import io.ktor.client.request.forms.submitForm
@@ -21,11 +19,10 @@ import org.gradle.api.file.RegularFileProperty
 import org.gradle.api.provider.Property
 import org.gradle.api.tasks.Input
 import org.gradle.api.tasks.InputFile
-import org.gradle.api.tasks.Internal
 import org.gradle.api.tasks.SourceSetContainer
 import org.gradle.api.tasks.TaskAction
 
-abstract class AtCoderSubmitTask: AtCoderSessionTask() {
+abstract class AtCoderSubmitTask : AtCoderSessionTask() {
     @get:Input
     abstract val contestName: Property<String>
 

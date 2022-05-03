@@ -11,9 +11,8 @@ import org.gradle.kotlin.dsl.register
 import org.gradle.kotlin.dsl.registerIfAbsent
 import org.gradle.kotlin.dsl.withType
 
-
 @Suppress("UnstableApiUsage")
-class AtCoderPlugin: Plugin<Project> {
+class AtCoderPlugin : Plugin<Project> {
     override fun apply(project: Project): Unit = project.run {
         val service = gradle.sharedServices.registerIfAbsent("atcoder", AtCoderBuildService::class) {
             configureAtCoderService(this)

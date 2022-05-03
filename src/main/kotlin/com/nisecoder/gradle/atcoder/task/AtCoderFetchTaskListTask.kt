@@ -7,7 +7,7 @@ import org.gradle.api.tasks.Input
 import org.gradle.api.tasks.OutputFile
 import org.gradle.api.tasks.TaskAction
 
-abstract class AtCoderFetchTaskListTask: AtCoderSessionTask() {
+abstract class AtCoderFetchTaskListTask : AtCoderSessionTask() {
     @get:Input
     abstract val contestName: Property<String>
 

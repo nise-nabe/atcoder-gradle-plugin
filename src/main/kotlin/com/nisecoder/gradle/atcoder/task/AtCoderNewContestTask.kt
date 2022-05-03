@@ -1,16 +1,13 @@
 package com.nisecoder.gradle.atcoder.task
 
-import com.nisecoder.gradle.atcoder.AtCoderBuildService
 import com.nisecoder.gradle.atcoder.internal.AtCoderFetcher
 import org.gradle.api.file.DirectoryProperty
-import org.gradle.api.provider.Property
 import org.gradle.api.tasks.Input
-import org.gradle.api.tasks.Internal
 import org.gradle.api.tasks.OutputDirectory
 import org.gradle.api.tasks.TaskAction
 import org.gradle.api.tasks.options.Option
 
-abstract class AtCoderNewContestTask: AtCoderSessionTask() {
+abstract class AtCoderNewContestTask : AtCoderSessionTask() {
     @get:Input
     @set:Option(option = "contest", description = "contest name")
     abstract var contestName: String
@@ -39,8 +36,6 @@ abstract class AtCoderNewContestTask: AtCoderSessionTask() {
             }
         }
 
-
-
         problems.forEach { problemName ->
             val problemDir = contestDir.resolve("src/$problemName/kotlin")
             if (!problemDir.exists()) problemDir.mkdirs()
@@ -49,11 +44,11 @@ abstract class AtCoderNewContestTask: AtCoderSessionTask() {
                 if (!mainFile.exists()) {
                     // language=kotlin
                     mainFile.writeText(
-                    """
+                        """
                         fun main() {
                         
                         }
-                    """.trimIndent()
+                        """.trimIndent()
                     )
                 }
             }

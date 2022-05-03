@@ -7,7 +7,7 @@ import io.ktor.http.renderCookieHeader
 import org.gradle.api.file.RegularFile
 
 fun String.csrfToken(): String {
-   return split("%00")
+    return split("%00")
         .first { it.startsWith("csrf_token") }
         .decodeURLQueryComponent()
         .split(":")[1]

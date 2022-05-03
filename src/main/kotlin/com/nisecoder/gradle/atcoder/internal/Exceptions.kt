@@ -8,9 +8,9 @@ open class AtCoderException(
 class AtCoderUnauthorizedException(
     override val message: String? = null,
     override val cause: Throwable? = null
-): AtCoderException()
+) : AtCoderException()
 
 class AtCoderNoSuchTaskException(
     override val message: String? = null,
     override val cause: Throwable? = null
-): AtCoderException()
+) : AtCoderException()

@@ -1,6 +1,5 @@
 package com.nisecoder.gradle.atcoder.internal
 
-
 class ContestTaskList {
     lateinit var tasks: List<ContestTask>
 
@@ -23,7 +22,7 @@ data class ContestTask(
             memoryLimit,
             taskScreenName,
             taskUrl,
-        ).joinToString( "\t")
+        ).joinToString("\t")
     }
 
     companion object {

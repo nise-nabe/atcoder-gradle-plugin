@@ -5,7 +5,7 @@ import org.gradle.api.file.RegularFileProperty
 import org.gradle.api.tasks.InputFile
 import org.gradle.api.tasks.TaskAction
 
-abstract class AtCoderTaskListTask: AtCoderTask() {
+abstract class AtCoderTaskListTask : AtCoderTask() {
     @get:InputFile
     abstract val taskListFile: RegularFileProperty
 
