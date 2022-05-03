@@ -16,7 +16,7 @@ jobs:
       - name: Set up Java for Publishing
         uses: actions/setup-java@v3
         with:
-          distribution: 'adopt'
+          distribution: 'temurin'
           java-version: 11
 
       - name: Generate Document
