@@ -49,7 +49,7 @@ abstract class AtCoderSubmitTask : AtCoderSessionTask() {
 
         val sourceSets: SourceSetContainer = project.extensions.getByType(SourceSetContainer::class.java)
 
-        val submitFile = sourceSets.getAt(task.taskId).allSource.find { it.name == fileName.get() }
+        val submitFile = sourceSets.getAt(task.taskId).allSource.find { it.name == sourceCode.get() }
             ?: throw AtCoderException("cannot find file for submit")
 
         val sourceCode = submitFile.readText()
