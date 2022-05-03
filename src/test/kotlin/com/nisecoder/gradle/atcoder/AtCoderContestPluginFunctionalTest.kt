@@ -22,27 +22,27 @@ internal class AtCoderContestPluginFunctionalTest {
         // language=gradle.kts
         settingsFile.writeText(
             """
-        | rootProject.name = "test-project"
-        | include("sample")
-        """.trimMargin()
+            | rootProject.name = "test-project"
+            | include("sample")
+            """.trimMargin()
         )
 
         // language=gradle.kts
         rootBuildFile.writeText(
             """
-        | plugins {
-        |   id("com.nisecoder.gradle.atcoder")
-        | }     
-        """.trimMargin()
+            | plugins {
+            |   id("com.nisecoder.gradle.atcoder")
+            | }     
+            """.trimMargin()
         )
 
         // language=gradle.kts
         buildFile.writeText(
             """
-        | plugins {
-        |   id("com.nisecoder.gradle.atcoder.contest")
-        | }
-        """.trimMargin()
+            | plugins {
+            |   id("com.nisecoder.gradle.atcoder.contest")
+            | }
+            """.trimMargin()
         )
 
         val runner = GradleRunner.create()
