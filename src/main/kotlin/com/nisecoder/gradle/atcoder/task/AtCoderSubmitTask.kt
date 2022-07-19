@@ -11,7 +11,6 @@ import io.ktor.client.HttpClient
 import io.ktor.client.engine.cio.CIO
 import io.ktor.client.request.forms.submitForm
 import io.ktor.client.request.header
-import io.ktor.client.statement.HttpResponse
 import io.ktor.http.HttpHeaders
 import io.ktor.http.Parameters
 import kotlinx.coroutines.runBlocking
@@ -59,7 +58,7 @@ abstract class AtCoderSubmitTask : AtCoderSessionTask() {
                 expectSuccess = false
                 followRedirects = false
             }
-            client.submitForm<HttpResponse>(
+            client.submitForm(
                 url = "${AtCoderSite.contest}/${contestName.get()}/submit",
                 formParameters = Parameters.build {
                     append("data.TaskScreenName", task.taskScreenName)
