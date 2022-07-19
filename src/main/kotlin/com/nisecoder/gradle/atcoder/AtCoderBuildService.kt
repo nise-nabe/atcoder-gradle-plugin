@@ -11,7 +11,7 @@ import io.ktor.client.engine.cio.CIO
 import io.ktor.client.request.forms.submitForm
 import io.ktor.client.request.header
 import io.ktor.client.statement.HttpResponse
-import io.ktor.client.statement.readText
+import io.ktor.client.statement.bodyAsText
 import io.ktor.http.HttpHeaders
 import io.ktor.http.HttpStatusCode.Companion.Forbidden
 import io.ktor.http.HttpStatusCode.Companion.Found
@@ -120,7 +120,7 @@ abstract class AtCoderBuildService : BuildService<AtCoderBuildService.Params> {
             }
             when (response.status) {
                 OK, Found -> return@runBlocking response.setCookie().first { it.name == AtCoderSite.sessionName }.value
-                Forbidden -> throw AtCoderUnauthorizedException(response.readText())
+                Forbidden -> throw AtCoderUnauthorizedException(response.bodyAsText())
                 else -> throw AtCoderException(response.status.toString())
             }
         }

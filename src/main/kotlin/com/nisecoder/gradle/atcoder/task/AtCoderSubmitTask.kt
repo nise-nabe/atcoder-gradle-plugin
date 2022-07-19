@@ -59,7 +59,7 @@ abstract class AtCoderSubmitTask : AtCoderSessionTask() {
                 expectSuccess = false
                 followRedirects = false
             }
-            client.submitForm<HttpResponse>(
+            client.submitForm(
                 url = "${AtCoderSite.contest}/${contestName.get()}/submit",
                 formParameters = Parameters.build {
                     append("data.TaskScreenName", task.taskScreenName)
