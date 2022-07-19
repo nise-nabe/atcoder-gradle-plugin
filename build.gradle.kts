@@ -53,18 +53,22 @@ gradlePlugin {
     plugins {
         create("AtCoderPlugin") {
             id = "com.nisecoder.gradle.atcoder"
+            displayName = "AtCoder Gradle plugin"
             implementationClass = "com.nisecoder.gradle.AtCoderPlugin"
         }
         create("AtCoderContestPlugin") {
             id = "com.nisecoder.gradle.atcoder.contest"
+            displayName = "Base Convention plugin for AtCoder Gradle plugin"
             implementationClass = "com.nisecoder.gradle.atcoder.AtCoderContestPlugin"
         }
         create("AtCoderContestKotlinPlugin") {
             id = "com.nisecoder.gradle.atcoder.contest.kotlin"
+            displayName = "Kotlin Language Convention plugin for AtCoder Gradle plugin"
             implementationClass = "com.nisecoder.gradle.atcoder.language.AtCoderContestKotlinPlugin"
         }
         create("AtCoderSettingsPlugin") {
             id = "com.nisecoder.gradle.atcoder.auto-detect"
+            displayName = "Settings Convention plugins for AtCoder Gradle plugin"
             implementationClass = "com.nisecoder.gradle.atcoder.AtCoderSettingsPlugin"
         }
     }
@@ -93,21 +97,6 @@ pluginBundle {
     tags = listOf("atcoder")
 
     description = "AtCoder tool for Gradle"
-
-    (plugins) {
-        "AtCoderPlugin" {
-            displayName = "AtCoder Gradle plugin"
-        }
-        "AtCoderContestPlugin" {
-            displayName = "Base Convention plugin for AtCoder Gradle plugin"
-        }
-        "AtCoderContestKotlinPlugin" {
-            displayName = "Kotlin Language Convention plugin for AtCoder Gradle plugin"
-        }
-        "AtCoderSettingsPlugin" {
-            displayName = "Settings Convention plugins for AtCoder Gradle plugin"
-        }
-    }
 }
 
 tasks.asciidoctor {
