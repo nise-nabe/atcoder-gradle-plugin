@@ -3,9 +3,9 @@ plugins {
     `kotlin-dsl-base`
     `maven-publish`
     idea
-    id("org.asciidoctor.jvm.convert") version "3.3.2"
-    id("com.gradle.plugin-publish") version "1.0.0"
-    id("org.jlleitschuh.gradle.ktlint") version "10.3.0"
+    id("org.asciidoctor.jvm.convert")
+    id("com.gradle.plugin-publish")
+    id("org.jlleitschuh.gradle.ktlint")
 }
 
 repositories {
