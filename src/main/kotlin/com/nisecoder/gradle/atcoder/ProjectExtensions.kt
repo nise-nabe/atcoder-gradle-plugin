@@ -5,7 +5,7 @@ import org.gradle.api.services.BuildServiceSpec
 
 fun Project.configureAtCoderService(spec: BuildServiceSpec<AtCoderBuildService.Params>) {
     spec.parameters {
-        sessionFile.set(rootProject.buildDir.resolve("atcoder/session.txt"))
+        sessionFile.set(rootProject.layout.buildDirectory.file("atcoder/session.txt"))
         persistence.set(true)
     }
 }
