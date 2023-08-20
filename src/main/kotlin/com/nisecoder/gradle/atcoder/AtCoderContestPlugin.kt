@@ -14,7 +14,6 @@ import org.gradle.api.plugins.jvm.JvmTestSuite
 import org.gradle.api.tasks.SourceSet
 import org.gradle.api.tasks.SourceSetContainer
 import org.gradle.jvm.toolchain.JavaLanguageVersion
-import org.gradle.jvm.toolchain.JavaToolchainSpec
 import org.gradle.kotlin.dsl.configure
 import org.gradle.kotlin.dsl.create
 import org.gradle.kotlin.dsl.getByType
@@ -134,7 +133,7 @@ class AtCoderContestPlugin : Plugin<Project> {
     private fun Project.configureForKotlinJvmPlugin() {
         configure<KotlinJvmProjectExtension> {
             jvmToolchain {
-                (this as JavaToolchainSpec).languageVersion.set(JavaLanguageVersion.of(11))
+                languageVersion.set(JavaLanguageVersion.of(11))
             }
         }
 
