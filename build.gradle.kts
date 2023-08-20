@@ -50,26 +50,34 @@ tasks.test {
 }
 
 gradlePlugin {
+    website.set("https://nise-nabe.github.io/atcoder-gradle-plugin/")
+    vcsUrl.set("https://github.com/nise-nabe/atcoder-gradle-plugin")
+
+    description = "AtCoder tool for Gradle"
     plugins {
         create("AtCoderPlugin") {
             id = "com.nisecoder.gradle.atcoder"
             displayName = "AtCoder Gradle plugin"
             implementationClass = "com.nisecoder.gradle.AtCoderPlugin"
+            tags.set(listOf("atcoder"))
         }
         create("AtCoderContestPlugin") {
             id = "com.nisecoder.gradle.atcoder.contest"
             displayName = "Base Convention plugin for AtCoder Gradle plugin"
             implementationClass = "com.nisecoder.gradle.atcoder.AtCoderContestPlugin"
+            tags.set(listOf("atcoder"))
         }
         create("AtCoderContestKotlinPlugin") {
             id = "com.nisecoder.gradle.atcoder.contest.kotlin"
             displayName = "Kotlin Language Convention plugin for AtCoder Gradle plugin"
             implementationClass = "com.nisecoder.gradle.atcoder.language.AtCoderContestKotlinPlugin"
+            tags.set(listOf("atcoder"))
         }
         create("AtCoderSettingsPlugin") {
             id = "com.nisecoder.gradle.atcoder.auto-detect"
             displayName = "Settings Convention plugins for AtCoder Gradle plugin"
             implementationClass = "com.nisecoder.gradle.atcoder.AtCoderSettingsPlugin"
+            tags.set(listOf("atcoder"))
         }
     }
 }
@@ -89,14 +97,6 @@ publishing {
             credentials(PasswordCredentials::class)
         }
     }
-}
-
-pluginBundle {
-    website = "https://nise-nabe.github.io/atcoder-gradle-plugin/"
-    vcsUrl = "https://github.com/nise-nabe/atcoder-gradle-plugin"
-    tags = listOf("atcoder")
-
-    description = "AtCoder tool for Gradle"
 }
 
 tasks.asciidoctor {
