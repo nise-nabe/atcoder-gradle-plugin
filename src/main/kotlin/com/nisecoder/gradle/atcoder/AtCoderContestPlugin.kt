@@ -112,9 +112,9 @@ class AtCoderContestPlugin : Plugin<Project> {
                         useJUnitJupiter()
 
                         dependencies {
-                            implementation(project)
-                            implementation(mainSourceSet.output)
-                            implementation("org.jetbrains.kotlin:kotlin-test-junit5")
+                            implementation.add(project())
+                            implementation.add(mainSourceSet.output)
+                            implementation.add("org.jetbrains.kotlin:kotlin-test-junit5")
                         }
 
                         targets.all {
