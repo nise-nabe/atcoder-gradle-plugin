@@ -44,7 +44,7 @@ class AtCoderContestPlugin : Plugin<Project> {
 
             contestName.set(atcoder.contestName)
 
-            taskListFile.set(buildDir.resolve("atcoder").resolve("tasks.tsv"))
+            taskListFile.set(layout.buildDirectory.file("atcoder/tasks.tsv"))
         }
 
         tasks.register<AtCoderTaskListTask>("atcoderTaskList") {
