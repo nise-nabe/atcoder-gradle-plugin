@@ -14,6 +14,7 @@ import org.gradle.api.plugins.jvm.JvmTestSuite
 import org.gradle.api.tasks.SourceSet
 import org.gradle.api.tasks.SourceSetContainer
 import org.gradle.jvm.toolchain.JavaLanguageVersion
+import org.gradle.jvm.toolchain.JvmVendorSpec
 import org.gradle.kotlin.dsl.configure
 import org.gradle.kotlin.dsl.create
 import org.gradle.kotlin.dsl.getByType
@@ -89,6 +90,7 @@ class AtCoderContestPlugin : Plugin<Project> {
         extensions.getByType<JavaPluginExtension>().apply {
             // atcoder use openjdk 17
             toolchain.languageVersion.convention(JavaLanguageVersion.of(17))
+            toolchain.vendor.convention(JvmVendorSpec.ADOPTIUM)
         }
 
         val sourceSets = extensions.getByType<SourceSetContainer>()
