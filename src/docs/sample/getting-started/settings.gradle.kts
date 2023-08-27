@@ -18,6 +18,7 @@ pluginManagement {
 
 plugins {
     id("com.nisecoder.gradle.atcoder.auto-include")
+    id("org.gradle.toolchains.foojay-resolver-convention") version "0.7.0"
 }
 
 
