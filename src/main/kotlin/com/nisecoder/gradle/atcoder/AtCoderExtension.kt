@@ -10,7 +10,7 @@ interface AtCoderExtension {
 }
 
 class AtCoderContestTaskObject(
-    var name: String,
+    var name: String
 ) {
     var language: AtCoderLanguage = AtCoderLanguage.Kotlin
 }
