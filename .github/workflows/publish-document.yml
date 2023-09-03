@@ -28,8 +28,10 @@ jobs:
         env:
           ORG_GRADLE_PROJECT_publishVersion: ${{ github.ref }}
 
-      - name: Publish Document to Github Pages
-        uses: JamesIves/github-pages-deploy-action@v4.4.3
+      - name: Upload Document Artifact
+        uses: actions/upload-pages-artifact@v2.0.0
         with:
-          branch: gh-pages
-          folder: build/docs/asciidoc
+          path: build/docs/asciidoc
+
+      - name: Deploy Document
+        uses: actions/deploy-pages@2.0.4
