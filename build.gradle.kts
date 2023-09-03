@@ -73,12 +73,6 @@ gradlePlugin {
             implementationClass = "com.nisecoder.gradle.atcoder.language.AtCoderContestKotlinPlugin"
             tags.set(listOf("atcoder"))
         }
-        create("AtCoderSettingsPlugin") {
-            id = "com.nisecoder.gradle.atcoder.auto-detect"
-            displayName = "Settings Convention plugins for AtCoder Gradle plugin"
-            implementationClass = "com.nisecoder.gradle.atcoder.AtCoderSettingsPlugin"
-            tags.set(listOf("atcoder"))
-        }
     }
 }
 
