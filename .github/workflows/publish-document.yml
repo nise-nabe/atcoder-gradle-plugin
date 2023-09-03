@@ -11,16 +11,16 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-      - uses: actions/checkout@v3
+      - uses: actions/checkout@v3.6.0
 
       - name: Set up Java for Publishing
-        uses: actions/setup-java@v3
+        uses: actions/setup-java@v3.12.0
         with:
           distribution: 'temurin'
           java-version: 17
 
       - name: Generate Document
-        uses: gradle/gradle-build-action@v2
+        uses: gradle/gradle-build-action@v2.8.0
         with:
           arguments: asciidoctor
           wrapper-cache-enabled: true
