@@ -113,15 +113,3 @@ plugins {
     id("com.nisecoder.gradle.atcoder.contest.kotlin")
 }
 ----
-
-==== auto-include
-
-Setting plugin to add generated contest project automatically.
-
-.settings.gradle.kts
-[source, kotlin]
-----
-plugins {
-    id("com.nisecoder.gradle.atcoder.auto-include")
-}
-----
