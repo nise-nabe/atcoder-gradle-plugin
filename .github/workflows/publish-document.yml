@@ -23,8 +23,6 @@ jobs:
         uses: gradle/gradle-build-action@v2.8.0
         with:
           arguments: asciidoctor
-          wrapper-cache-enabled: true
-          dependencies-cache-enabled: true
         env:
           ORG_GRADLE_PROJECT_publishVersion: ${{ github.ref }}
 
