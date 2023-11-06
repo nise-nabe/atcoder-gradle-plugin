@@ -41,7 +41,7 @@ dependencies {
     testImplementation(kotlin("test-junit5"))
 
     // https://github.com/junit-team/junit5
-    testImplementation(platform("org.junit:junit-bom:5.10.0"))
+    testImplementation(platform("org.junit:junit-bom:5.10.1"))
     testImplementation("org.junit.jupiter:junit-jupiter")
 }
 
