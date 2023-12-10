@@ -42,31 +42,35 @@ abstract class AtCoderSubmitTask : AtCoderSessionTask() {
     fun submit() {
         val session = atcoderService.get().login()
 
-        val task = taskListFile.get().asFile.readLines().map(ContestTask::fromTsvRow)
-            .firstOrNull { it.taskId == taskId.get() }
-            ?: throw AtCoderNoSuchTaskException("taskId=${taskId.get()} is not found")
+        val task =
+            taskListFile.get().asFile.readLines().map(ContestTask::fromTsvRow)
+                .firstOrNull { it.taskId == taskId.get() }
+                ?: throw AtCoderNoSuchTaskException("taskId=${taskId.get()} is not found")
 
         val sourceSets: SourceSetContainer = project.extensions.getByType(SourceSetContainer::class.java)
 
-        val submitFile = sourceSets.getAt(task.taskId).allSource.find { it.name == sourceCode.get() }
-            ?: throw AtCoderException("cannot find file for submit")
+        val submitFile =
+            sourceSets.getAt(task.taskId).allSource.find { it.name == sourceCode.get() }
+                ?: throw AtCoderException("cannot find file for submit")
 
         val sourceCode = submitFile.readText()
 
         runBlocking {
-            val client = HttpClient(CIO) {
-                expectSuccess = false
-                followRedirects = false
-            }
+            val client =
+                HttpClient(CIO) {
+                    expectSuccess = false
+                    followRedirects = false
+                }
             client.submitForm(
-                url = "${AtCoderSite.contest}/${contestName.get()}/submit",
-                formParameters = Parameters.build {
-                    append("data.TaskScreenName", task.taskScreenName)
-                    append("data.LanguageId", submitLanguage.get().code)
-                    append("sourceCode", sourceCode)
-                    append("csrf_token", session.csrfToken())
-                },
-                encodeInQuery = false
+                url = "${AtCoderSite.CONTEST}/${contestName.get()}/submit",
+                formParameters =
+                    Parameters.build {
+                        append("data.TaskScreenName", task.taskScreenName)
+                        append("data.LanguageId", submitLanguage.get().code)
+                        append("sourceCode", sourceCode)
+                        append("csrf_token", session.csrfToken())
+                    },
+                encodeInQuery = false,
             ) {
                 header(HttpHeaders.AcceptLanguage, "ja")
                 header(HttpHeaders.Cookie, session.cookieValue())

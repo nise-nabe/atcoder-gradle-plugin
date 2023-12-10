@@ -10,7 +10,9 @@ import kotlin.test.assertEquals
 
 internal class AtCoderContestPluginFunctionalTest {
     @Test
-    fun apply(@TempDir tempDir: Path) {
+    fun apply(
+        @TempDir tempDir: Path,
+    ) {
         val settingsFile: File = tempDir.resolve("settings.gradle.kts").toFile()
         // create root-project directory
         val rootBuildFile: File = tempDir.resolve("build.gradle.kts").toFile()
@@ -24,7 +26,7 @@ internal class AtCoderContestPluginFunctionalTest {
             """
             | rootProject.name = "test-project"
             | include("sample")
-            """.trimMargin()
+            """.trimMargin(),
         )
 
         // language=gradle.kts
@@ -33,7 +35,7 @@ internal class AtCoderContestPluginFunctionalTest {
             | plugins {
             |   id("com.nisecoder.gradle.atcoder")
             | }     
-            """.trimMargin()
+            """.trimMargin(),
         )
 
         // language=gradle.kts
@@ -42,14 +44,15 @@ internal class AtCoderContestPluginFunctionalTest {
             | plugins {
             |   id("com.nisecoder.gradle.atcoder.contest")
             | }
-            """.trimMargin()
+            """.trimMargin(),
         )
 
-        val runner = GradleRunner.create()
-            .forwardOutput()
-            .withPluginClasspath()
-            .withArguments("help")
-            .withProjectDir(tempDir.toFile())
+        val runner =
+            GradleRunner.create()
+                .forwardOutput()
+                .withPluginClasspath()
+                .withArguments("help")
+                .withProjectDir(tempDir.toFile())
 
         val buildResult = runner.build()
 

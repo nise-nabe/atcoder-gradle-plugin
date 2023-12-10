@@ -2,13 +2,13 @@ package com.nisecoder.gradle.atcoder.internal
 
 @Suppress("MemberVisibilityCanBePrivate")
 object AtCoderSite {
-    const val domain = "atcoder.jp"
+    const val DOMAIN = "atcoder.jp"
 
-    const val baseUrl = "https://$domain"
+    const val BASE_URL = "https://$DOMAIN"
 
-    const val home = baseUrl
-    const val login = "$baseUrl/login"
-    const val contest = "$baseUrl/contests"
+    const val HOME = BASE_URL
+    const val LOGIN = "$BASE_URL/login"
+    const val CONTEST = "$BASE_URL/contests"
 
-    const val sessionName = "REVEL_SESSION"
+    const val SESSION_NAME = "REVEL_SESSION"
 }

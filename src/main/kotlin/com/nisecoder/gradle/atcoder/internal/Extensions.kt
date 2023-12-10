@@ -14,7 +14,7 @@ fun String.csrfToken(): String {
 }
 
 fun String.cookieValue(): String {
-    return Cookie(name = AtCoderSite.sessionName, value = this, encoding = CookieEncoding.RAW)
+    return Cookie(name = AtCoderSite.SESSION_NAME, value = this, encoding = CookieEncoding.RAW)
         .let(::renderCookieHeader)
 }
 
