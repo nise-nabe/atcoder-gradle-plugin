@@ -28,10 +28,10 @@ abstract class AtCoderNewContestTask : AtCoderSessionTask() {
                 // language=gradle.kts
                 buildscriptFile.writeText(
                     """
-                        plugins {
-                            id("com.nisecoder.gradle.atcoder.contest.kotlin")
-                        }
-                    """.trimIndent()
+                    plugins {
+                        id("com.nisecoder.gradle.atcoder.contest.kotlin")
+                    }
+                    """.trimIndent(),
                 )
             }
         }
@@ -48,7 +48,7 @@ abstract class AtCoderNewContestTask : AtCoderSessionTask() {
                         fun main() {
                         
                         }
-                        """.trimIndent()
+                        """.trimIndent(),
                     )
                 }
             }

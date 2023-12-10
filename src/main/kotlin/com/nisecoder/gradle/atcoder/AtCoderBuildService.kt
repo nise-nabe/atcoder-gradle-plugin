@@ -77,15 +77,16 @@ abstract class AtCoderBuildService : BuildService<AtCoderBuildService.Params> {
     }
 
     private fun fetchAnonymousCookie(): Cookie {
-        val session = skrape(HttpFetcher) {
-            request {
-                url = AtCoderSite.home
-            }
+        val session =
+            skrape(HttpFetcher) {
+                request {
+                    url = AtCoderSite.HOME
+                }
 
-            response {
-                cookies.first { it.name == AtCoderSite.sessionName }
+                response {
+                    cookies.first { it.name == AtCoderSite.SESSION_NAME }
+                }
             }
-        }
 
         return session
     }
@@ -99,26 +100,33 @@ abstract class AtCoderBuildService : BuildService<AtCoderBuildService.Params> {
      *
      * @throws AtCoderUnauthorizedException if the [username] or [password] is incorrect
      */
-    private fun loginInternal(session: Cookie, username: String, password: String): String {
+    private fun loginInternal(
+        session: Cookie,
+        username: String,
+        password: String,
+    ): String {
         return runBlocking {
-            val client = HttpClient(CIO) {
-                expectSuccess = false
-                followRedirects = false
-            }
-            val response: HttpResponse = client.submitForm(
-                url = AtCoderSite.login,
-                formParameters = Parameters.build {
-                    append("username", username)
-                    append("password", password)
-                    append("csrf_token", session.value.csrfToken())
-                },
-                encodeInQuery = false
-            ) {
-                header(HttpHeaders.AcceptLanguage, "ja")
-                header(HttpHeaders.Cookie, session.value.cookieValue())
-            }
+            val client =
+                HttpClient(CIO) {
+                    expectSuccess = false
+                    followRedirects = false
+                }
+            val response: HttpResponse =
+                client.submitForm(
+                    url = AtCoderSite.LOGIN,
+                    formParameters =
+                        Parameters.build {
+                            append("username", username)
+                            append("password", password)
+                            append("csrf_token", session.value.csrfToken())
+                        },
+                    encodeInQuery = false,
+                ) {
+                    header(HttpHeaders.AcceptLanguage, "ja")
+                    header(HttpHeaders.Cookie, session.value.cookieValue())
+                }
             when (response.status) {
-                OK, Found -> return@runBlocking response.setCookie().first { it.name == AtCoderSite.sessionName }.value
+                OK, Found -> return@runBlocking response.setCookie().first { it.name == AtCoderSite.SESSION_NAME }.value
                 Forbidden -> throw AtCoderUnauthorizedException(response.bodyAsText())
                 else -> throw AtCoderException(response.status.toString())
             }

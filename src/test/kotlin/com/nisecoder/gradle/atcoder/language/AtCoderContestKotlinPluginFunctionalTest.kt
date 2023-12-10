@@ -10,7 +10,9 @@ import kotlin.test.assertEquals
 
 internal class AtCoderContestKotlinPluginFunctionalTest {
     @Test
-    fun apply(@TempDir tempDir: Path) {
+    fun apply(
+        @TempDir tempDir: Path,
+    ) {
         val settingsFile: File = tempDir.resolve("settings.gradle.kts").toFile()
         // create root-project directory
         val rootBuildFile: File = tempDir.resolve("build.gradle.kts").toFile()
@@ -27,7 +29,7 @@ internal class AtCoderContestKotlinPluginFunctionalTest {
             | plugins {
             |   id("org.gradle.toolchains.foojay-resolver-convention") version "0.7.0"
             | }
-            """.trimMargin()
+            """.trimMargin(),
         )
 
         // language=gradle.kts
@@ -36,7 +38,7 @@ internal class AtCoderContestKotlinPluginFunctionalTest {
             | plugins {
             |   id("com.nisecoder.gradle.atcoder")
             | }     
-            """.trimMargin()
+            """.trimMargin(),
         )
 
         // language=gradle.kts
@@ -46,14 +48,15 @@ internal class AtCoderContestKotlinPluginFunctionalTest {
             |   id("com.nisecoder.gradle.atcoder.contest")
             |   id("com.nisecoder.gradle.atcoder.contest.kotlin")
             | }
-            """.trimMargin()
+            """.trimMargin(),
         )
 
-        val runner = GradleRunner.create()
-            .forwardOutput()
-            .withPluginClasspath()
-            .withArguments("help")
-            .withProjectDir(tempDir.toFile())
+        val runner =
+            GradleRunner.create()
+                .forwardOutput()
+                .withPluginClasspath()
+                .withArguments("help")
+                .withProjectDir(tempDir.toFile())
 
         val buildResult = runner.build()
 

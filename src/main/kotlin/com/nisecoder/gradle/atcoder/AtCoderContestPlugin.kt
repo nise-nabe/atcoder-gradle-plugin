@@ -29,62 +29,65 @@ import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
 
 @Suppress("UnstableApiUsage")
 class AtCoderContestPlugin : Plugin<Project> {
-    override fun apply(project: Project): Unit = project.run {
-        val atcoder = extensions.create<AtCoderExtension>("atcoder")
-        atcoder.contestName.convention(name)
+    override fun apply(project: Project): Unit =
+        project.run {
+            val atcoder = extensions.create<AtCoderExtension>("atcoder")
+            atcoder.contestName.convention(name)
 
-        val service = gradle.sharedServices.registerIfAbsent("atcoder", AtCoderBuildService::class) {
-            configureAtCoderService(this)
-        }
+            val service =
+                gradle.sharedServices.registerIfAbsent("atcoder", AtCoderBuildService::class) {
+                    configureAtCoderService(this)
+                }
 
-        tasks.withType<AtCoderSessionTask>().configureEach {
-            atcoderService.set(service)
-        }
+            tasks.withType<AtCoderSessionTask>().configureEach {
+                atcoderService.set(service)
+            }
 
-        val fetchTaskListTask = tasks.register<AtCoderFetchTaskListTask>("atcoderFetchTaskList") {
-            description = "Fetches task list for '${atcoder.contestName.get()}'"
+            val fetchTaskListTask =
+                tasks.register<AtCoderFetchTaskListTask>("atcoderFetchTaskList") {
+                    description = "Fetches task list for '${atcoder.contestName.get()}'"
 
-            contestName.set(atcoder.contestName)
+                    contestName.set(atcoder.contestName)
 
-            taskListFile.set(layout.buildDirectory.file("atcoder/tasks.tsv"))
-        }
+                    taskListFile.set(layout.buildDirectory.file("atcoder/tasks.tsv"))
+                }
 
-        tasks.register<AtCoderTaskListTask>("atcoderTaskList") {
-            description = "Displays task list for '${atcoder.contestName.get()}'"
+            tasks.register<AtCoderTaskListTask>("atcoderTaskList") {
+                description = "Displays task list for '${atcoder.contestName.get()}'"
 
-            taskListFile.set(fetchTaskListTask.flatMap { it.taskListFile })
-        }
-
-        // register sourceSets
-        val defaultList = mutableListOf("A", "B", "C", "D", "E", "F", "G")
-        atcoder.contestTasks.convention(defaultList)
-        val contestTasks = objects.namedDomainObjectList(AtCoderContestTaskObject::class.java)
-        afterEvaluate {
-            contestTasks.addAll(atcoder.contestTasks.get().map { AtCoderContestTaskObject(it) })
-        }
-
-        contestTasks.all {
-            val contestTaskName = name
-            tasks.register<AtCoderSubmitTask>("atcoderSubmit$contestTaskName") {
-                description = "Submits '$contestTaskName' sourceCode"
-
-                contestName.set(atcoder.contestName)
-                taskId.set(contestTaskName)
-                submitLanguage.set(language)
                 taskListFile.set(fetchTaskListTask.flatMap { it.taskListFile })
-                sourceCode.set("main.kt")
+            }
+
+            // register sourceSets
+            val defaultList = mutableListOf("A", "B", "C", "D", "E", "F", "G")
+            atcoder.contestTasks.convention(defaultList)
+            val contestTasks = objects.namedDomainObjectList(AtCoderContestTaskObject::class.java)
+            afterEvaluate {
+                contestTasks.addAll(atcoder.contestTasks.get().map { AtCoderContestTaskObject(it) })
+            }
+
+            contestTasks.all {
+                val contestTaskName = name
+                tasks.register<AtCoderSubmitTask>("atcoderSubmit$contestTaskName") {
+                    description = "Submits '$contestTaskName' sourceCode"
+
+                    contestName.set(atcoder.contestName)
+                    taskId.set(contestTaskName)
+                    submitLanguage.set(language)
+                    taskListFile.set(fetchTaskListTask.flatMap { it.taskListFile })
+                    sourceCode.set("main.kt")
+                }
+            }
+
+            // configure for each language env
+            plugins.withType<JavaPlugin> {
+                configureForJavaPlugin(contestTasks)
+            }
+
+            plugins.withType<KotlinPluginWrapper> {
+                configureForKotlinJvmPlugin()
             }
         }
-
-        // configure for each language env
-        plugins.withType<JavaPlugin> {
-            configureForJavaPlugin(contestTasks)
-        }
-
-        plugins.withType<KotlinPluginWrapper> {
-            configureForKotlinJvmPlugin()
-        }
-    }
 
     private fun Project.configureForJavaPlugin(contestTasks: NamedDomainObjectList<AtCoderContestTaskObject>) {
         extensions.getByType<JavaPluginExtension>().apply {
@@ -97,15 +100,16 @@ class AtCoderContestPlugin : Plugin<Project> {
 
         contestTasks.all {
             // copy settings from default "main" sourceSets
-            val mainSourceSet = sourceSets.create(name) {
-                val mainSourceSet = sourceSets.getByName(SourceSet.MAIN_SOURCE_SET_NAME)
-                val mainOutput = objects.fileCollection().from(mainSourceSet.output)
-                compileClasspath += mainOutput
-                runtimeClasspath += mainOutput
+            val mainSourceSet =
+                sourceSets.create(name) {
+                    val mainSourceSet = sourceSets.getByName(SourceSet.MAIN_SOURCE_SET_NAME)
+                    val mainOutput = objects.fileCollection().from(mainSourceSet.output)
+                    compileClasspath += mainOutput
+                    runtimeClasspath += mainOutput
 
-                configurations.getByName(implementationConfigurationName)
-                    .extendsFrom(configurations.getByName(mainSourceSet.implementationConfigurationName))
-            }
+                    configurations.getByName(implementationConfigurationName)
+                        .extendsFrom(configurations.getByName(mainSourceSet.implementationConfigurationName))
+                }
 
             // create contest test task for each problem
             plugins.withType<JvmTestSuitePlugin> {
