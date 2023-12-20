@@ -31,7 +31,7 @@ jobs:
           ORG_GRADLE_PROJECT_publishVersion: ${{ github.ref }}
 
       - name: Upload Document Artifact
-        uses: actions/upload-pages-artifact@v2.0.0
+        uses: actions/upload-pages-artifact@v3.0.0
         with:
           path: build/docs/asciidoc
 
