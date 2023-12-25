@@ -36,4 +36,4 @@ jobs:
           path: build/docs/asciidoc
 
       - name: Deploy Document
-        uses: actions/deploy-pages@v4.0.0
+        uses: actions/deploy-pages@v4.0.2
