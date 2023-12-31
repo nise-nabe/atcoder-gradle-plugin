@@ -3,7 +3,6 @@ plugins {
     `kotlin-dsl-base`
     `maven-publish`
     idea
-    id("org.asciidoctor.jvm.convert")
     id("com.gradle.plugin-publish")
     id("org.jlleitschuh.gradle.ktlint")
 }
@@ -92,8 +91,4 @@ publishing {
             credentials(PasswordCredentials::class)
         }
     }
-}
-
-tasks.asciidoctor {
-    baseDirFollowsSourceFile()
 }
