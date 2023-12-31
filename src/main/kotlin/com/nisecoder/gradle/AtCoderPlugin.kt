@@ -19,7 +19,7 @@ class AtCoderPlugin : Plugin<Project> {
                     configureAtCoderService(this)
                 }
 
-            tasks.withType<AtCoderSessionTask>().configureEach {
+            tasks.withType<AtCoderSessionTask> {
                 atcoderService.set(service)
             }
 
