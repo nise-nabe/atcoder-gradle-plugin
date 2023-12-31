@@ -26,7 +26,6 @@ jobs:
         with:
           arguments: build
           gradle-home-cache-cleanup: true
-          dependency-graph: generate-and-submit
 
       - name: Output Test Results to Summary
         uses: mikepenz/action-junit-report@v4.0.3
