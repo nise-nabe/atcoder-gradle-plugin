@@ -21,10 +21,10 @@ jobs:
           distribution: 'temurin'
           java-version: ${{ matrix.java-version }}
 
-      - name: Check
+      - name: Build
         uses: gradle/gradle-build-action@v2.11.1
         with:
-          arguments: check
+          arguments: build
 
       - name: Output Test Results to Summary
         uses: mikepenz/action-junit-report@v4.0.3
