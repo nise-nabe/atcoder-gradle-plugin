@@ -28,7 +28,7 @@ jobs:
           gradle-home-cache-cleanup: true
 
       - name: Output Test Results to Summary
-        uses: mikepenz/action-junit-report@v4.0.4
+        uses: mikepenz/action-junit-report@v4.1.0
         if: success() || failure()
         with:
           report_paths: '**/build/test-results/test/*.xml'
