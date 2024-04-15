@@ -22,7 +22,7 @@ jobs:
           java-version: ${{ matrix.java-version }}
 
       - name: Build
-        uses: gradle/gradle-build-action@v3.2.1
+        uses: gradle/gradle-build-action@v3.3.0
         with:
           arguments: build
           gradle-home-cache-cleanup: true
