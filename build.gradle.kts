@@ -37,16 +37,20 @@ dependencies {
     implementation("io.ktor:ktor-client-logging")
     implementation("ch.qos.logback:logback-classic")
 
-    testImplementation(gradleTestKit())
     testImplementation(kotlin("test-junit5"))
-
-    // https://github.com/junit-team/junit5
-    testImplementation(platform("org.junit:junit-bom:5.10.2"))
-    testImplementation("org.junit.jupiter:junit-jupiter")
 }
 
-tasks.test {
-    useJUnitPlatform()
+testing {
+    suites {
+        @Suppress("UnstableApiUsage")
+        withType<JvmTestSuite> {
+            useJUnitJupiter("5.10.2")
+
+            dependencies {
+                implementation(gradleTestKit())
+            }
+        }
+    }
 }
 
 gradlePlugin {
