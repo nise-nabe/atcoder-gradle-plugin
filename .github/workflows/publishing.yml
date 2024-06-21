@@ -18,7 +18,7 @@ jobs:
           java-version: 17
 
       - name: Setup Gradle
-        uses: gradle/actions/setup-gradle@v3.4.1
+        uses: gradle/actions/setup-gradle@v3.4.2
 
       - name: Publish to Github Packages
         run: ./gradlew publish
