@@ -2,7 +2,7 @@ rootProject.name = "atcoder-gradle-plugin"
 
 pluginManagement {
     plugins {
-        id("com.gradle.plugin-publish") version "1.2.1"
+        id("com.gradle.plugin-publish") version "1.2.2"
         id("org.jlleitschuh.gradle.ktlint") version "12.1.1"
     }
 
