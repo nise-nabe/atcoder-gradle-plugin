@@ -23,21 +23,18 @@ version =
     }
 
 dependencies {
-    // https://docs.gradle.org/current/userguide/compatibility.html#kotlin
-    implementation(platform("org.jetbrains.kotlin:kotlin-bom:$embeddedKotlinVersion"))
-    implementation("org.jetbrains.kotlin:kotlin-gradle-plugin")
+    implementation(platform(libs.kotlin.bom))
+    implementation(libs.kotlin.plugin)
 
-    // https://github.com/skrapeit/skrape.it
-    implementation("it.skrape:skrapeit:1.3.0-alpha.2")
+    implementation(libs.skrapeit)
 
-    // https://github.com/ktorio/ktor
-    implementation(platform("io.ktor:ktor-bom:3.0.1"))
-    implementation("io.ktor:ktor-client-core")
-    implementation("io.ktor:ktor-client-cio")
-    implementation("io.ktor:ktor-client-logging")
-    implementation("ch.qos.logback:logback-classic")
+    implementation(platform(libs.ktor.bom))
+    implementation(libs.ktor.clientCore)
+    implementation(libs.ktor.clientCio)
+    implementation(libs.ktor.clientLogging)
+    implementation(libs.logback.classic)
 
-    testImplementation(kotlin("test-junit5"))
+    testImplementation(kotlin("test-junit5", libs.versions.kotlin.get()))
 }
 
 testing {
