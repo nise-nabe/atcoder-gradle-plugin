@@ -9,9 +9,11 @@ import it.skrape.selects.html5.tbody
 import it.skrape.selects.html5.td
 import it.skrape.selects.html5.tr
 
-class AtCoderFetcher(private val session: String) {
-    fun fetchTaskList(contestName: String): ContestTaskList {
-        return skrape(HttpFetcher) {
+class AtCoderFetcher(
+    private val session: String,
+) {
+    fun fetchTaskList(contestName: String): ContestTaskList =
+        skrape(HttpFetcher) {
             request {
                 url = "${AtCoderSite.BASE_URL}/contests/$contestName/tasks"
                 headers =
@@ -51,5 +53,4 @@ class AtCoderFetcher(private val session: String) {
                 }
             }
         }
-    }
 }

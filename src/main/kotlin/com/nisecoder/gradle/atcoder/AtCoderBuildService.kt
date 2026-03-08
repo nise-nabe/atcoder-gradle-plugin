@@ -48,7 +48,12 @@ abstract class AtCoderBuildService : BuildService<AtCoderBuildService.Params> {
     val username: String? by lazy { credentials.username }
 
     private val session: String by lazy {
-        if (parameters.persistence.get() && parameters.sessionFile.get().asFile.exists()) {
+        if (parameters.persistence.get() &&
+            parameters.sessionFile
+                .get()
+                .asFile
+                .exists()
+        ) {
             parameters.sessionFile.get().readFirstLine()
         } else {
             val anonymous = fetchAnonymousCookie()
@@ -60,7 +65,9 @@ abstract class AtCoderBuildService : BuildService<AtCoderBuildService.Params> {
 
             loginInternal(anonymous, username, password).also {
                 if (parameters.persistence.get()) {
-                    parameters.sessionFile.asFile.get().writeText(it)
+                    parameters.sessionFile.asFile
+                        .get()
+                        .writeText(it)
                 }
             }
         }
@@ -72,9 +79,7 @@ abstract class AtCoderBuildService : BuildService<AtCoderBuildService.Params> {
      * @return login Session ID
      * @throws AtCoderUnauthorizedException if the credentials is incorrect
      */
-    fun login(): String {
-        return session
-    }
+    fun login(): String = session
 
     private fun fetchAnonymousCookie(): Cookie {
         val session =

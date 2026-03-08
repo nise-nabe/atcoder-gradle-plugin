@@ -6,18 +6,14 @@ import io.ktor.http.decodeURLQueryComponent
 import io.ktor.http.renderCookieHeader
 import org.gradle.api.file.RegularFile
 
-fun String.csrfToken(): String {
-    return split("%00")
+fun String.csrfToken(): String =
+    split("%00")
         .first { it.startsWith("csrf_token") }
         .decodeURLQueryComponent()
         .split(":")[1]
-}
 
-fun String.cookieValue(): String {
-    return Cookie(name = AtCoderSite.SESSION_NAME, value = this, encoding = CookieEncoding.RAW)
+fun String.cookieValue(): String =
+    Cookie(name = AtCoderSite.SESSION_NAME, value = this, encoding = CookieEncoding.RAW)
         .let(::renderCookieHeader)
-}
 
-fun RegularFile.readFirstLine(): String {
-    return asFile.readLines().first()
-}
+fun RegularFile.readFirstLine(): String = asFile.readLines().first()

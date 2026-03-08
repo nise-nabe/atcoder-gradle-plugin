@@ -48,7 +48,8 @@ internal class AtCoderContestPluginFunctionalTest {
         )
 
         val runner =
-            GradleRunner.create()
+            GradleRunner
+                .create()
                 .forwardOutput()
                 .withPluginClasspath()
                 .withArguments("help")
