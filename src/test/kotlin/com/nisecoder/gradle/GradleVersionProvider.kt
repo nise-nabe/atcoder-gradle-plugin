@@ -6,5 +6,10 @@ import org.junit.jupiter.params.provider.ArgumentsProvider
 import java.util.stream.Stream
 
 internal class GradleVersionProvider : ArgumentsProvider {
-    override fun provideArguments(context: ExtensionContext): Stream<out Arguments> = Stream.of("8.14.3", "9.4.0").map { Arguments.of(it) }
+    override fun provideArguments(context: ExtensionContext): Stream<out Arguments> =
+        Stream
+            .of(
+                "8.14.3",
+                "9.4.0",
+            ).map { Arguments.of(it) }
 }
