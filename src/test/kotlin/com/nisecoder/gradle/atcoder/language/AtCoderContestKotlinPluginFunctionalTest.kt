@@ -1,9 +1,11 @@
 package com.nisecoder.gradle.atcoder.language
 
+import com.nisecoder.gradle.GradleVersionProvider
 import org.gradle.testkit.runner.GradleRunner
 import org.gradle.testkit.runner.TaskOutcome
-import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.io.TempDir
+import org.junit.jupiter.params.ParameterizedTest
+import org.junit.jupiter.params.provider.ArgumentsSource
 import java.io.File
 import java.nio.file.Path
 import kotlin.io.path.writeText
@@ -17,10 +19,9 @@ internal class AtCoderContestKotlinPluginFunctionalTest {
 
     private val settingsFile by lazy { projectDir.resolve("settings.gradle.kts") }
 
-    @Test
-    fun apply(
-        @TempDir tempDir: Path,
-    ) {
+    @ParameterizedTest(name = "gradle version: {0}")
+    @ArgumentsSource(GradleVersionProvider::class)
+    fun apply(gradleVersion: String) {
         projectDir.resolve("sample").toFile().mkdir()
         // create sub-project buildscript
         val buildFile: File = projectDir.resolve("sample/build.gradle.kts").toFile()
@@ -60,6 +61,7 @@ internal class AtCoderContestKotlinPluginFunctionalTest {
                 .create()
                 .forwardOutput()
                 .withPluginClasspath()
+                .withGradleVersion(gradleVersion)
                 .withArguments("help")
                 .withProjectDir(projectDir.toFile())
 

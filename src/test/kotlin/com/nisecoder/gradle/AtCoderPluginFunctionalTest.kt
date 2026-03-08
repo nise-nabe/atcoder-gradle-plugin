@@ -2,8 +2,9 @@ package com.nisecoder.gradle
 
 import org.gradle.testkit.runner.GradleRunner
 import org.gradle.testkit.runner.TaskOutcome
-import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.io.TempDir
+import org.junit.jupiter.params.ParameterizedTest
+import org.junit.jupiter.params.provider.ArgumentsSource
 import java.nio.file.Path
 import kotlin.io.path.writeText
 import kotlin.test.assertEquals
@@ -16,8 +17,9 @@ internal class AtCoderPluginFunctionalTest {
 
     private val settingsFile by lazy { projectDir.resolve("settings.gradle.kts") }
 
-    @Test
-    fun apply() {
+    @ParameterizedTest
+    @ArgumentsSource(GradleVersionProvider::class)
+    fun apply(gradleVersion: String) {
         // language=gradle.kts
         settingsFile.writeText(
             """
@@ -43,6 +45,7 @@ internal class AtCoderPluginFunctionalTest {
                 .create()
                 .forwardOutput()
                 .withPluginClasspath()
+                .withGradleVersion(gradleVersion)
                 .withArguments("help")
                 .withProjectDir(projectDir.toFile())
 
