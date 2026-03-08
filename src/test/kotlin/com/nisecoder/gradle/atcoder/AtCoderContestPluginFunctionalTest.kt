@@ -1,25 +1,31 @@
 package com.nisecoder.gradle.atcoder
 
+import com.nisecoder.gradle.GradleVersionProvider
 import org.gradle.testkit.runner.GradleRunner
 import org.gradle.testkit.runner.TaskOutcome
-import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.io.TempDir
+import org.junit.jupiter.params.ParameterizedTest
+import org.junit.jupiter.params.provider.ArgumentsSource
 import java.io.File
 import java.nio.file.Path
+import kotlin.io.path.writeText
 import kotlin.test.assertEquals
 
 internal class AtCoderContestPluginFunctionalTest {
-    @Test
-    fun apply(
-        @TempDir tempDir: Path,
-    ) {
-        val settingsFile: File = tempDir.resolve("settings.gradle.kts").toFile()
-        // create root-project directory
-        val rootBuildFile: File = tempDir.resolve("build.gradle.kts").toFile()
+    @field:TempDir
+    lateinit var projectDir: Path
+
+    private val rootBuildFile by lazy { projectDir.resolve("build.gradle.kts") }
+
+    private val settingsFile by lazy { projectDir.resolve("settings.gradle.kts") }
+
+    @ParameterizedTest
+    @ArgumentsSource(GradleVersionProvider::class)
+    fun apply(gradleVersion: String) {
         // create sub-project directory
-        tempDir.resolve("sample").toFile().mkdir()
+        projectDir.resolve("sample").toFile().mkdir()
         // create sub-project buildscript
-        val buildFile: File = tempDir.resolve("sample/build.gradle.kts").toFile()
+        val buildFile: File = projectDir.resolve("sample/build.gradle.kts").toFile()
 
         // language=gradle.kts
         settingsFile.writeText(
@@ -52,8 +58,9 @@ internal class AtCoderContestPluginFunctionalTest {
                 .create()
                 .forwardOutput()
                 .withPluginClasspath()
+                .withGradleVersion(gradleVersion)
                 .withArguments("help")
-                .withProjectDir(tempDir.toFile())
+                .withProjectDir(projectDir.toFile())
 
         val buildResult = runner.build()
 

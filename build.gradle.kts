@@ -35,7 +35,7 @@ testing {
     suites {
         @Suppress("UnstableApiUsage")
         withType<JvmTestSuite> {
-            useJUnitJupiter("5.10.2")
+            useJUnitJupiter("6.0.3")
 
             dependencies {
                 implementation(gradleTestKit())

@@ -2,33 +2,37 @@ package com.nisecoder.gradle
 
 import org.gradle.testkit.runner.GradleRunner
 import org.gradle.testkit.runner.TaskOutcome
-import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.io.TempDir
-import java.io.File
+import org.junit.jupiter.params.ParameterizedTest
+import org.junit.jupiter.params.provider.ArgumentsSource
 import java.nio.file.Path
+import kotlin.io.path.writeText
 import kotlin.test.assertEquals
 
 internal class AtCoderPluginFunctionalTest {
-    @Test
-    fun apply(
-        @TempDir tempDir: Path,
-    ) {
-        val settingsFile: File = tempDir.resolve("settings.gradle.kts").toFile()
-        val buildFIle: File = tempDir.resolve("build.gradle.kts").toFile()
+    @field:TempDir
+    lateinit var projectDir: Path
 
+    private val rootBuildFile by lazy { projectDir.resolve("build.gradle.kts") }
+
+    private val settingsFile by lazy { projectDir.resolve("settings.gradle.kts") }
+
+    @ParameterizedTest
+    @ArgumentsSource(GradleVersionProvider::class)
+    fun apply(gradleVersion: String) {
         // language=gradle.kts
         settingsFile.writeText(
             """
             | rootProject.name = "test-project"
             | 
             | plugins {
-            |   id("org.gradle.toolchains.foojay-resolver-convention") version "0.7.0"
+            |   id("org.gradle.toolchains.foojay-resolver-convention") version "1.0.0"
             | }
             """.trimMargin(),
         )
 
         // language=gradle.kts
-        buildFIle.writeText(
+        rootBuildFile.writeText(
             """
             | plugins {
             |   id("com.nisecoder.gradle.atcoder")
@@ -41,8 +45,9 @@ internal class AtCoderPluginFunctionalTest {
                 .create()
                 .forwardOutput()
                 .withPluginClasspath()
+                .withGradleVersion(gradleVersion)
                 .withArguments("help")
-                .withProjectDir(tempDir.toFile())
+                .withProjectDir(projectDir.toFile())
 
         val buildResult = runner.build()
 
