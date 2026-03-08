@@ -20,7 +20,9 @@ import org.gradle.api.tasks.Input
 import org.gradle.api.tasks.InputFile
 import org.gradle.api.tasks.SourceSetContainer
 import org.gradle.api.tasks.TaskAction
+import org.gradle.work.DisableCachingByDefault
 
+@DisableCachingByDefault(because = "temporary")
 abstract class AtCoderSubmitTask : AtCoderSessionTask() {
     @get:Input
     abstract val contestName: Property<String>
