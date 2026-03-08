@@ -6,20 +6,24 @@ import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.io.TempDir
 import java.io.File
 import java.nio.file.Path
+import kotlin.io.path.writeText
 import kotlin.test.assertEquals
 
 internal class AtCoderContestKotlinPluginFunctionalTest {
+    @field:TempDir
+    lateinit var projectDir: Path
+
+    private val rootBuildFile by lazy { projectDir.resolve("build.gradle.kts") }
+
+    private val settingsFile by lazy { projectDir.resolve("settings.gradle.kts") }
+
     @Test
     fun apply(
         @TempDir tempDir: Path,
     ) {
-        val settingsFile: File = tempDir.resolve("settings.gradle.kts").toFile()
-        // create root-project directory
-        val rootBuildFile: File = tempDir.resolve("build.gradle.kts").toFile()
-        // create sub-project directory
-        tempDir.resolve("sample").toFile().mkdir()
+        projectDir.resolve("sample").toFile().mkdir()
         // create sub-project buildscript
-        val buildFile: File = tempDir.resolve("sample/build.gradle.kts").toFile()
+        val buildFile: File = projectDir.resolve("sample/build.gradle.kts").toFile()
 
         // language=gradle.kts
         settingsFile.writeText(
@@ -57,7 +61,7 @@ internal class AtCoderContestKotlinPluginFunctionalTest {
                 .forwardOutput()
                 .withPluginClasspath()
                 .withArguments("help")
-                .withProjectDir(tempDir.toFile())
+                .withProjectDir(projectDir.toFile())
 
         val buildResult = runner.build()
 

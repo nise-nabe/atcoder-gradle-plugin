@@ -4,18 +4,20 @@ import org.gradle.testkit.runner.GradleRunner
 import org.gradle.testkit.runner.TaskOutcome
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.io.TempDir
-import java.io.File
 import java.nio.file.Path
+import kotlin.io.path.writeText
 import kotlin.test.assertEquals
 
 internal class AtCoderPluginFunctionalTest {
-    @Test
-    fun apply(
-        @TempDir tempDir: Path,
-    ) {
-        val settingsFile: File = tempDir.resolve("settings.gradle.kts").toFile()
-        val buildFIle: File = tempDir.resolve("build.gradle.kts").toFile()
+    @field:TempDir
+    lateinit var projectDir: Path
 
+    private val rootBuildFile by lazy { projectDir.resolve("build.gradle.kts") }
+
+    private val settingsFile by lazy { projectDir.resolve("settings.gradle.kts") }
+
+    @Test
+    fun apply() {
         // language=gradle.kts
         settingsFile.writeText(
             """
@@ -28,7 +30,7 @@ internal class AtCoderPluginFunctionalTest {
         )
 
         // language=gradle.kts
-        buildFIle.writeText(
+        rootBuildFile.writeText(
             """
             | plugins {
             |   id("com.nisecoder.gradle.atcoder")
@@ -42,7 +44,7 @@ internal class AtCoderPluginFunctionalTest {
                 .forwardOutput()
                 .withPluginClasspath()
                 .withArguments("help")
-                .withProjectDir(tempDir.toFile())
+                .withProjectDir(projectDir.toFile())
 
         val buildResult = runner.build()
 
