@@ -7,10 +7,6 @@ plugins {
     id("org.jlleitschuh.gradle.ktlint")
 }
 
-repositories {
-    gradlePluginPortal()
-}
-
 group = "com.nisecoder.gradle"
 
 // inject in GitHub Action Publish Workflow
@@ -28,10 +24,9 @@ dependencies {
 
     implementation(libs.ksoup)
 
-    implementation(platform(libs.ktor.bom))
-    implementation(libs.ktor.clientCore)
-    implementation(libs.ktor.clientCio)
-    implementation(libs.ktor.clientLogging)
+    implementation(ktorLibs.client.core)
+    implementation(ktorLibs.client.cio)
+    implementation(ktorLibs.client.logging)
 
     testImplementation(kotlin("test-junit5", libs.versions.kotlin.get()))
 }
