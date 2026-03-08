@@ -91,8 +91,8 @@ class AtCoderContestPlugin : Plugin<Project> {
 
     private fun Project.configureForJavaPlugin(contestTasks: NamedDomainObjectList<AtCoderContestTaskObject>) {
         extensions.getByType<JavaPluginExtension>().apply {
-            // atcoder use openjdk 17
-            toolchain.languageVersion.convention(JavaLanguageVersion.of(17))
+            // atcoder use openjdk 24
+            toolchain.languageVersion.convention(JavaLanguageVersion.of(24))
             toolchain.vendor.convention(JvmVendorSpec.ADOPTIUM)
         }
 
@@ -141,14 +141,14 @@ class AtCoderContestPlugin : Plugin<Project> {
     private fun Project.configureForKotlinJvmPlugin() {
         configure<KotlinJvmProjectExtension> {
             jvmToolchain {
-                // java use 17 but kotlin jvm use 19
-                languageVersion.set(JavaLanguageVersion.of(19))
+                // java use 24 but kotlin jvm use 23
+                languageVersion.set(JavaLanguageVersion.of(23))
             }
         }
 
         tasks.withType<KotlinCompile>().configureEach {
             compilerOptions {
-                // atcoder use 1.8.20
+                // atcoder use 2.1.10
                 languageVersion.set(KotlinVersion.KOTLIN_1_8)
                 apiVersion.set(KotlinVersion.KOTLIN_1_8)
                 javaParameters.set(true)
