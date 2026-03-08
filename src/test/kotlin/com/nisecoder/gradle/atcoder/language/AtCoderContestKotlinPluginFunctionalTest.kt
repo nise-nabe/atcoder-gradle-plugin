@@ -52,7 +52,8 @@ internal class AtCoderContestKotlinPluginFunctionalTest {
         )
 
         val runner =
-            GradleRunner.create()
+            GradleRunner
+                .create()
                 .forwardOutput()
                 .withPluginClasspath()
                 .withArguments("help")

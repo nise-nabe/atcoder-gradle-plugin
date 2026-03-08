@@ -43,7 +43,11 @@ abstract class AtCoderSubmitTask : AtCoderSessionTask() {
         val session = atcoderService.get().login()
 
         val task =
-            taskListFile.get().asFile.readLines().map(ContestTask::fromTsvRow)
+            taskListFile
+                .get()
+                .asFile
+                .readLines()
+                .map(ContestTask::fromTsvRow)
                 .firstOrNull { it.taskId == taskId.get() }
                 ?: throw AtCoderNoSuchTaskException("taskId=${taskId.get()} is not found")
 

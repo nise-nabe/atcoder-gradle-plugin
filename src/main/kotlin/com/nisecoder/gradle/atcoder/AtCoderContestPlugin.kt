@@ -107,7 +107,8 @@ class AtCoderContestPlugin : Plugin<Project> {
                     compileClasspath += mainOutput
                     runtimeClasspath += mainOutput
 
-                    configurations.getByName(implementationConfigurationName)
+                    configurations
+                        .getByName(implementationConfigurationName)
                         .extendsFrom(configurations.getByName(mainSourceSet.implementationConfigurationName))
                 }
 

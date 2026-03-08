@@ -14,8 +14,8 @@ data class ContestTask(
     val taskScreenName: String,
     val taskUrl: String,
 ) {
-    fun toTsvRow(): String {
-        return listOf(
+    fun toTsvRow(): String =
+        listOf(
             taskId,
             taskName,
             timeLimit,
@@ -23,11 +23,10 @@ data class ContestTask(
             taskScreenName,
             taskUrl,
         ).joinToString("\t")
-    }
 
     companion object {
-        fun fromTsvRow(row: String): ContestTask {
-            return row.split("\t").let {
+        fun fromTsvRow(row: String): ContestTask =
+            row.split("\t").let {
                 ContestTask(
                     taskId = it[0],
                     taskName = it[1],
@@ -37,6 +36,5 @@ data class ContestTask(
                     taskUrl = it[5],
                 )
             }
-        }
     }
 }

@@ -37,7 +37,8 @@ internal class AtCoderPluginFunctionalTest {
         )
 
         val runner =
-            GradleRunner.create()
+            GradleRunner
+                .create()
                 .forwardOutput()
                 .withPluginClasspath()
                 .withArguments("help")
