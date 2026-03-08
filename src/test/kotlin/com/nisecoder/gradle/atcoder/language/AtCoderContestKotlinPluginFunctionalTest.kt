@@ -19,7 +19,7 @@ internal class AtCoderContestKotlinPluginFunctionalTest {
 
     private val settingsFile by lazy { projectDir.resolve("settings.gradle.kts") }
 
-    @ParameterizedTest(name = "gradle version: {0}")
+    @ParameterizedTest
     @ArgumentsSource(GradleVersionProvider::class)
     fun apply(gradleVersion: String) {
         projectDir.resolve("sample").toFile().mkdir()
