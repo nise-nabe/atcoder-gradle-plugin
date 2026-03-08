@@ -27,3 +27,5 @@ dependencyResolutionManagement {
         }
     }
 }
+
+includeBuild("consumer")
