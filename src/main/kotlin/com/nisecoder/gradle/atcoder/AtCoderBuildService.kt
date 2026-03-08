@@ -23,23 +23,19 @@ import kotlinx.coroutines.runBlocking
 import org.gradle.api.credentials.PasswordCredentials
 import org.gradle.api.file.RegularFileProperty
 import org.gradle.api.provider.Property
-import org.gradle.api.provider.ProviderFactory
 import org.gradle.api.services.BuildService
 import org.gradle.api.services.BuildServiceParameters
 import org.gradle.kotlin.dsl.credentials
-import javax.inject.Inject
 
 abstract class AtCoderBuildService : BuildService<AtCoderBuildService.Params> {
     interface Params : BuildServiceParameters {
         val persistence: Property<Boolean>
         val sessionFile: RegularFileProperty
+        val credentials: Property<PasswordCredentials>
     }
 
-    @get:Inject
-    abstract val providers: ProviderFactory
-
     private val credentials: PasswordCredentials by lazy {
-        providers.credentials(PasswordCredentials::class, "atcoder").get()
+        parameters.credentials.get()
     }
 
     val username: String? by lazy { credentials.username }
