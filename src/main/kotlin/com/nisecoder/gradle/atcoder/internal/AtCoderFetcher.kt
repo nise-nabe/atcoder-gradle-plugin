@@ -1,56 +1,55 @@
 package com.nisecoder.gradle.atcoder.internal
 
-import it.skrape.core.document
-import it.skrape.core.htmlDocument
-import it.skrape.fetcher.HttpFetcher
-import it.skrape.fetcher.extractIt
-import it.skrape.fetcher.skrape
-import it.skrape.selects.html5.tbody
-import it.skrape.selects.html5.td
-import it.skrape.selects.html5.tr
+import com.fleeksoft.ksoup.Ksoup
+import io.ktor.client.HttpClient
+import io.ktor.client.engine.cio.CIO
+import io.ktor.client.request.get
+import io.ktor.client.request.header
+import io.ktor.client.statement.bodyAsText
+import io.ktor.http.HttpHeaders
+import io.ktor.http.HttpStatusCode
+import kotlinx.coroutines.runBlocking
 
 class AtCoderFetcher(
     private val session: String,
 ) {
     fun fetchTaskList(contestName: String): ContestTaskList =
-        skrape(HttpFetcher) {
-            request {
-                url = "${AtCoderSite.BASE_URL}/contests/$contestName/tasks"
-                headers =
-                    mapOf(
-                        "Accept-Language" to "ja",
-                        "Cookie" to session.cookieValue(),
-                    )
-            }
+        runBlocking {
+            HttpClient(CIO) {
+                expectSuccess = false
+                followRedirects = false
+            }.use { client ->
+                val response =
+                    client.get("${AtCoderSite.BASE_URL}/contests/$contestName/tasks") {
+                        header(HttpHeaders.AcceptLanguage, "ja")
+                        header(HttpHeaders.Cookie, session.cookieValue())
+                    }
 
-            extractIt {
-                if (responseStatus.code == 404 && document.wholeText.contains("権限がありません")) {
+                val html = response.bodyAsText()
+                if (response.status == HttpStatusCode.NotFound && html.contains("権限がありません")) {
                     throw AtCoderUnauthorizedException("not login")
                 }
-                htmlDocument {
-                    it.tasks =
-                        tbody {
-                            tr {
-                                findAll {
-                                    map {
-                                        it.td {
-                                            ContestTask(
-                                                taskId = findByIndex(0) { text },
-                                                taskName = findByIndex(1) { text },
-                                                timeLimit = findByIndex(2) { text },
-                                                memoryLimit = findByIndex(3) { text },
-                                                taskScreenName =
-                                                    findByIndex(4) {
-                                                        eachHref.first().split("taskScreenName=")[1]
-                                                    },
-                                                taskUrl = findByIndex(0) { AtCoderSite.BASE_URL + eachHref.first() },
-                                            )
-                                        }
-                                    }
-                                }
-                            }
-                        }
-                }
+
+                val document = Ksoup.parse(html)
+                val rows = document.select("tbody tr")
+                val tasks =
+                    rows.map { tr ->
+                        val tds = tr.select("td")
+                        ContestTask(
+                            taskId = tds[0].text(),
+                            taskName = tds[1].text(),
+                            timeLimit = tds[2].text(),
+                            memoryLimit = tds[3].text(),
+                            taskScreenName =
+                                tds[4]
+                                    .select("a")
+                                    .first()
+                                    ?.attr("href")
+                                    ?.substringAfter("taskScreenName=") ?: "",
+                            taskUrl = AtCoderSite.BASE_URL + (tds[0].select("a").first()?.attr("href") ?: ""),
+                        )
+                    }
+                ContestTaskList().apply { this.tasks = tasks }
             }
         }
 }
