@@ -15,7 +15,10 @@ class AtCoderFetcher(
 ) {
     fun fetchTaskList(contestName: String): ContestTaskList =
         runBlocking {
-            HttpClient(CIO).use { client ->
+            HttpClient(CIO) {
+                expectSuccess = false
+                followRedirects = false
+            }.use { client ->
                 val response =
                     client.get("${AtCoderSite.BASE_URL}/contests/$contestName/tasks") {
                         header(HttpHeaders.AcceptLanguage, "ja")
