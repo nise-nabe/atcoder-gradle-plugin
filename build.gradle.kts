@@ -26,13 +26,12 @@ dependencies {
     implementation(platform(libs.kotlin.bom))
     implementation(libs.kotlin.plugin)
 
-    implementation(libs.skrapeit)
+    implementation(libs.ksoup)
 
     implementation(platform(libs.ktor.bom))
     implementation(libs.ktor.clientCore)
     implementation(libs.ktor.clientCio)
     implementation(libs.ktor.clientLogging)
-    implementation(libs.logback.classic)
 
     testImplementation(kotlin("test-junit5", libs.versions.kotlin.get()))
 }

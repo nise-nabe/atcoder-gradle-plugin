@@ -9,6 +9,7 @@ import com.nisecoder.gradle.atcoder.internal.readFirstLine
 import io.ktor.client.HttpClient
 import io.ktor.client.engine.cio.CIO
 import io.ktor.client.request.forms.submitForm
+import io.ktor.client.request.get
 import io.ktor.client.request.header
 import io.ktor.client.statement.HttpResponse
 import io.ktor.client.statement.bodyAsText
@@ -18,10 +19,6 @@ import io.ktor.http.HttpStatusCode.Companion.Found
 import io.ktor.http.HttpStatusCode.Companion.OK
 import io.ktor.http.Parameters
 import io.ktor.http.setCookie
-import it.skrape.fetcher.Cookie
-import it.skrape.fetcher.HttpFetcher
-import it.skrape.fetcher.response
-import it.skrape.fetcher.skrape
 import kotlinx.coroutines.runBlocking
 import org.gradle.api.credentials.PasswordCredentials
 import org.gradle.api.file.RegularFileProperty
@@ -77,24 +74,20 @@ abstract class AtCoderBuildService : BuildService<AtCoderBuildService.Params> {
      * Login to AtCoder using the credentials provided by the user.
      *
      * @return login Session ID
-     * @throws AtCoderUnauthorizedException if the credentials is incorrect
+     * @throws AtCoderUnauthorizedException if the credentials are incorrect
      */
     fun login(): String = session
 
-    private fun fetchAnonymousCookie(): Cookie {
-        val session =
-            skrape(HttpFetcher) {
-                request {
-                    url = AtCoderSite.HOME
-                }
-
-                response {
-                    cookies.first { it.name == AtCoderSite.SESSION_NAME }
-                }
+    private fun fetchAnonymousCookie(): String =
+        runBlocking {
+            HttpClient(CIO) {
+                expectSuccess = false
+                followRedirects = false
+            }.use { client ->
+                val response = client.get(AtCoderSite.HOME)
+                response.setCookie().first { it.name == AtCoderSite.SESSION_NAME }.value
             }
-
-        return session
-    }
+        }
 
     /**
      * @param session AtCoder Site Session
@@ -106,7 +99,7 @@ abstract class AtCoderBuildService : BuildService<AtCoderBuildService.Params> {
      * @throws AtCoderUnauthorizedException if the [username] or [password] is incorrect
      */
     private fun loginInternal(
-        session: Cookie,
+        session: String,
         username: String,
         password: String,
     ): String {
@@ -123,12 +116,12 @@ abstract class AtCoderBuildService : BuildService<AtCoderBuildService.Params> {
                         Parameters.build {
                             append("username", username)
                             append("password", password)
-                            append("csrf_token", session.value.csrfToken())
+                            append("csrf_token", session.csrfToken())
                         },
                     encodeInQuery = false,
                 ) {
                     header(HttpHeaders.AcceptLanguage, "ja")
-                    header(HttpHeaders.Cookie, session.value.cookieValue())
+                    header(HttpHeaders.Cookie, session.cookieValue())
                 }
             when (response.status) {
                 OK, Found -> return@runBlocking response.setCookie().first { it.name == AtCoderSite.SESSION_NAME }.value
