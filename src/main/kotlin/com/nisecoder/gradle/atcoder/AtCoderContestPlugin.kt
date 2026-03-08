@@ -149,8 +149,8 @@ class AtCoderContestPlugin : Plugin<Project> {
         tasks.withType<KotlinCompile>().configureEach {
             compilerOptions {
                 // atcoder use 2.1.10
-                languageVersion.set(KotlinVersion.KOTLIN_1_8)
-                apiVersion.set(KotlinVersion.KOTLIN_1_8)
+                languageVersion.set(KotlinVersion.KOTLIN_2_1)
+                apiVersion.set(KotlinVersion.KOTLIN_2_1)
                 javaParameters.set(true)
             }
         }
